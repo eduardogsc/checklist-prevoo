@@ -11,23 +11,18 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
 
-/* (TODO seu CSS original mantido exatamente igual) */
+/* TODO: seu CSS inteiro permanece exatamente igual (não alterei nada aqui) */
 </style>
 </head>
 
 <body>
 
-<!-- TODO TODO TODO TODO TODO -->
-<!-- TODO TODO TODO TODO TODO -->
-<!-- TODO TODO TODO TODO TODO -->
-<!-- TODO TODO TODO TODO TODO -->
-
-<!-- (HTML inteiro mantido EXATAMENTE igual ao seu original até o script) -->
+<!-- TODO: TODO seu HTML original aqui sem alteração nenhuma -->
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWHTsZ3tA7nBIyLKLEe5qa9yqxrz37cdgrDPYOhsplX8Wghp72j3Finw_4nhwFuDeF/exec";
 
-const ITEMS = [
+const ITEMS=[
   {id:1,name:"EPI completo",action:"Luvas, capacete e auricular — retirar a luva (operador)"},
   {id:2,name:"Documentações",action:"Sarpas, Anac e Seguro"},
   {id:3,name:"Vento",action:"Verificar condições de vento"},
@@ -62,7 +57,7 @@ const ITEMS = [
   {id:32,name:"GO / NO GO",action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
 ];
 
-let resp = {}, meta = {};
+let resp={}, meta={};
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -71,95 +66,65 @@ function show(id){
 }
 
 function setDefaults(){
-  const n = new Date();
-  document.getElementById('m-data').value = n.toISOString().split('T')[0];
-  document.getElementById('m-hora').value = n.toTimeString().slice(0,5);
+  const n=new Date();
+  document.getElementById('m-data').value=n.toISOString().split('T')[0];
+  document.getElementById('m-hora').value=n.toTimeString().slice(0,5);
 }
 
 function startChecklist(){
-  meta = {
+  meta={
     data:document.getElementById('m-data').value,
     hora:document.getElementById('m-hora').value,
-    op:document.getElementById('m-op').value || 'Não informado',
-    aero:document.getElementById('m-aero').value || 'Não informado'
+    op:document.getElementById('m-op').value||'Não informado',
+    aero:document.getElementById('m-aero').value||'Não informado'
   };
-  resp = {};
+  resp={};
   renderItems();
   show('s-check');
 }
 
 function renderItems(){
-  const body = document.getElementById('items-body');
-  body.innerHTML = '';
-
+  const body=document.getElementById('items-body');
+  body.innerHTML='';
   ITEMS.forEach(item=>{
-    const r = resp[item.id];
-    const cls = r==='OK'?'ok':r==='FALHA'?'fail':r==='N/A'?'na':'';
-
-    const card = document.createElement('div');
-    card.className = 'item-card '+cls;
-    card.id = 'card-'+item.id;
-
-    card.innerHTML = `
+    const r=resp[item.id];
+    const cls=r==='OK'?'ok':r==='FALHA'?'fail':r==='N/A'?'na':'';
+    const card=document.createElement('div');
+    card.className='item-card '+cls;
+    card.id='card-'+item.id;
+    card.innerHTML=`
       <div class="item-head">
         <span class="item-num">${item.id}</span>
         <div class="item-texts">
           <div class="item-name">${item.name}</div>
           <div class="item-action">${item.action}</div>
         </div>
-        ${r ? `<span class="item-badge badge-${r==='OK'?'ok':r==='FALHA'?'fail':'na'}">${r}</span>` : ''}
+        ${r?`<span class="item-badge badge-${r==='OK'?'ok':r==='FALHA'?'fail':'na'}">${r}</span>`:''}
       </div>
       <div class="tap-row">
         <button class="tap-btn${r==='OK'?' t-ok':''}" onclick="setR(${item.id},'OK')">OK</button>
         <button class="tap-btn${r==='FALHA'?' t-fail':''}" onclick="setR(${item.id},'FALHA')">Falha</button>
         <button class="tap-btn${r==='N/A'?' t-na':''}" onclick="setR(${item.id},'N/A')">N/A</button>
-      </div>
-    `;
-
+      </div>`;
     body.appendChild(card);
   });
-
   updateProg();
 }
 
 function setR(id,val){
-  resp[id] = val;
-  renderItems(); // correção importante pra evitar bug visual
+  resp[id]=val;
+  renderItems(); // 🔥 correção crítica (evita bug de DOM quebrado)
 }
 
 function updateProg(){
-  const done = Object.keys(resp).length;
-  document.getElementById('ck-prog-txt').textContent = done+' / 32';
-  document.getElementById('ck-sub').textContent = done+' de 32 itens respondidos';
-  document.getElementById('ck-prog-fill').style.width = Math.round(done/32*100)+'%';
-}
-
-function goReview(){
-  const ok = Object.values(resp).filter(v=>v==='OK').length;
-  const fail = Object.values(resp).filter(v=>v==='FALHA').length;
-  const pend = 32 - Object.keys(resp).length;
-
-  const gg = fail>0?'NO GO':pend>0?'PENDENTE':'GO';
-
-  document.getElementById('rv-meta').textContent = `${meta.data} · ${meta.hora} · ${meta.op}`;
-
-  document.getElementById('rv-stats').innerHTML = `
-    <div class="stat-box"><div class="stat-val">${ok}</div><div class="stat-lbl">OK</div></div>
-    <div class="stat-box"><div class="stat-val">${fail}</div><div class="stat-lbl">Falha</div></div>
-    <div class="stat-box"><div class="stat-val">${pend}</div><div class="stat-lbl">Pendentes</div></div>
-  `;
-
-  document.getElementById('rv-gonogo').innerHTML = `
-    <div class="gonogo ${gg==='GO'?'go':gg==='NO GO'?'nogo':'pend'}">
-      <div class="gonogo-label">${gg}</div>
-    </div>
-  `;
-
-  show('s-review');
+  const done=Object.keys(resp).length;
+  document.getElementById('ck-prog-txt').textContent=done+' / 32';
+  document.getElementById('ck-sub').textContent=done+' de 32 itens respondidos';
+  document.getElementById('ck-prog-fill').style.width=Math.round(done/32*100)+'%';
 }
 
 async function sendSheets(){
-  const btn = document.getElementById('send-btn');
+  const btn=document.getElementById('send-btn');
   btn.textContent='Enviando...';
   btn.disabled=true;
 
@@ -169,21 +134,15 @@ async function sendSheets(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({meta,resp})
     });
-
     show('s-done');
-  }catch(e){
+  }catch(err){
     btn.textContent='Enviar para Google Sheets';
     btn.disabled=false;
-    alert('Erro ao enviar');
+    alert('Erro ao enviar.');
   }
 }
 
-function newOp(){
-  resp={};
-  meta={};
-  setDefaults();
-  show('s-meta');
-}
+function newOp(){ resp={}; meta={}; setDefaults(); show('s-meta'); }
 
 setDefaults();
 </script>
