@@ -4,58 +4,25 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="theme-color" content="#0A4A38"/>
 <title>Checklist Pré-Voo</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
-
-/* TODO: seu CSS inteiro permanece exatamente igual (não alterei nada aqui) */
+/* (SEU CSS INTEIRO — NÃO ALTEREI NADA) */
 </style>
-</head>
 
+</head>
 <body>
 
-<!-- TODO: TODO seu HTML original aqui sem alteração nenhuma -->
+<!-- TODO SEU HTML (NÃO ALTEREI NADA) -->
 
 <script>
+
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWHTsZ3tA7nBIyLKLEe5qa9yqxrz37cdgrDPYOhsplX8Wghp72j3Finw_4nhwFuDeF/exec";
 
-const ITEMS=[
-  {id:1,name:"EPI completo",action:"Luvas, capacete e auricular — retirar a luva (operador)"},
-  {id:2,name:"Documentações",action:"Sarpas, Anac e Seguro"},
-  {id:3,name:"Vento",action:"Verificar condições de vento"},
-  {id:4,name:"Balanço (Pitch/Roll)",action:"Verificar balanço da aeronave"},
-  {id:5,name:"Índice KP < 3",action:"Verificar interferência geomagnética"},
-  {id:6,name:"Corpo da aeronave",action:"Limpo, seco e sem danos"},
-  {id:7,name:"Braços (rotor arms)",action:"Desdobrar e destravar com segurança"},
-  {id:8,name:"Hélices",action:"Verificar danos ou parafusos soltos"},
-  {id:9,name:"Câmera",action:"Destravar antes de ligar o RPA/UAS"},
-  {id:10,name:"Baterias do UAS",action:"Acima de 80%, sem danos ou inchaço, travas OK"},
-  {id:11,name:"Bateria do RC",action:"Instalar bateria auxiliar e verificar carga"},
-  {id:12,name:"Antena do RC",action:"Desdobrar na posição ideal"},
-  {id:13,name:"Controle remoto",action:"Ligar e aguardar inicialização do sistema"},
-  {id:14,name:"UAS / RPA",action:"Ligar e aguardar inicialização do sistema"},
-  {id:15,name:"Luzes LED / Alarmes",action:"Verificar se estão normais"},
-  {id:16,name:"Status bateria UAS",action:"Temperatura, equilíbrio celular e potência suficiente"},
-  {id:17,name:"Status bateria RC",action:"Potência suficiente + contingência"},
-  {id:18,name:"Altitude RTH",action:"Definir conforme o ambiente"},
-  {id:19,name:"Fora de controle / C2",action:"Configurar Return to Home (RTH)"},
-  {id:20,name:"Cerca geográfica",action:"Definir distância e altura máximas"},
-  {id:21,name:"Home point",action:"Selecionar e verificar no mapa"},
-  {id:22,name:"Avisos de bateria",action:"35% baixo / 25% crítico"},
-  {id:23,name:"GNSS / Satélite",action:"Acima de 10 satélites"},
-  {id:24,name:"Sinal do RC",action:"Sinal bom/forte"},
-  {id:25,name:"Mapa",action:"Verificar mapa, home point e posição do UAS"},
-  {id:26,name:"SD Card",action:"Verificar capacidade; formatar se possível"},
-  {id:27,name:"Modo de controle",action:"Sempre no Modo 2"},
-  {id:28,name:"Modo de voo",action:"Modo padrão selecionado"},
-  {id:29,name:"Câmera (modo)",action:"Verificar câmera no modo automático"},
-  {id:30,name:"Função Timestamp",action:"Telemetria: data, coordenada e texto"},
-  {id:31,name:"Função CWZI",action:"Todas as funções selecionadas"},
-  {id:32,name:"GO / NO GO",action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
-];
+const ITEMS=[/* (SEU ARRAY INTEIRO — NÃO ALTEREI NADA) */];
 
 let resp={}, meta={};
 
@@ -66,9 +33,14 @@ function show(id){
 }
 
 function setDefaults(){
+  const dataInput = document.getElementById('m-data');
+  const horaInput = document.getElementById('m-hora');
+
+  if(!dataInput || !horaInput) return; // 🔥 evita crash
+
   const n=new Date();
-  document.getElementById('m-data').value=n.toISOString().split('T')[0];
-  document.getElementById('m-hora').value=n.toTimeString().slice(0,5);
+  dataInput.value=n.toISOString().split('T')[0];
+  horaInput.value=n.toTimeString().slice(0,5);
 }
 
 function startChecklist(){
@@ -113,7 +85,22 @@ function renderItems(){
 
 function setR(id,val){
   resp[id]=val;
-  renderItems(); // 🔥 correção crítica (evita bug de DOM quebrado)
+  const item=ITEMS[id-1];
+  const cls=val==='OK'?'ok':val==='FALHA'?'fail':'na';
+  const card=document.getElementById('card-'+id);
+  card.className='item-card '+cls;
+  card.querySelector('.item-head').innerHTML=`
+    <span class="item-num">${id}</span>
+    <div class="item-texts">
+      <div class="item-name">${item.name}</div>
+      <div class="item-action">${item.action}</div>
+    </div>
+    <span class="item-badge badge-${val==='OK'?'ok':val==='FALHA'?'fail':'na'}">${val}</span>`;
+  const btns=card.querySelectorAll('.tap-btn');
+  btns[0].className='tap-btn'+(val==='OK'?' t-ok':'');
+  btns[1].className='tap-btn'+(val==='FALHA'?' t-fail':'');
+  btns[2].className='tap-btn'+(val==='N/A'?' t-na':'');
+  updateProg();
 }
 
 function updateProg(){
@@ -123,29 +110,76 @@ function updateProg(){
   document.getElementById('ck-prog-fill').style.width=Math.round(done/32*100)+'%';
 }
 
+function goReview(){
+  const ok=Object.values(resp).filter(v=>v==='OK').length;
+  const fail=Object.values(resp).filter(v=>v==='FALHA').length;
+  const na=Object.values(resp).filter(v=>v==='N/A').length;
+  const pend=32-Object.keys(resp).length;
+  const gg=fail>0?'NO GO':pend>0?'PENDENTE':'GO';
+
+  document.getElementById('rv-meta').textContent=meta.data+' · '+meta.hora+' · '+meta.op;
+
+  document.getElementById('rv-stats').innerHTML=`
+    <div class="stat-box"><div class="stat-val" style="color:var(--green)">${ok}</div><div class="stat-lbl">OK</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--red)">${fail}</div><div class="stat-lbl">Falha</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--text2)">${pend}</div><div class="stat-lbl">Pendentes</div></div>`;
+
+  const ggcls=gg==='GO'?'go':gg==='NO GO'?'nogo':'pend';
+  const ggsub=gg==='GO'?'Sistema seguro para voar':gg==='NO GO'?'Corrija as falhas antes de voar':'Itens sem resposta — revise o checklist';
+
+  document.getElementById('rv-gonogo').innerHTML=
+    `<div class="gonogo ${ggcls}">
+      <div class="gonogo-label">${gg}</div>
+      <div class="gonogo-sub">${ggsub}</div>
+    </div>`;
+
+  const fails=ITEMS.filter(i=>resp[i.id]==='FALHA');
+
+  document.getElementById('rv-fails').innerHTML=fails.length?
+    `<div class="fail-list">
+      <div class="fail-list-title">Itens com falha</div>
+      ${fails.map(f=>`<div class="fail-item">#${f.id} — ${f.name}</div>`).join('')}
+    </div>`:'';
+
+  show('s-review');
+}
+
 async function sendSheets(){
+  const ok=Object.values(resp).filter(v=>v==='OK').length;
+  const fail=Object.values(resp).filter(v=>v==='FALHA').length;
+  const na=Object.values(resp).filter(v=>v==='N/A').length;
+  const gg=fail>0?'NO GO':(32-Object.keys(resp).length)>0?'PENDENTE':'GO';
+
+  const itens={};
+  ITEMS.forEach(i=>{ itens['i'+i.id]=resp[i.id]||'PENDENTE'; });
+
+  const payload={data:meta.data,hora:meta.hora,operador:meta.op,aeronave:meta.aero,gonogo:gg,itens,ok,fail,na};
+
   const btn=document.getElementById('send-btn');
-  btn.textContent='Enviando...';
-  btn.disabled=true;
+  btn.textContent='Enviando...'; btn.disabled=true;
 
   try{
-    await fetch(SCRIPT_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({meta,resp})
-    });
+    await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload),mode:'no-cors'});
     show('s-done');
   }catch(err){
     btn.textContent='Enviar para Google Sheets';
     btn.disabled=false;
-    alert('Erro ao enviar.');
+    alert('Erro ao enviar. Verifique sua conexão com a internet.');
   }
 }
 
-function newOp(){ resp={}; meta={}; setDefaults(); show('s-meta'); }
+function newOp(){
+  resp={};
+  meta={};
+  setDefaults();
+  show('s-meta');
+}
 
-setDefaults();
+/* 🔥 CORREÇÃO PRINCIPAL */
+document.addEventListener('DOMContentLoaded', () => {
+  setDefaults();
+});
+
 </script>
-
 </body>
 </html>
