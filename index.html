@@ -349,19 +349,13 @@ async function sendSheets(){
   const btn=document.getElementById('send-btn');
   btn.textContent='Enviando...'; btn.disabled=true;
   try{
-    const response = await fetch(SCRIPT_URL,{
+    await fetch(SCRIPT_URL,{
   method:'POST',
-  headers:{
-    'Content-Type':'application/json'
-  },
-  body:JSON.stringify(payload)
+  body:JSON.stringify(payload),
+  mode:'no-cors'
 });
 
-if(response.ok){
-  show('s-done');
-}else{
-  throw new Error("Erro no envio");
-};
+show('s-done');
   }catch(err){
     btn.textContent='Enviar para Google Sheets'; btn.disabled=false;
     alert('Erro ao enviar. Verifique sua conexão com a internet.');
