@@ -343,17 +343,47 @@ async function sendSheets(){
   const fail=Object.values(resp).filter(v=>v==='FALHA').length;
   const na=Object.values(resp).filter(v=>v==='N/A').length;
   const gg=fail>0?'NO GO':(32-Object.keys(resp).length)>0?'PENDENTE':'GO';
+
   const itens={};
   ITEMS.forEach(i=>{ itens['i'+i.id]=resp[i.id]||'PENDENTE'; });
-  const payload={data:meta.data,hora:meta.hora,operador:meta.op,aeronave:meta.aero,gonogo:gg,itens,ok,fail,na};
+
+  const payload={
+    data:meta.data,
+    hora:meta.hora,
+    operador:meta.op,
+    aeronave:meta.aero,
+    gonogo:gg,
+    itens,
+    ok,
+    fail,
+    na
+  };
+
   const btn=document.getElementById('send-btn');
-  btn.textContent='Enviando...'; btn.disabled=true;
+  btn.textContent='Enviando...';
+  btn.disabled=true;
+
   try{
-    await fetch(SCRIPT_URL,{
-  method:'POST',
-  body:JSON.stringify(payload),
-  mode:'no-cors'
-});
+    const response = await fetch(SCRIPT_URL,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(payload)
+    });
+
+    const result = await response.text();
+    console.log(result);
+
+    show('s-done');
+
+  }catch(err){
+    console.error(err);
+    btn.textContent='Enviar para Google Sheets';
+    btn.disabled=false;
+    alert('Erro ao enviar.');
+  }
+}
 
 show('s-done');
   }catch(err){
