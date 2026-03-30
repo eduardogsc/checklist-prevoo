@@ -74,54 +74,53 @@
     border-radius: 12px; padding: 13px; margin-bottom: 8px;
     transition: background 0.15s, border-color 0.15s;
   }
-  .item-card.ok { background: var(--green-bg); border-color: var(--green-light); }
-  .item-card.fail { background: var(--red-bg); border-color: var(--red); }
-  .item-card.na { background: #F1EFE8; border-color: #D3D1C7; }
+  .item-card.ok  { background: var(--green-bg); border-color: var(--green-light); }
+  .item-card.fail { background: var(--red-bg);   border-color: var(--red); }
+  .item-card.na  { background: #F1EFE8;           border-color: #D3D1C7; }
   .item-head { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
   .item-num { font-size: 11px; font-family: var(--mono); color: var(--text3); min-width: 20px; padding-top: 2px; }
   .item-texts { flex: 1; }
-  .item-name { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .item-name   { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.3; }
   .item-action { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
-  .item-badge { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; font-family: var(--mono); flex-shrink: 0; }
-  .badge-ok { background: var(--green); color: #fff; }
-  .badge-fail { background: var(--red); color: #fff; }
-  .badge-na { background: #D3D1C7; color: #444441; }
+  .item-badge  { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; font-family: var(--mono); flex-shrink: 0; }
+  .badge-ok   { background: var(--green); color: #fff; }
+  .badge-fail { background: var(--red);   color: #fff; }
+  .badge-na   { background: #D3D1C7;      color: #444441; }
   .tap-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
   .tap-btn {
     padding: 10px 4px; border-radius: 9px; font-size: 14px; font-weight: 500;
     font-family: var(--sans); border: 0.5px solid var(--border);
     background: var(--surface); color: var(--text2); cursor: pointer;
-    transition: background 0.1s, border-color 0.1s, color 0.1s;
   }
   .tap-btn:active { opacity: 0.75; }
-  .tap-btn.t-ok { background: var(--green-bg); border-color: var(--green); color: var(--green-dark); }
-  .tap-btn.t-fail { background: var(--red-bg); border-color: var(--red); color: var(--red-dark); }
-  .tap-btn.t-na { background: #F1EFE8; border-color: #D3D1C7; color: #444441; }
+  .tap-btn.t-ok   { background: var(--green-bg); border-color: var(--green); color: var(--green-dark); }
+  .tap-btn.t-fail { background: var(--red-bg);   border-color: var(--red);   color: var(--red-dark); }
+  .tap-btn.t-na   { background: #F1EFE8;          border-color: #D3D1C7;      color: #444441; }
   .stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
-  .stat-box { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
-  .stat-val { font-size: 26px; font-weight: 500; font-family: var(--mono); }
-  .stat-lbl { font-size: 11px; color: var(--text2); margin-top: 3px; font-family: var(--mono); }
+  .stat-box  { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
+  .stat-val  { font-size: 26px; font-weight: 500; font-family: var(--mono); }
+  .stat-lbl  { font-size: 11px; color: var(--text2); margin-top: 3px; font-family: var(--mono); }
   .gonogo { text-align: center; padding: 18px; border-radius: 14px; margin-bottom: 14px; }
-  .gonogo.go { background: var(--green-bg); border: 1px solid var(--green-light); }
-  .gonogo.nogo { background: var(--red-bg); border: 1px solid var(--red); }
+  .gonogo.go   { background: var(--green-bg); border: 1px solid var(--green-light); }
+  .gonogo.nogo { background: var(--red-bg);   border: 1px solid var(--red); }
   .gonogo.pend { background: var(--amber-bg); border: 1px solid #EF9F27; }
   .gonogo-label { font-size: 28px; font-weight: 500; font-family: var(--mono); letter-spacing: 0.05em; }
-  .gonogo.go .gonogo-label { color: var(--green-dark); }
+  .gonogo.go   .gonogo-label { color: var(--green-dark); }
   .gonogo.nogo .gonogo-label { color: var(--red-dark); }
   .gonogo.pend .gonogo-label { color: var(--amber); }
   .gonogo-sub { font-size: 12px; margin-top: 5px; font-family: var(--mono); }
-  .gonogo.go .gonogo-sub { color: var(--green-mid); }
+  .gonogo.go   .gonogo-sub { color: var(--green-mid); }
   .gonogo.nogo .gonogo-sub { color: var(--red-dark); }
   .gonogo.pend .gonogo-sub { color: var(--amber); }
-  .fail-list { background: var(--red-bg); border: 0.5px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
+  .fail-list       { background: var(--red-bg); border: 0.5px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
   .fail-list-title { font-size: 12px; font-weight: 500; color: var(--red-dark); margin-bottom: 7px; font-family: var(--mono); }
-  .fail-item { font-size: 13px; color: var(--red-dark); padding: 3px 0; }
+  .fail-item       { font-size: 13px; color: var(--red-dark); padding: 3px 0; }
   .done-center { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 2rem 1.5rem; text-align: center; }
 </style>
 </head>
 <body>
 
-<!-- META -->
+<!-- ── TELA 1: DADOS DO VOO ── -->
 <div id="s-meta" class="screen active">
   <div class="topbar">
     <div class="topbar-title">Checklist Pré-Voo</div>
@@ -138,7 +137,7 @@
   </div>
 </div>
 
-<!-- CHECKLIST -->
+<!-- ── TELA 2: CHECKLIST ── -->
 <div id="s-check" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-meta')">
@@ -150,7 +149,10 @@
   </div>
   <div class="content">
     <div class="prog-wrap">
-      <div class="prog-row"><span class="prog-label">progresso</span><span class="prog-val" id="ck-prog-txt">0 / 32</span></div>
+      <div class="prog-row">
+        <span class="prog-label">progresso</span>
+        <span class="prog-val" id="ck-prog-txt">0 / 32</span>
+      </div>
       <div class="prog-bg"><div class="prog-fill" id="ck-prog-fill" style="width:0%"></div></div>
     </div>
     <div id="items-body"></div>
@@ -160,7 +162,7 @@
   </div>
 </div>
 
-<!-- REVIEW -->
+<!-- ── TELA 3: RESUMO ── -->
 <div id="s-review" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-check')">
@@ -180,7 +182,7 @@
   </div>
 </div>
 
-<!-- DONE -->
+<!-- ── TELA 4: SUCESSO ── -->
 <div id="s-done" class="screen">
   <div class="topbar">
     <div class="topbar-title">Checklist Pré-Voo</div>
@@ -197,167 +199,192 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWHTsZ3tA7nBIyLKLEe5qa9yqxrz37cdgrDPYOhsplX8Wghp72j3Finw_4nhwFuDeF/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdUpUn6fft1DEUUtUW-zu3N6elGigcDHqJWAPzcw6G63k4dik1mTMpRWwHBv8c7ZNW/exec";
 
-const ITEMS=[
-  {id:1,name:"EPI completo",action:"Luvas, capacete e auricular — retirar a luva (operador)"},
-  {id:2,name:"Documentações",action:"Sarpas, Anac e Seguro"},
-  {id:3,name:"Vento",action:"Verificar condições de vento"},
-  {id:4,name:"Balanço (Pitch/Roll)",action:"Verificar balanço da aeronave"},
-  {id:5,name:"Índice KP < 3",action:"Verificar interferência geomagnética"},
-  {id:6,name:"Corpo da aeronave",action:"Limpo, seco e sem danos"},
-  {id:7,name:"Braços (rotor arms)",action:"Desdobrar e destravar com segurança"},
-  {id:8,name:"Hélices",action:"Verificar danos ou parafusos soltos"},
-  {id:9,name:"Câmera",action:"Destravar antes de ligar o RPA/UAS"},
-  {id:10,name:"Baterias do UAS",action:"Acima de 80%, sem danos ou inchaço, travas OK"},
-  {id:11,name:"Bateria do RC",action:"Instalar bateria auxiliar e verificar carga"},
-  {id:12,name:"Antena do RC",action:"Desdobrar na posição ideal"},
-  {id:13,name:"Controle remoto",action:"Ligar e aguardar inicialização do sistema"},
-  {id:14,name:"UAS / RPA",action:"Ligar e aguardar inicialização do sistema"},
-  {id:15,name:"Luzes LED / Alarmes",action:"Verificar se estão normais"},
-  {id:16,name:"Status bateria UAS",action:"Temperatura, equilíbrio celular e potência suficiente"},
-  {id:17,name:"Status bateria RC",action:"Potência suficiente + contingência"},
-  {id:18,name:"Altitude RTH",action:"Definir conforme o ambiente"},
-  {id:19,name:"Fora de controle / C2",action:"Configurar Return to Home (RTH)"},
-  {id:20,name:"Cerca geográfica",action:"Definir distância e altura máximas"},
-  {id:21,name:"Home point",action:"Selecionar e verificar no mapa"},
-  {id:22,name:"Avisos de bateria",action:"35% baixo / 25% crítico"},
-  {id:23,name:"GNSS / Satélite",action:"Acima de 10 satélites"},
-  {id:24,name:"Sinal do RC",action:"Sinal bom/forte"},
-  {id:25,name:"Mapa",action:"Verificar mapa, home point e posição do UAS"},
-  {id:26,name:"SD Card",action:"Verificar capacidade; formatar se possível"},
-  {id:27,name:"Modo de controle",action:"Sempre no Modo 2"},
-  {id:28,name:"Modo de voo",action:"Modo padrão selecionado"},
-  {id:29,name:"Câmera (modo)",action:"Verificar câmera no modo automático"},
-  {id:30,name:"Função Timestamp",action:"Telemetria: data, coordenada e texto"},
-  {id:31,name:"Função CWZI",action:"Todas as funções selecionadas"},
-  {id:32,name:"GO / NO GO",action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
+const ITEMS = [
+  {id:1,  name:"EPI completo",          action:"Luvas, capacete e auricular — retirar a luva (operador)"},
+  {id:2,  name:"Documentações",         action:"Sarpas, Anac e Seguro"},
+  {id:3,  name:"Vento",                 action:"Verificar condições de vento"},
+  {id:4,  name:"Balanço (Pitch/Roll)",  action:"Verificar balanço da aeronave"},
+  {id:5,  name:"Índice KP < 3",         action:"Verificar interferência geomagnética"},
+  {id:6,  name:"Corpo da aeronave",     action:"Limpo, seco e sem danos"},
+  {id:7,  name:"Braços (rotor arms)",   action:"Desdobrar e destravar com segurança"},
+  {id:8,  name:"Hélices",               action:"Verificar danos ou parafusos soltos"},
+  {id:9,  name:"Câmera",                action:"Destravar antes de ligar o RPA/UAS"},
+  {id:10, name:"Baterias do UAS",       action:"Acima de 80%, sem danos ou inchaço, travas OK"},
+  {id:11, name:"Bateria do RC",         action:"Instalar bateria auxiliar e verificar carga"},
+  {id:12, name:"Antena do RC",          action:"Desdobrar na posição ideal"},
+  {id:13, name:"Controle remoto",       action:"Ligar e aguardar inicialização do sistema"},
+  {id:14, name:"UAS / RPA",             action:"Ligar e aguardar inicialização do sistema"},
+  {id:15, name:"Luzes LED / Alarmes",   action:"Verificar se estão normais"},
+  {id:16, name:"Status bateria UAS",    action:"Temperatura, equilíbrio celular e potência suficiente"},
+  {id:17, name:"Status bateria RC",     action:"Potência suficiente + contingência"},
+  {id:18, name:"Altitude RTH",          action:"Definir conforme o ambiente"},
+  {id:19, name:"Fora de controle / C2", action:"Configurar Return to Home (RTH)"},
+  {id:20, name:"Cerca geográfica",      action:"Definir distância e altura máximas"},
+  {id:21, name:"Home point",            action:"Selecionar e verificar no mapa"},
+  {id:22, name:"Avisos de bateria",     action:"35% baixo / 25% crítico"},
+  {id:23, name:"GNSS / Satélite",       action:"Acima de 10 satélites"},
+  {id:24, name:"Sinal do RC",           action:"Sinal bom/forte"},
+  {id:25, name:"Mapa",                  action:"Verificar mapa, home point e posição do UAS"},
+  {id:26, name:"SD Card",               action:"Verificar capacidade; formatar se possível"},
+  {id:27, name:"Modo de controle",      action:"Sempre no Modo 2"},
+  {id:28, name:"Modo de voo",           action:"Modo padrão selecionado"},
+  {id:29, name:"Câmera (modo)",         action:"Verificar câmera no modo automático"},
+  {id:30, name:"Função Timestamp",      action:"Telemetria: data, coordenada e texto"},
+  {id:31, name:"Função CWZI",           action:"Todas as funções selecionadas"},
+  {id:32, name:"GO / NO GO",            action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
 ];
 
-let resp={}, meta={};
+let resp = {}, meta = {};
 
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
-function setDefaults(){
-  const n=new Date();
-  document.getElementById('m-data').value=n.toISOString().split('T')[0];
-  document.getElementById('m-hora').value=n.toTimeString().slice(0,5);
+function setDefaults() {
+  const n = new Date();
+  document.getElementById('m-data').value = n.toISOString().split('T')[0];
+  document.getElementById('m-hora').value = n.toTimeString().slice(0, 5);
 }
 
-function startChecklist(){
-  meta={
-    data:document.getElementById('m-data').value,
-    hora:document.getElementById('m-hora').value,
-    op:document.getElementById('m-op').value||'Não informado',
-    aero:document.getElementById('m-aero').value||'Não informado'
+function startChecklist() {
+  meta = {
+    data: document.getElementById('m-data').value,
+    hora: document.getElementById('m-hora').value,
+    op:   document.getElementById('m-op').value   || 'Não informado',
+    aero: document.getElementById('m-aero').value || 'Não informado'
   };
-  resp={};
+  resp = {};
   renderItems();
   show('s-check');
 }
 
-function renderItems(){
-  const body=document.getElementById('items-body');
-  body.innerHTML='';
-  ITEMS.forEach(item=>{
-    const r=resp[item.id];
-    const cls=r==='OK'?'ok':r==='FALHA'?'fail':r==='N/A'?'na':'';
-    const card=document.createElement('div');
-    card.className='item-card '+cls;
-    card.id='card-'+item.id;
-    card.innerHTML=`
+function renderItems() {
+  const body = document.getElementById('items-body');
+  body.innerHTML = '';
+  ITEMS.forEach(item => {
+    const r   = resp[item.id];
+    const cls = r === 'OK' ? 'ok' : r === 'FALHA' ? 'fail' : r === 'N/A' ? 'na' : '';
+    const card = document.createElement('div');
+    card.className = 'item-card ' + cls;
+    card.id = 'card-' + item.id;
+    card.innerHTML = `
       <div class="item-head">
         <span class="item-num">${item.id}</span>
         <div class="item-texts">
           <div class="item-name">${item.name}</div>
           <div class="item-action">${item.action}</div>
         </div>
-        ${r?`<span class="item-badge badge-${r==='OK'?'ok':r==='FALHA'?'fail':'na'}">${r}</span>`:''}
+        ${r ? `<span class="item-badge badge-${r==='OK'?'ok':r==='FALHA'?'fail':'na'}">${r}</span>` : ''}
       </div>
       <div class="tap-row">
-        <button class="tap-btn${r==='OK'?' t-ok':''}" onclick="setR(${item.id},'OK')">OK</button>
+        <button class="tap-btn${r==='OK'   ?' t-ok':''}"   onclick="setR(${item.id},'OK')">OK</button>
         <button class="tap-btn${r==='FALHA'?' t-fail':''}" onclick="setR(${item.id},'FALHA')">Falha</button>
-        <button class="tap-btn${r==='N/A'?' t-na':''}" onclick="setR(${item.id},'N/A')">N/A</button>
+        <button class="tap-btn${r==='N/A'  ?' t-na':''}"   onclick="setR(${item.id},'N/A')">N/A</button>
       </div>`;
     body.appendChild(card);
   });
   updateProg();
 }
 
-function setR(id,val){
-  resp[id]=val;
-  const item=ITEMS[id-1];
-  const cls=val==='OK'?'ok':val==='FALHA'?'fail':'na';
-  const card=document.getElementById('card-'+id);
-  card.className='item-card '+cls;
-  card.querySelector('.item-head').innerHTML=`
+function setR(id, val) {
+  resp[id] = val;
+  const item = ITEMS[id - 1];
+  const cls  = val === 'OK' ? 'ok' : val === 'FALHA' ? 'fail' : 'na';
+  const card = document.getElementById('card-' + id);
+  card.className = 'item-card ' + cls;
+  card.querySelector('.item-head').innerHTML = `
     <span class="item-num">${id}</span>
     <div class="item-texts">
       <div class="item-name">${item.name}</div>
       <div class="item-action">${item.action}</div>
     </div>
     <span class="item-badge badge-${val==='OK'?'ok':val==='FALHA'?'fail':'na'}">${val}</span>`;
-  const btns=card.querySelectorAll('.tap-btn');
-  btns[0].className='tap-btn'+(val==='OK'?' t-ok':'');
-  btns[1].className='tap-btn'+(val==='FALHA'?' t-fail':'');
-  btns[2].className='tap-btn'+(val==='N/A'?' t-na':'');
+  const btns = card.querySelectorAll('.tap-btn');
+  btns[0].className = 'tap-btn' + (val === 'OK'    ? ' t-ok'   : '');
+  btns[1].className = 'tap-btn' + (val === 'FALHA' ? ' t-fail' : '');
+  btns[2].className = 'tap-btn' + (val === 'N/A'   ? ' t-na'   : '');
   updateProg();
 }
 
-function updateProg(){
-  const done=Object.keys(resp).length;
-  document.getElementById('ck-prog-txt').textContent=done+' / 32';
-  document.getElementById('ck-sub').textContent=done+' de 32 itens respondidos';
-  document.getElementById('ck-prog-fill').style.width=Math.round(done/32*100)+'%';
+function updateProg() {
+  const done = Object.keys(resp).length;
+  document.getElementById('ck-prog-txt').textContent  = done + ' / 32';
+  document.getElementById('ck-sub').textContent        = done + ' de 32 itens respondidos';
+  document.getElementById('ck-prog-fill').style.width  = Math.round(done / 32 * 100) + '%';
 }
 
-function goReview(){
-  const ok=Object.values(resp).filter(v=>v==='OK').length;
-  const fail=Object.values(resp).filter(v=>v==='FALHA').length;
-  const na=Object.values(resp).filter(v=>v==='N/A').length;
-  const pend=32-Object.keys(resp).length;
-  const gg=fail>0?'NO GO':pend>0?'PENDENTE':'GO';
+function goReview() {
+  const ok   = Object.values(resp).filter(v => v === 'OK').length;
+  const fail = Object.values(resp).filter(v => v === 'FALHA').length;
+  const na   = Object.values(resp).filter(v => v === 'N/A').length;
+  const pend = 32 - Object.keys(resp).length;
+  const gg   = fail > 0 ? 'NO GO' : pend > 0 ? 'PENDENTE' : 'GO';
 
-  document.getElementById('rv-meta').textContent=meta.data+' · '+meta.hora+' · '+meta.op;
-  document.getElementById('rv-stats').innerHTML=`
+  document.getElementById('rv-meta').textContent = meta.data + ' · ' + meta.hora + ' · ' + meta.op;
+
+  document.getElementById('rv-stats').innerHTML = `
     <div class="stat-box"><div class="stat-val" style="color:var(--green)">${ok}</div><div class="stat-lbl">OK</div></div>
     <div class="stat-box"><div class="stat-val" style="color:var(--red)">${fail}</div><div class="stat-lbl">Falha</div></div>
     <div class="stat-box"><div class="stat-val" style="color:var(--text2)">${pend}</div><div class="stat-lbl">Pendentes</div></div>`;
 
-  const ggcls=gg==='GO'?'go':gg==='NO GO'?'nogo':'pend';
-  const ggsub=gg==='GO'?'Sistema seguro para voar':gg==='NO GO'?'Corrija as falhas antes de voar':'Itens sem resposta — revise o checklist';
-  document.getElementById('rv-gonogo').innerHTML=`<div class="gonogo ${ggcls}"><div class="gonogo-label">${gg}</div><div class="gonogo-sub">${ggsub}</div></div>`;
+  const ggcls = gg === 'GO' ? 'go' : gg === 'NO GO' ? 'nogo' : 'pend';
+  const ggsub = gg === 'GO'
+    ? 'Sistema seguro para voar'
+    : gg === 'NO GO'
+      ? 'Corrija as falhas antes de voar'
+      : 'Itens sem resposta — revise o checklist';
+  document.getElementById('rv-gonogo').innerHTML =
+    `<div class="gonogo ${ggcls}"><div class="gonogo-label">${gg}</div><div class="gonogo-sub">${ggsub}</div></div>`;
 
-  const fails=ITEMS.filter(i=>resp[i.id]==='FALHA');
-  document.getElementById('rv-fails').innerHTML=fails.length?`<div class="fail-list"><div class="fail-list-title">Itens com falha</div>${fails.map(f=>`<div class="fail-item">#${f.id} — ${f.name}</div>`).join('')}</div>`:'';
+  const fails = ITEMS.filter(i => resp[i.id] === 'FALHA');
+  document.getElementById('rv-fails').innerHTML = fails.length
+    ? `<div class="fail-list"><div class="fail-list-title">Itens com falha</div>${fails.map(f => `<div class="fail-item">#${f.id} — ${f.name}</div>`).join('')}</div>`
+    : '';
 
   show('s-review');
 }
 
-async function sendSheets(){
-  const ok=Object.values(resp).filter(v=>v==='OK').length;
-  const fail=Object.values(resp).filter(v=>v==='FALHA').length;
-  const na=Object.values(resp).filter(v=>v==='N/A').length;
-  const gg=fail>0?'NO GO':(32-Object.keys(resp).length)>0?'PENDENTE':'GO';
-  const itens={};
-  ITEMS.forEach(i=>{ itens['i'+i.id]=resp[i.id]||'PENDENTE'; });
-  const payload={data:meta.data,hora:meta.hora,operador:meta.op,aeronave:meta.aero,gonogo:gg,itens,ok,fail,na};
-  const btn=document.getElementById('send-btn');
-  btn.textContent='Enviando...'; btn.disabled=true;
-  try{
-    await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload),mode:'no-cors'});
+async function sendSheets() {
+  const ok   = Object.values(resp).filter(v => v === 'OK').length;
+  const fail = Object.values(resp).filter(v => v === 'FALHA').length;
+  const na   = Object.values(resp).filter(v => v === 'N/A').length;
+  const gg   = fail > 0 ? 'NO GO' : (32 - Object.keys(resp).length) > 0 ? 'PENDENTE' : 'GO';
+  const itens = {};
+  ITEMS.forEach(i => { itens['i' + i.id] = resp[i.id] || 'PENDENTE'; });
+
+  const payload = {
+    data: meta.data, hora: meta.hora,
+    operador: meta.op, aeronave: meta.aero,
+    gonogo: gg, itens, ok, fail, na
+  };
+
+  const btn = document.getElementById('send-btn');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      mode: 'no-cors'
+    });
     show('s-done');
-  }catch(err){
-    btn.textContent='Enviar para Google Sheets'; btn.disabled=false;
+  } catch (err) {
+    btn.textContent = 'Enviar para Google Sheets';
+    btn.disabled = false;
     alert('Erro ao enviar. Verifique sua conexão com a internet.');
   }
 }
 
-function newOp(){ resp={}; meta={}; setDefaults(); show('s-meta'); }
+function newOp() {
+  resp = {}; meta = {};
+  setDefaults();
+  show('s-meta');
+}
 
 setDefaults();
 </script>
