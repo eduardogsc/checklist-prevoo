@@ -53,6 +53,7 @@
   .btn { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 500; font-family: var(--sans); cursor: pointer; border: none; transition: opacity 0.1s; }
   .btn:active { opacity: 0.8; }
   .btn-primary { background: var(--green-dark); color: #fff; }
+  .btn-ghost { background: transparent; color: var(--text2); border: 0.5px solid var(--border); margin-top: 8px; }
   .field { margin-bottom: 16px; }
   .field label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.02em; }
   .field input {
@@ -87,7 +88,7 @@
   .badge-na   { background: #D3D1C7;      color: #444441; }
   .tap-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
   .tap-btn {
-    padding: 10px 4px; border-radius: 9px; font-size: 14px; font-weight: 500;
+    padding: 10px 4px; border-radius: 9px; font-size: 13px; font-weight: 500;
     font-family: var(--sans); border: 0.5px solid var(--border);
     background: var(--surface); color: var(--text2); cursor: pointer;
   }
@@ -95,6 +96,27 @@
   .tap-btn.t-ok   { background: var(--green-bg); border-color: var(--green); color: var(--green-dark); }
   .tap-btn.t-fail { background: var(--red-bg);   border-color: var(--red);   color: var(--red-dark); }
   .tap-btn.t-na   { background: #F1EFE8;          border-color: #D3D1C7;      color: #444441; }
+
+  /* Assinaturas */
+  .sig-block { margin-bottom: 20px; }
+  .sig-label { font-size: 12px; font-family: var(--mono); color: var(--text2); margin-bottom: 8px; letter-spacing: 0.02em; }
+  .sig-name  { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+  .sig-wrap  {
+    position: relative;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    overflow: hidden;
+  }
+  .sig-wrap.signed { border-color: var(--green); background: var(--green-bg); }
+  .sig-canvas { display: block; width: 100%; height: 160px; cursor: crosshair; touch-action: none; }
+  .sig-actions { display: flex; justify-content: flex-end; padding: 6px 10px; border-top: 0.5px solid var(--border); gap: 8px; }
+  .sig-clear { font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 4px 8px; }
+  .sig-status { font-size: 11px; font-family: var(--mono); padding: 4px 8px; }
+  .sig-status.ok { color: var(--green-mid); }
+  .sig-status.empty { color: var(--text3); }
+  .sig-divider { border: none; border-top: 0.5px solid var(--border); margin: 24px 0 20px; }
+
   .stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
   .stat-box  { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
   .stat-val  { font-size: 26px; font-weight: 500; font-family: var(--mono); }
@@ -114,6 +136,9 @@
   .fail-list       { background: var(--red-bg); border: 0.5px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
   .fail-list-title { font-size: 12px; font-weight: 500; color: var(--red-dark); margin-bottom: 7px; font-family: var(--mono); }
   .fail-item       { font-size: 13px; color: var(--red-dark); padding: 3px 0; }
+  .sig-preview { margin-bottom: 14px; }
+  .sig-preview-label { font-size: 11px; font-family: var(--mono); color: var(--text2); margin-bottom: 6px; }
+  .sig-preview img { width: 100%; border-radius: 8px; border: 0.5px solid var(--border); }
   .done-center { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 2rem 1.5rem; text-align: center; }
 </style>
 </head>
@@ -128,9 +153,9 @@
   <div class="content">
     <div class="field"><label>Data</label><input type="date" id="m-data"/></div>
     <div class="field"><label>Hora</label><input type="time" id="m-hora"/></div>
-    <div class="field"><label>Drone (modelo / ID)</label><input type="text" id="m-drone" placeholder="Ex: Drone 09 – #001"/></div>
+    <div class="field"><label>Drone (modelo / ID)</label><input type="text" id="m-drone" placeholder="Ex: DJI Mavic 3 – #001"/></div>
     <div class="field"><label>Embarcação</label><input type="text" id="m-aero" placeholder="Nome da embarcação"/></div>
-    <div class="field"><label>Piloto / Operador</label><input type="text" id="m-op" placeholder="Nome Nome"/></div>
+    <div class="field"><label>Piloto / Operador</label><input type="text" id="m-op" placeholder="Nome completo"/></div>
   </div>
   <div class="footer">
     <button class="btn btn-primary" onclick="startChecklist()">Iniciar checklist</button>
@@ -158,14 +183,56 @@
     <div id="items-body"></div>
   </div>
   <div class="footer">
+    <button class="btn btn-primary" onclick="show('s-sign')">Assinar e revisar</button>
+  </div>
+</div>
+
+<!-- TELA 3: ASSINATURAS -->
+<div id="s-sign" class="screen">
+  <div class="topbar">
+    <button class="topbar-back" onclick="show('s-check')">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Voltar
+    </button>
+    <div class="topbar-title">Assinaturas</div>
+    <div class="topbar-sub">assine com o dedo</div>
+  </div>
+  <div class="content">
+    <div class="sig-block">
+      <div class="sig-label">ASSINATURA DO PILOTO</div>
+      <div class="sig-name" id="sig-pilot-name"></div>
+      <div class="sig-wrap" id="sig-pilot-wrap">
+        <canvas class="sig-canvas" id="sig-pilot" width="800" height="320"></canvas>
+        <div class="sig-actions">
+          <span class="sig-status empty" id="sig-pilot-status">Aguardando assinatura</span>
+          <button class="sig-clear" onclick="clearSig('pilot')">Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <hr class="sig-divider"/>
+
+    <div class="sig-block">
+      <div class="sig-label">ASSINATURA DO OPERADOR</div>
+      <div class="sig-name" id="sig-op-name"></div>
+      <div class="sig-wrap" id="sig-op-wrap">
+        <canvas class="sig-canvas" id="sig-op" width="800" height="320"></canvas>
+        <div class="sig-actions">
+          <span class="sig-status empty" id="sig-op-status">Aguardando assinatura</span>
+          <button class="sig-clear" onclick="clearSig('op')">Limpar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
     <button class="btn btn-primary" onclick="goReview()">Revisar e enviar</button>
   </div>
 </div>
 
-<!-- TELA 3: RESUMO -->
+<!-- TELA 4: RESUMO -->
 <div id="s-review" class="screen">
   <div class="topbar">
-    <button class="topbar-back" onclick="show('s-check')">
+    <button class="topbar-back" onclick="show('s-sign')">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Voltar
     </button>
@@ -176,13 +243,14 @@
     <div class="stat-grid" id="rv-stats"></div>
     <div id="rv-gonogo"></div>
     <div id="rv-fails"></div>
+    <div id="rv-sigs"></div>
   </div>
   <div class="footer">
     <button class="btn btn-primary" id="send-btn" onclick="sendSheets()">Enviar para Google Sheets</button>
   </div>
 </div>
 
-<!-- TELA 4: SUCESSO -->
+<!-- TELA 5: SUCESSO -->
 <div id="s-done" class="screen">
   <div class="topbar">
     <div class="topbar-title">Checklist Pré-Voo</div>
@@ -199,7 +267,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPI9l9_ZCHeZEYpFgCN__wupyNoViuSjh7Rny_7RCaGp5Nwgsm1VoqTvR-TTX2y_VD/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0_6_ecN5ybVU9NCts0zATCJK8FG0JZnWPZEmp39Lx79khpK-QcWFe_5lfL7VdwPEF/exec";
 
 const ITEMS = [
   {id:1,  name:"EPI completo",          action:"Luvas, capacete e auricular — retirar a luva (operador)"},
@@ -237,11 +305,14 @@ const ITEMS = [
 ];
 
 let resp = {}, meta = {};
+const sigState = { pilot: false, op: false };
 
+// ── helpers ──────────────────────────────────────────────
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
+  if (id === 's-sign') initSigCanvases();
 }
 
 function setDefaults() {
@@ -250,19 +321,21 @@ function setDefaults() {
   document.getElementById('m-hora').value = n.toTimeString().slice(0, 5);
 }
 
+// ── meta ─────────────────────────────────────────────────
 function startChecklist() {
   meta = {
     data:     document.getElementById('m-data').value,
     hora:     document.getElementById('m-hora').value,
-    drone:    document.getElementById('m-drone').value || 'Não informado',
-    aeronave: document.getElementById('m-aero').value  || 'Não informado',
-    op:       document.getElementById('m-op').value    || 'Não informado',
+    drone:    document.getElementById('m-drone').value  || 'Não informado',
+    aeronave: document.getElementById('m-aero').value   || 'Não informado',
+    op:       document.getElementById('m-op').value     || 'Não informado',
   };
   resp = {};
   renderItems();
   show('s-check');
 }
 
+// ── checklist ─────────────────────────────────────────────
 function renderItems() {
   const body = document.getElementById('items-body');
   body.innerHTML = '';
@@ -318,6 +391,91 @@ function updateProg() {
   document.getElementById('ck-prog-fill').style.width = Math.round(done / 32 * 100) + '%';
 }
 
+// ── assinaturas ───────────────────────────────────────────
+function initSigCanvases() {
+  document.getElementById('sig-pilot-name').textContent = meta.op;
+  document.getElementById('sig-op-name').textContent    = meta.op;
+  setupCanvas('sig-pilot', 'pilot');
+  setupCanvas('sig-op',    'op');
+}
+
+function setupCanvas(canvasId, key) {
+  const canvas = document.getElementById(canvasId);
+  const ctx    = canvas.getContext('2d');
+  // scale canvas for retina / pixel density
+  const rect   = canvas.getBoundingClientRect();
+  canvas.width  = rect.width  * window.devicePixelRatio || 800;
+  canvas.height = rect.height * window.devicePixelRatio || 320;
+  ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  ctx.strokeStyle = '#0A4A38';
+  ctx.lineWidth   = 2.5;
+  ctx.lineCap     = 'round';
+  ctx.lineJoin    = 'round';
+
+  let drawing = false, lastX = 0, lastY = 0;
+
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: src.clientX - r.left, y: src.clientY - r.top };
+  }
+
+  function start(e) {
+    e.preventDefault();
+    drawing = true;
+    const p = getPos(e);
+    lastX = p.x; lastY = p.y;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    lastX = p.x; lastY = p.y;
+    markSigned(key);
+  }
+
+  function end(e) { drawing = false; }
+
+  canvas.addEventListener('mousedown',  start, { passive: false });
+  canvas.addEventListener('mousemove',  draw,  { passive: false });
+  canvas.addEventListener('mouseup',    end);
+  canvas.addEventListener('touchstart', start, { passive: false });
+  canvas.addEventListener('touchmove',  draw,  { passive: false });
+  canvas.addEventListener('touchend',   end);
+}
+
+function markSigned(key) {
+  sigState[key] = true;
+  const wrap   = document.getElementById('sig-' + key + '-wrap');
+  const status = document.getElementById('sig-' + key + '-status');
+  wrap.classList.add('signed');
+  status.textContent = 'Assinado';
+  status.className   = 'sig-status ok';
+}
+
+function clearSig(key) {
+  const canvas = document.getElementById('sig-' + key);
+  const ctx    = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  sigState[key] = false;
+  const wrap   = document.getElementById('sig-' + key + '-wrap');
+  const status = document.getElementById('sig-' + key + '-status');
+  wrap.classList.remove('signed');
+  status.textContent = 'Aguardando assinatura';
+  status.className   = 'sig-status empty';
+}
+
+function getSigDataURL(key) {
+  const canvas = document.getElementById('sig-' + key);
+  return sigState[key] ? canvas.toDataURL('image/png') : '';
+}
+
+// ── review ────────────────────────────────────────────────
 function goReview() {
   const ok   = Object.values(resp).filter(v => v === 'OK').length;
   const fail = Object.values(resp).filter(v => v === 'FALHA').length;
@@ -333,11 +491,9 @@ function goReview() {
     <div class="stat-box"><div class="stat-val" style="color:var(--text2)">${pend}</div><div class="stat-lbl">Pendentes</div></div>`;
 
   const ggcls = gg === 'GO' ? 'go' : gg === 'NO GO' ? 'nogo' : 'pend';
-  const ggsub = gg === 'GO'
-    ? 'Sistema seguro para voar'
-    : gg === 'NO GO'
-      ? 'Corrija as não conformidades antes de voar'
-      : 'Itens sem resposta — revise o checklist';
+  const ggsub = gg === 'GO' ? 'Sistema seguro para voar'
+    : gg === 'NO GO' ? 'Corrija as não conformidades antes de voar'
+    : 'Itens sem resposta — revise o checklist';
   document.getElementById('rv-gonogo').innerHTML =
     `<div class="gonogo ${ggcls}"><div class="gonogo-label">${gg}</div><div class="gonogo-sub">${ggsub}</div></div>`;
 
@@ -346,9 +502,25 @@ function goReview() {
     ? `<div class="fail-list"><div class="fail-list-title">Não conformidades</div>${fails.map(f => `<div class="fail-item">#${f.id} — ${f.name}</div>`).join('')}</div>`
     : '';
 
+  // preview das assinaturas
+  const sigPilot = getSigDataURL('pilot');
+  const sigOp    = getSigDataURL('op');
+  document.getElementById('rv-sigs').innerHTML = `
+    <div style="margin-top:8px;">
+      <div class="sig-preview">
+        <div class="sig-preview-label">ASSINATURA DO PILOTO</div>
+        ${sigPilot ? `<img src="${sigPilot}"/>` : '<p style="font-size:12px;color:var(--text3);font-family:var(--mono);">Não assinado</p>'}
+      </div>
+      <div class="sig-preview">
+        <div class="sig-preview-label">ASSINATURA DO OPERADOR</div>
+        ${sigOp ? `<img src="${sigOp}"/>` : '<p style="font-size:12px;color:var(--text3);font-family:var(--mono);">Não assinado</p>'}
+      </div>
+    </div>`;
+
   show('s-review');
 }
 
+// ── envio ─────────────────────────────────────────────────
 async function sendSheets() {
   const ok   = Object.values(resp).filter(v => v === 'OK').length;
   const fail = Object.values(resp).filter(v => v === 'FALHA').length;
@@ -365,7 +537,9 @@ async function sendSheets() {
     operador:  meta.op,
     gonogo:    gg,
     itens,
-    ok, fail, na
+    ok, fail, na,
+    sig_piloto:   getSigDataURL('pilot'),
+    sig_operador: getSigDataURL('op')
   };
 
   const btn = document.getElementById('send-btn');
@@ -388,6 +562,7 @@ async function sendSheets() {
 
 function newOp() {
   resp = {}; meta = {};
+  sigState.pilot = false; sigState.op = false;
   setDefaults();
   show('s-meta');
 }
@@ -396,4 +571,3 @@ setDefaults();
 </script>
 </body>
 </html>
-
