@@ -54,7 +54,7 @@
   .btn:active { opacity: 0.8; }
   .btn-primary { background: var(--green-dark); color: #fff; }
 
-  /* ── searchable select ── */
+  /* ── fields ── */
   .field { margin-bottom: 16px; position: relative; }
   .field label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.02em; }
   .field input {
@@ -66,6 +66,17 @@
   .field input:focus { outline: none; border-color: var(--green); }
   .field input.selected { border-color: var(--green); background: var(--green-bg); color: var(--green-dark); font-weight: 500; }
   .field input.error { border-color: var(--red); background: var(--red-bg); }
+
+  /* ── two-column row for pilot/operator ── */
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .field-row .field { margin-bottom: 0; }
+
+  /* ── dropdown ── */
   .dropdown {
     display: none;
     position: absolute;
@@ -77,6 +88,7 @@
     max-height: 220px;
     overflow-y: auto;
     margin-top: 4px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
   }
   .dropdown.open { display: block; }
   .dropdown-item {
@@ -88,7 +100,9 @@
   }
   .dropdown-item:last-child { border-bottom: none; }
   .dropdown-item:active, .dropdown-item.hover { background: var(--green-bg); color: var(--green-dark); }
-  .dropdown-item.disabled { color: var(--text3); pointer-events: none; font-style: italic; }
+  .dropdown-item.disabled { color: var(--text3); pointer-events: none; font-style: italic; font-size: 13px; }
+  .dropdown-item.disabled::after { content: " (outro campo)"; font-size: 11px; }
+
   .field-error { font-size: 11px; color: var(--red); font-family: var(--mono); margin-top: 4px; display: none; }
   .field-error.visible { display: block; }
 
@@ -180,7 +194,7 @@
   <div class="content">
     <div class="field"><label>Data</label><input type="date" id="m-data"/></div>
     <div class="field"><label>Hora</label><input type="time" id="m-hora"/></div>
-    <div class="field"><label>Drone (modelo / ID)</label><input type="text" id="m-drone" placeholder="Ex: DJI Mavic 3 – #001"/></div>
+    <div class="field"><label>Drone (modelo / ID)</label><input type="text" id="m-drone" placeholder="Ex: Drone 09"/></div>
 
     <!-- Embarcação -->
     <div class="field" id="field-aero">
@@ -191,22 +205,23 @@
       <div class="field-error" id="err-aero">Selecione uma embarcação da lista</div>
     </div>
 
-    <!-- Piloto -->
-    <div class="field" id="field-piloto">
-      <label>Piloto</label>
-      <input type="text" id="m-piloto" placeholder="Digite para buscar..." autocomplete="off"
-        oninput="filterDropdown('piloto')" onfocus="openDropdown('piloto')" onblur="blurDropdown('piloto')"/>
-      <div class="dropdown" id="dd-piloto"></div>
-      <div class="field-error" id="err-piloto">Selecione um piloto da lista</div>
-    </div>
+    <!-- Piloto + Operador lado a lado -->
+    <div class="field-row">
+      <div class="field" id="field-piloto">
+        <label>Piloto</label>
+        <input type="text" id="m-piloto" placeholder="Buscar..." autocomplete="off"
+          oninput="filterDropdown('piloto')" onfocus="openDropdown('piloto')" onblur="blurDropdown('piloto')"/>
+        <div class="dropdown" id="dd-piloto"></div>
+        <div class="field-error" id="err-piloto">Selecione um piloto</div>
+      </div>
 
-    <!-- Operador -->
-    <div class="field" id="field-operador">
-      <label>Operador</label>
-      <input type="text" id="m-operador" placeholder="Digite para buscar..." autocomplete="off"
-        oninput="filterDropdown('operador')" onfocus="openDropdown('operador')" onblur="blurDropdown('operador')"/>
-      <div class="dropdown" id="dd-operador"></div>
-      <div class="field-error" id="err-operador">Selecione um operador diferente do piloto</div>
+      <div class="field" id="field-operador">
+        <label>Operador</label>
+        <input type="text" id="m-operador" placeholder="Buscar..." autocomplete="off"
+          oninput="filterDropdown('operador')" onfocus="openDropdown('operador')" onblur="blurDropdown('operador')"/>
+        <div class="dropdown" id="dd-operador"></div>
+        <div class="field-error" id="err-operador">Deve ser diferente do piloto</div>
+      </div>
     </div>
   </div>
   <div class="footer">
@@ -317,10 +332,19 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz7vXjJt8ULLoZFFf1A8xURqIgXiPj-geCwcXuURvNd3AtSOZHVHYHhSihXo_wf2VWW/exec";
+// ── CONFIG ────────────────────────────────────────────────
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4SIgr6w01-VeCqo5c-tXC1F-jlfkWVMWcVW_9gszun7JgkHfdn_V0rirsezTEEslW/exec";
 
-const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"];
-const PESSOAS     = ["Eduardo","Tiago","Cleverson","Paulo M","Lucas Khul","Lucas Cruz","Guilherme","Diorge","Matheus","Wallace","Ivinin","Bruno V","Augusto T","Augusto C"];
+const EMBARCACOES = [
+  "C Agressor","C-Atlas","Olin Conqueror","Elizabeth C",
+  "Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"
+];
+
+const PESSOAS = [
+  "Eduardo","Tiago","Cleverson","Paulo M","Lucas Khul",
+  "Lucas Cruz","Guilherme","Diorge","Matheus",
+  "Wallace","Ivinin","Bruno V","Augusto T","Augusto C"
+];
 
 const ITEMS = [
   {id:1,  name:"EPI completo",          action:"Luvas, capacete e auricular — retirar a luva (operador)"},
@@ -357,20 +381,29 @@ const ITEMS = [
   {id:32, name:"GO / NO GO",            action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
 ];
 
+// ── STATE ─────────────────────────────────────────────────
 let resp = {}, meta = {};
 const sigState = { pilot: false, op: false };
+const sigData  = { pilot: '', op: '' };
 const selected = { aero: '', piloto: '', operador: '' };
 
-// ── dropdown helpers ──────────────────────────────────────
+// ── DROPDOWN HELPERS ──────────────────────────────────────
 function buildDropdown(key, list) {
   const dd = document.getElementById('dd-' + key);
   dd.innerHTML = '';
+  if (list.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'dropdown-item disabled';
+    empty.textContent = 'Nenhum resultado';
+    dd.appendChild(empty);
+    return;
+  }
   list.forEach(item => {
     const div = document.createElement('div');
     div.className = 'dropdown-item';
-    // disable if already selected in conflicting field
-    if (key === 'piloto'   && item === selected.operador) div.classList.add('disabled');
-    if (key === 'operador' && item === selected.piloto)   div.classList.add('disabled');
+    // disable if already selected in the conflicting field
+    if (key === 'piloto'   && item === selected.operador) { div.classList.add('disabled'); }
+    if (key === 'operador' && item === selected.piloto)   { div.classList.add('disabled'); }
     div.textContent = item;
     div.addEventListener('mousedown', e => { e.preventDefault(); selectItem(key, item); });
     div.addEventListener('touchend',  e => { e.preventDefault(); selectItem(key, item); });
@@ -379,7 +412,8 @@ function buildDropdown(key, list) {
 }
 
 function openDropdown(key) {
-  const list = key === 'aero' ? EMBARCACOES : PESSOAS;
+  const query = document.getElementById('m-' + key).value.toLowerCase();
+  const list  = (key === 'aero' ? EMBARCACOES : PESSOAS).filter(i => i.toLowerCase().includes(query));
   buildDropdown(key, list);
   document.getElementById('dd-' + key).classList.add('open');
 }
@@ -387,32 +421,53 @@ function openDropdown(key) {
 function filterDropdown(key) {
   const val  = document.getElementById('m-' + key).value.toLowerCase();
   const list = (key === 'aero' ? EMBARCACOES : PESSOAS).filter(i => i.toLowerCase().includes(val));
+  // typing means no longer a confirmed selection
   selected[key] = '';
   document.getElementById('m-' + key).classList.remove('selected');
   buildDropdown(key, list);
   document.getElementById('dd-' + key).classList.add('open');
-  // revalidate the other person field when this one changes
-  if (key === 'piloto')   buildDropdown('operador', PESSOAS.filter(i => i.toLowerCase().includes(document.getElementById('m-operador').value.toLowerCase())));
-  if (key === 'operador') buildDropdown('piloto',   PESSOAS.filter(i => i.toLowerCase().includes(document.getElementById('m-piloto').value.toLowerCase())));
+  // refresh other person dropdown to update disabled states
+  if (key === 'piloto') {
+    const v = document.getElementById('m-operador').value.toLowerCase();
+    buildDropdown('operador', PESSOAS.filter(i => i.toLowerCase().includes(v)));
+  }
+  if (key === 'operador') {
+    const v = document.getElementById('m-piloto').value.toLowerCase();
+    buildDropdown('piloto', PESSOAS.filter(i => i.toLowerCase().includes(v)));
+  }
 }
 
 function selectItem(key, value) {
   selected[key] = value;
-  document.getElementById('m-' + key).value = value;
-  document.getElementById('m-' + key).classList.add('selected');
-  document.getElementById('m-' + key).classList.remove('error');
+  const inp = document.getElementById('m-' + key);
+  inp.value = value;
+  inp.classList.add('selected');
+  inp.classList.remove('error');
   document.getElementById('dd-' + key).classList.remove('open');
   document.getElementById('err-' + key).classList.remove('visible');
-  // refresh the other person dropdown to disable this selection there
-  if (key === 'piloto')   { const v = document.getElementById('m-operador').value.toLowerCase(); buildDropdown('operador', PESSOAS.filter(i => i.toLowerCase().includes(v))); }
-  if (key === 'operador') { const v = document.getElementById('m-piloto').value.toLowerCase();   buildDropdown('piloto',   PESSOAS.filter(i => i.toLowerCase().includes(v))); }
+  // refresh the other person dropdown to disable this choice there
+  if (key === 'piloto') {
+    const v = document.getElementById('m-operador').value.toLowerCase();
+    buildDropdown('operador', PESSOAS.filter(i => i.toLowerCase().includes(v)));
+  }
+  if (key === 'operador') {
+    const v = document.getElementById('m-piloto').value.toLowerCase();
+    buildDropdown('piloto', PESSOAS.filter(i => i.toLowerCase().includes(v)));
+  }
 }
 
 function blurDropdown(key) {
-  setTimeout(() => { document.getElementById('dd-' + key).classList.remove('open'); }, 150);
+  setTimeout(() => {
+    document.getElementById('dd-' + key).classList.remove('open');
+    // if user typed but didn't select a valid item, clear the field
+    if (!selected[key]) {
+      document.getElementById('m-' + key).value = '';
+      document.getElementById('m-' + key).classList.remove('selected');
+    }
+  }, 180);
 }
 
-// ── screen nav ────────────────────────────────────────────
+// ── SCREEN NAV ────────────────────────────────────────────
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -426,9 +481,14 @@ function setDefaults() {
   document.getElementById('m-hora').value = n.toTimeString().slice(0, 5);
 }
 
-// ── start ─────────────────────────────────────────────────
+// ── START ─────────────────────────────────────────────────
 function startChecklist() {
   let valid = true;
+
+  ['aero', 'piloto', 'operador'].forEach(key => {
+    document.getElementById('m-' + key).classList.remove('error');
+    document.getElementById('err-' + key).classList.remove('visible');
+  });
 
   if (!selected.aero) {
     document.getElementById('m-aero').classList.add('error');
@@ -465,7 +525,7 @@ function startChecklist() {
   show('s-check');
 }
 
-// ── checklist ─────────────────────────────────────────────
+// ── CHECKLIST ─────────────────────────────────────────────
 function renderItems() {
   const body = document.getElementById('items-body');
   body.innerHTML = '';
@@ -521,7 +581,7 @@ function updateProg() {
   document.getElementById('ck-prog-fill').style.width = Math.round(done / 32 * 100) + '%';
 }
 
-// ── signatures ────────────────────────────────────────────
+// ── SIGNATURES ────────────────────────────────────────────
 function initSigCanvases() {
   document.getElementById('sig-pilot-name').textContent = meta.piloto;
   document.getElementById('sig-op-name').textContent    = meta.operador;
@@ -533,5 +593,207 @@ function setupCanvas(canvasId, key) {
   const canvas = document.getElementById(canvasId);
   const ctx    = canvas.getContext('2d');
   const rect   = canvas.getBoundingClientRect();
-  canvas.width  = (rect.width  || 340) * (window.devicePixelRatio || 1);
-  canvas.heigh
+  const dpr    = window.devicePixelRatio || 1;
+  canvas.width  = (rect.width  || 340) * dpr;
+  canvas.height = (rect.height || 160) * dpr;
+  ctx.scale(dpr, dpr);
+  ctx.strokeStyle = '#0A4A38';
+  ctx.lineWidth   = 2.5;
+  ctx.lineCap     = 'round';
+  ctx.lineJoin    = 'round';
+
+  let drawing = false, lastX = 0, lastY = 0;
+
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    if (e.touches) return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+
+  function startDraw(e) {
+    e.preventDefault();
+    drawing = true;
+    const p = getPos(e);
+    lastX = p.x; lastY = p.y;
+  }
+  function draw(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    lastX = p.x; lastY = p.y;
+    markSigned(key, true);
+  }
+  function endDraw() { drawing = false; }
+
+  canvas.removeEventListener('mousedown', canvas._startDraw);
+  canvas.removeEventListener('mousemove', canvas._draw);
+  canvas.removeEventListener('mouseup',   canvas._endDraw);
+  canvas.removeEventListener('touchstart',canvas._startDraw);
+  canvas.removeEventListener('touchmove', canvas._draw);
+  canvas.removeEventListener('touchend',  canvas._endDraw);
+
+  canvas._startDraw = startDraw;
+  canvas._draw      = draw;
+  canvas._endDraw   = endDraw;
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup',   endDraw);
+  canvas.addEventListener('touchstart',startDraw, { passive: false });
+  canvas.addEventListener('touchmove', draw,       { passive: false });
+  canvas.addEventListener('touchend',  endDraw);
+}
+
+function markSigned(key, val) {
+  sigState[key] = val;
+  const wrap   = document.getElementById('sig-' + key + '-wrap');
+  const status = document.getElementById('sig-' + key + '-status');
+  if (val) {
+    wrap.classList.add('signed');
+    status.textContent = 'Assinado';
+    status.className   = 'sig-status ok';
+  } else {
+    wrap.classList.remove('signed');
+    status.textContent = 'Aguardando assinatura';
+    status.className   = 'sig-status empty';
+  }
+}
+
+function clearSig(key) {
+  const canvasId = key === 'pilot' ? 'sig-pilot' : 'sig-op';
+  const canvas   = document.getElementById(canvasId);
+  const ctx      = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  markSigned(key, false);
+}
+
+// ── REVIEW ────────────────────────────────────────────────
+function goReview() {
+  const okCnt   = Object.values(resp).filter(v => v === 'OK').length;
+  const failCnt = Object.values(resp).filter(v => v === 'FALHA').length;
+  const naCnt   = Object.values(resp).filter(v => v === 'N/A').length;
+  const pend    = 32 - okCnt - failCnt - naCnt;
+
+  document.getElementById('rv-meta').textContent =
+    meta.aeronave + ' · ' + meta.piloto + ' · ' + meta.data;
+
+  document.getElementById('rv-stats').innerHTML = `
+    <div class="stat-box"><div class="stat-val" style="color:var(--green)">${okCnt}</div><div class="stat-lbl">Conformes</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--red)">${failCnt}</div><div class="stat-lbl">Não Conf.</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--text3)">${naCnt}</div><div class="stat-lbl">N/A</div></div>`;
+
+  // GO / NO GO
+  let ggClass, ggLabel, ggSub;
+  if (pend > 0) {
+    ggClass = 'pend'; ggLabel = 'PENDENTE';
+    ggSub   = pend + ' item(ns) sem resposta';
+  } else if (failCnt > 0) {
+    ggClass = 'nogo'; ggLabel = 'NO GO';
+    ggSub   = failCnt + ' item(ns) não conforme(s)';
+  } else {
+    ggClass = 'go'; ggLabel = 'GO';
+    ggSub   = 'Todos os itens conformes ou N/A';
+  }
+  document.getElementById('rv-gonogo').innerHTML =
+    `<div class="gonogo ${ggClass}"><div class="gonogo-label">${ggLabel}</div><div class="gonogo-sub">${ggSub}</div></div>`;
+
+  // Fails list
+  const failItems = ITEMS.filter(i => resp[i.id] === 'FALHA');
+  if (failItems.length) {
+    document.getElementById('rv-fails').innerHTML =
+      `<div class="fail-list">
+        <div class="fail-list-title">ITENS NÃO CONFORMES</div>
+        ${failItems.map(i => `<div class="fail-item">· ${i.id}. ${i.name}</div>`).join('')}
+       </div>`;
+  } else {
+    document.getElementById('rv-fails').innerHTML = '';
+  }
+
+  // Sig previews
+  const pilotCanvas = document.getElementById('sig-pilot');
+  const opCanvas    = document.getElementById('sig-op');
+  document.getElementById('rv-sigs').innerHTML = `
+    <div class="sig-preview">
+      <div class="sig-preview-label">ASSINATURA — ${meta.piloto.toUpperCase()} (PILOTO)</div>
+      <img src="${pilotCanvas.toDataURL()}" alt="Assinatura piloto"/>
+    </div>
+    <div class="sig-preview">
+      <div class="sig-preview-label">ASSINATURA — ${meta.operador.toUpperCase()} (OPERADOR)</div>
+      <img src="${opCanvas.toDataURL()}" alt="Assinatura operador"/>
+    </div>`;
+
+  show('s-review');
+}
+
+// ── SEND ──────────────────────────────────────────────────
+function sendSheets() {
+  const btn = document.getElementById('send-btn');
+  btn.textContent = 'Enviando…';
+  btn.disabled    = true;
+
+  const okCnt   = Object.values(resp).filter(v => v === 'OK').length;
+  const failCnt = Object.values(resp).filter(v => v === 'FALHA').length;
+  const naCnt   = Object.values(resp).filter(v => v === 'N/A').length;
+
+  const itens = {};
+  for (let i = 1; i <= 32; i++) itens['i' + i] = resp[i] || 'Pendente';
+
+  const payload = {
+    ...meta,
+    itens,
+    ok:   okCnt,
+    fail: failCnt,
+    na:   naCnt,
+    sig_piloto:   document.getElementById('sig-pilot').toDataURL(),
+    sig_operador: document.getElementById('sig-op').toDataURL(),
+  };
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body:   JSON.stringify(payload),
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.status === 'ok') {
+      show('s-done');
+    } else {
+      alert('Erro ao enviar: ' + (d.mensagem || 'desconhecido'));
+      btn.textContent = 'Enviar para Google Sheets';
+      btn.disabled    = false;
+    }
+  })
+  .catch(err => {
+    alert('Falha de rede: ' + err);
+    btn.textContent = 'Enviar para Google Sheets';
+    btn.disabled    = false;
+  });
+}
+
+// ── NEW OP ────────────────────────────────────────────────
+function newOp() {
+  resp = {};
+  meta = {};
+  sigState.pilot = false;
+  sigState.op    = false;
+  selected.aero      = '';
+  selected.piloto    = '';
+  selected.operador  = '';
+  ['aero','piloto','operador'].forEach(k => {
+    document.getElementById('m-' + k).value = '';
+    document.getElementById('m-' + k).classList.remove('selected','error');
+    document.getElementById('err-' + k).classList.remove('visible');
+  });
+  document.getElementById('m-drone').value = '';
+  setDefaults();
+  show('s-meta');
+}
+
+// ── INIT ──────────────────────────────────────────────────
+setDefaults();
+</script>
+</body>
+</html>
