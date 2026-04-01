@@ -194,7 +194,7 @@
   <div class="content">
     <div class="field"><label>Data</label><input type="date" id="m-data"/></div>
     <div class="field"><label>Hora</label><input type="time" id="m-hora"/></div>
-    <div class="field"><label>Drone (modelo / ID)</label><input type="text" id="m-drone" placeholder="Ex: Drone 09"/></div>
+    <div class="field"><label>Drone (modelo / ID)</label><input type="text" id="m-drone" placeholder="Ex: DJI Mavic 3 – #001"/></div>
 
     <!-- Embarcação -->
     <div class="field" id="field-aero">
@@ -237,13 +237,13 @@
       Voltar
     </button>
     <div class="topbar-title">Checklist pré-voo</div>
-    <div class="topbar-sub" id="ck-sub">0 de 32 itens respondidos</div>
+    <div class="topbar-sub" id="ck-sub">0 de 35 itens respondidos</div>
   </div>
   <div class="content">
     <div class="prog-wrap">
       <div class="prog-row">
         <span class="prog-label">progresso</span>
-        <span class="prog-val" id="ck-prog-txt">0 / 32</span>
+        <span class="prog-val" id="ck-prog-txt">0 / 35</span>
       </div>
       <div class="prog-bg"><div class="prog-fill" id="ck-prog-fill" style="width:0%"></div></div>
     </div>
@@ -347,38 +347,41 @@ const PESSOAS = [
 ];
 
 const ITEMS = [
-  {id:1,  name:"EPI completo",          action:"Luvas, capacete e auricular — retirar a luva (operador)"},
-  {id:2,  name:"Documentações",         action:"Sarpas, Anac e Seguro"},
-  {id:3,  name:"Vento",                 action:"Verificar condições de vento"},
-  {id:4,  name:"Balanço (Pitch/Roll)",  action:"Verificar balanço da aeronave"},
-  {id:5,  name:"Índice KP < 3",         action:"Verificar interferência geomagnética"},
-  {id:6,  name:"Corpo da aeronave",     action:"Limpo, seco e sem danos"},
-  {id:7,  name:"Braços (rotor arms)",   action:"Desdobrar e destravar com segurança"},
-  {id:8,  name:"Hélices",               action:"Verificar danos ou parafusos soltos"},
-  {id:9,  name:"Câmera",                action:"Destravar antes de ligar o RPA/UAS"},
-  {id:10, name:"Baterias do UAS",       action:"Acima de 80%, sem danos ou inchaço, travas OK"},
-  {id:11, name:"Bateria do RC",         action:"Instalar bateria auxiliar e verificar carga"},
-  {id:12, name:"Antena do RC",          action:"Desdobrar na posição ideal"},
-  {id:13, name:"Controle remoto",       action:"Ligar e aguardar inicialização do sistema"},
-  {id:14, name:"UAS / RPA",             action:"Ligar e aguardar inicialização do sistema"},
-  {id:15, name:"Luzes LED / Alarmes",   action:"Verificar se estão normais"},
-  {id:16, name:"Status bateria UAS",    action:"Temperatura, equilíbrio celular e potência suficiente"},
-  {id:17, name:"Status bateria RC",     action:"Potência suficiente + contingência"},
-  {id:18, name:"Altitude RTH",          action:"Definir conforme o ambiente"},
-  {id:19, name:"Fora de controle / C2", action:"Configurar Return to Home (RTH)"},
-  {id:20, name:"Cerca geográfica",      action:"Definir distância e altura máximas"},
-  {id:21, name:"Home point",            action:"Selecionar e verificar no mapa"},
-  {id:22, name:"Avisos de bateria",     action:"35% baixo / 25% crítico"},
-  {id:23, name:"GNSS / Satélite",       action:"Acima de 10 satélites"},
-  {id:24, name:"Sinal do RC",           action:"Sinal bom/forte"},
-  {id:25, name:"Mapa",                  action:"Verificar mapa, home point e posição do UAS"},
-  {id:26, name:"SD Card",               action:"Verificar capacidade; formatar se possível"},
-  {id:27, name:"Modo de controle",      action:"Sempre no Modo 2"},
-  {id:28, name:"Modo de voo",           action:"Modo padrão selecionado"},
-  {id:29, name:"Câmera (modo)",         action:"Verificar câmera no modo automático"},
-  {id:30, name:"Função Timestamp",      action:"Telemetria: data, coordenada e texto"},
-  {id:31, name:"Função CWZI",           action:"Todas as funções selecionadas"},
-  {id:32, name:"GO / NO GO",            action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
+  {id:1,  name:"EPI completo",                        action:"Luvas, capacete e auricular — retirar a luva (operador)"},
+  {id:2,  name:"Documentações",                       action:"Sarpas, Anac e Seguro"},
+  {id:3,  name:"Vento (Wind) / Chuva (Rain) / Visibilidade",  action:"Verificar condições de vento, presença de chuva e visibilidade"},
+  {id:4,  name:"Condições do Céu (Sky conditions)",   action:"Avaliar cobertura de nuvens e condições meteorológicas gerais"},
+  {id:5,  name:"Espaço Aéreo livre?",                 action:"Sem helicópteros ou aves próximas à área de operação"},
+  {id:6,  name:"Distância adequada de terceiros?",    action:"Verificar afastamento seguro de pessoas e embarcações"},
+  {id:7,  name:"Balanço (Pitch/Roll)",                action:"Verificar balanço da aeronave"},
+  {id:8,  name:"Índice KP < 3",                       action:"Verificar interferência geomagnética"},
+  {id:9,  name:"Corpo da aeronave",                   action:"Limpo, seco e sem danos"},
+  {id:10, name:"Braços (rotor arms)",                 action:"Desdobrar e destravar com segurança"},
+  {id:11, name:"Hélices",                             action:"Verificar danos ou parafusos soltos"},
+  {id:12, name:"Câmera",                              action:"Destravar antes de ligar o RPA/UAS"},
+  {id:13, name:"Baterias do UAS",                     action:"Acima de 80%, sem danos ou inchaço, travas OK"},
+  {id:14, name:"Bateria do RC",                       action:"Instalar bateria auxiliar e verificar carga"},
+  {id:15, name:"Antena do RC",                        action:"Desdobrar na posição ideal"},
+  {id:16, name:"Controle remoto",                     action:"Ligar e aguardar inicialização do sistema"},
+  {id:17, name:"UAS / RPA",                           action:"Ligar e aguardar inicialização do sistema"},
+  {id:18, name:"Luzes LED / Alarmes",                 action:"Verificar se estão normais"},
+  {id:19, name:"Status bateria UAS",                  action:"Temperatura, equilíbrio celular e potência suficiente"},
+  {id:20, name:"Status bateria RC",                   action:"Potência suficiente + contingência"},
+  {id:21, name:"Altitude RTH",                        action:"Definir conforme o ambiente"},
+  {id:22, name:"Fora de controle / C2",               action:"Configurar Return to Home (RTH)"},
+  {id:23, name:"Cerca geográfica",                    action:"Definir distância e altura máximas"},
+  {id:24, name:"Home point",                          action:"Selecionar e verificar no mapa"},
+  {id:25, name:"Avisos de bateria",                   action:"35% baixo / 25% crítico"},
+  {id:26, name:"GNSS / Satélite",                     action:"Acima de 10 satélites"},
+  {id:27, name:"Sinal do RC",                         action:"Sinal bom/forte"},
+  {id:28, name:"Mapa",                                action:"Verificar mapa, home point e posição do UAS"},
+  {id:29, name:"SD Card",                             action:"Verificar capacidade; formatar se possível"},
+  {id:30, name:"Modo de controle",                    action:"Sempre no Modo 2"},
+  {id:31, name:"Modo de voo",                         action:"Modo padrão selecionado"},
+  {id:32, name:"Câmera (modo)",                       action:"Verificar câmera no modo automático"},
+  {id:33, name:"Função Timestamp",                    action:"Telemetria: data, coordenada e texto"},
+  {id:34, name:"Função CWZI",                         action:"Todas as funções selecionadas"},
+  {id:35, name:"GO / NO GO",                          action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
 ];
 
 // ── STATE ─────────────────────────────────────────────────
@@ -576,9 +579,9 @@ function setR(id, val) {
 
 function updateProg() {
   const done = Object.keys(resp).length;
-  document.getElementById('ck-prog-txt').textContent = done + ' / 32';
-  document.getElementById('ck-sub').textContent       = done + ' de 32 itens respondidos';
-  document.getElementById('ck-prog-fill').style.width = Math.round(done / 32 * 100) + '%';
+  document.getElementById('ck-prog-txt').textContent = done + ' / 35';
+  document.getElementById('ck-sub').textContent       = done + ' de 35 itens respondidos';
+  document.getElementById('ck-prog-fill').style.width = Math.round(done / 35 * 100) + '%';
 }
 
 // ── SIGNATURES ────────────────────────────────────────────
@@ -676,7 +679,7 @@ function goReview() {
   const okCnt   = Object.values(resp).filter(v => v === 'OK').length;
   const failCnt = Object.values(resp).filter(v => v === 'FALHA').length;
   const naCnt   = Object.values(resp).filter(v => v === 'N/A').length;
-  const pend    = 32 - okCnt - failCnt - naCnt;
+  const pend    = 35 - okCnt - failCnt - naCnt;
 
   document.getElementById('rv-meta').textContent =
     meta.aeronave + ' · ' + meta.piloto + ' · ' + meta.data;
@@ -740,7 +743,7 @@ function sendSheets() {
   const naCnt   = Object.values(resp).filter(v => v === 'N/A').length;
 
   const itens = {};
-  for (let i = 1; i <= 32; i++) itens['i' + i] = resp[i] || 'Pendente';
+  for (let i = 1; i <= 35; i++) itens['i' + i] = resp[i] || 'Pendente';
 
   const payload = {
     ...meta,
