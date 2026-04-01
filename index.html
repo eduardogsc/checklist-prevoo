@@ -5,216 +5,354 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="theme-color" content="#0A4A38"/>
+<meta name="theme-color" content="#0b243a"/>
 <title>Dit Services</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+/* ══════════════════════════════════════════════════
+   PALETA DE CORES — Dit Services
+   Primário:   #0b243a  (azul-marinho)
+   Acento:     #77a670  (verde sálvia)
+   Base:       #ffffff  (branco)
+   ══════════════════════════════════════════════════ */
 :root {
-  --green-dark: #0A4A38;
-  --green-mid:  #0F6E56;
-  --green:      #1D9E75;
-  --green-light:#5DCAA5;
-  --green-bg:   #E1F5EE;
-  --red:        #E24B4A;
-  --red-bg:     #FCEBEB;
-  --red-dark:   #791F1F;
-  --amber:      #BA7517;
-  --amber-bg:   #FAEEDA;
-  --surface:    #F7F7F5;
-  --card:       #FFFFFF;
-  --border:     rgba(0,0,0,0.09);
-  --text:       #1A1A18;
-  --text2:      #5F5E5A;
-  --text3:      #A0A09A;
-  --mono:       'IBM Plex Mono', monospace;
-  --sans:       'IBM Plex Sans', sans-serif;
+  /* Azul-marinho — cor principal da marca */
+  --navy:        #0b243a;
+  --navy-mid:    #163d5e;   /* hover / variante média              */
+  --navy-light:  #e8eef4;   /* superfície azul muito clara          */
+  --navy-muted:  #9aabbf;   /* texto/ícone sobre fundo claro        */
+
+  /* Verde sálvia — cor de acento */
+  --sage:        #77a670;
+  --sage-dark:   #4d7a46;   /* texto verde sobre fundo claro        */
+  --sage-light:  #eaf3e9;   /* superfície verde muito clara         */
+  --sage-border: #b3d1b0;   /* borda verde suave                    */
+
+  /* Neutros e estados */
+  --red:         #d94f4f;
+  --red-bg:      #fdf0f0;
+  --red-dark:    #7a1f1f;
+  --amber:       #b07a1a;
+  --amber-bg:    #fdf4e3;
+  --amber-border:#e8c46a;
+
+  /* Superfícies — branco como base */
+  --surface:     #f5f7f9;   /* fundo geral levemente acinzentado    */
+  --card:        #ffffff;
+  --border:      rgba(11,36,58,0.10);
+  --border-soft: rgba(11,36,58,0.06);
+
+  /* Texto */
+  --text:        #0d1f2d;   /* quase-preto com tom marinho          */
+  --text2:       #4a6070;   /* secundário                           */
+  --text3:       #8fa5b5;   /* placeholder / desabilitado           */
+
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; background: var(--surface); font-family: var(--sans); color: var(--text); }
 
+/* ── SCREENS ── */
 .screen { display: none; flex-direction: column; min-height: 100vh; }
 .screen.active { display: flex; }
 
+/* ── TOPBAR ── */
 .topbar {
-  background: var(--green-dark);
+  background: var(--navy);
   padding: env(safe-area-inset-top, 16px) 20px 14px;
   padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
   flex-shrink: 0;
 }
-.topbar-back { background: none; border: none; color: #9FE1CB; font-size: 13px; font-family: var(--sans); cursor: pointer; padding: 0 0 8px; display: flex; align-items: center; gap: 4px; }
+.topbar-back {
+  background: none; border: none; color: var(--navy-muted);
+  font-size: 13px; font-family: var(--sans); cursor: pointer;
+  padding: 0 0 8px; display: flex; align-items: center; gap: 4px;
+}
+.topbar-back:active { color: #fff; }
 .topbar-title { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: -0.01em; }
-.topbar-sub   { font-size: 12px; color: #9FE1CB; margin-top: 3px; font-family: var(--mono); }
+.topbar-sub   { font-size: 12px; color: var(--navy-muted); margin-top: 3px; font-family: var(--mono); }
 .topbar-row   { display: flex; align-items: flex-start; justify-content: space-between; }
-.topbar-logout { background: none; border: 1px solid rgba(159,225,203,0.35); border-radius: 8px; color: #9FE1CB; font-size: 12px; font-family: var(--mono); cursor: pointer; padding: 5px 10px; margin-top: 2px; }
+.topbar-logout {
+  background: none;
+  border: 1px solid rgba(119,166,112,0.45);
+  border-radius: 8px; color: var(--sage-border);
+  font-size: 12px; font-family: var(--mono);
+  cursor: pointer; padding: 5px 10px; margin-top: 2px;
+}
+.topbar-logout:active { background: rgba(119,166,112,0.15); }
 
+/* ── LAYOUT ── */
 .content { flex: 1; overflow-y: auto; padding: 16px; -webkit-overflow-scrolling: touch; }
-.footer  { padding: 12px 16px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); background: var(--card); border-top: 0.5px solid var(--border); flex-shrink: 0; }
+.footer  {
+  padding: 12px 16px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  background: var(--card);
+  border-top: 0.5px solid var(--border);
+  flex-shrink: 0;
+}
 
+/* ── BUTTONS ── */
 .btn { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 500; font-family: var(--sans); cursor: pointer; border: none; transition: opacity 0.1s; }
-.btn:active { opacity: 0.8; }
-.btn-primary { background: var(--green-dark); color: #fff; }
-.btn-outline { background: transparent; color: var(--green-dark); border: 1px solid var(--green-dark); }
+.btn:active { opacity: 0.82; }
+.btn-primary { background: var(--navy); color: #fff; }
+.btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
 
+/* ── FIELDS ── */
 .field { margin-bottom: 16px; position: relative; }
-.field label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.02em; }
+.field label {
+  font-size: 11px; color: var(--text2); display: block; margin-bottom: 6px;
+  font-family: var(--mono); letter-spacing: 0.05em; text-transform: uppercase;
+}
 .field input, .field textarea {
   width: 100%; padding: 12px 14px; font-size: 16px; font-family: var(--sans);
-  border: 0.5px solid var(--border); border-radius: 10px;
+  border: 1px solid var(--border); border-radius: 10px;
   background: var(--card); color: var(--text);
   -webkit-appearance: none; appearance: none;
+  transition: border-color 0.15s;
 }
 .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-.field input:focus, .field textarea:focus { outline: none; border-color: var(--green); }
-.field input.selected { border-color: var(--green); background: var(--green-bg); color: var(--green-dark); font-weight: 500; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(119,166,112,0.15); }
+.field input.selected { border-color: var(--sage); background: var(--sage-light); color: var(--sage-dark); font-weight: 500; }
 .field input.error, .field textarea.error { border-color: var(--red); background: var(--red-bg); }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
 .field-row .field { margin-bottom: 0; }
 .field-error { font-size: 11px; color: var(--red); font-family: var(--mono); margin-top: 4px; display: none; }
 .field-error.visible { display: block; }
 
+/* ── DROPDOWN ── */
 .dropdown {
   display: none; position: absolute; top: 100%; left: 0; right: 0;
-  background: var(--card); border: 0.5px solid var(--border); border-radius: 10px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
   z-index: 200; max-height: 220px; overflow-y: auto; margin-top: 4px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  box-shadow: 0 6px 20px rgba(11,36,58,0.12);
 }
 .dropdown.open { display: block; }
-.dropdown-item { padding: 12px 14px; font-size: 15px; color: var(--text); cursor: pointer; border-bottom: 0.5px solid var(--border); }
+.dropdown-item { padding: 12px 14px; font-size: 15px; color: var(--text); cursor: pointer; border-bottom: 0.5px solid var(--border-soft); }
 .dropdown-item:last-child { border-bottom: none; }
-.dropdown-item:active { background: var(--green-bg); color: var(--green-dark); }
+.dropdown-item:active { background: var(--sage-light); color: var(--sage-dark); }
 .dropdown-item.disabled { color: var(--text3); pointer-events: none; font-style: italic; font-size: 13px; }
 .dropdown-item.disabled::after { content: " (outro campo)"; font-size: 11px; }
 
+/* ══════════════════════════════════════════════════
+   LOGIN
+   ══════════════════════════════════════════════════ */
 .login-wrap {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 32px 24px;
-  background: var(--green-dark);
+  padding: 40px 24px;
+  /* Gradiente suave: marinho escuro → marinho médio */
+  background: linear-gradient(160deg, #0b243a 0%, #163d5e 100%);
 }
-.login-logo { margin-bottom: 36px; text-align: center; }
-.login-logo svg { display: block; margin: 0 auto 14px; }
-.login-logo-title { font-size: 22px; font-weight: 500; color: #fff; letter-spacing: -0.01em; }
-.login-logo-sub   { font-size: 12px; color: #9FE1CB; font-family: var(--mono); margin-top: 4px; }
-.login-card { background: var(--card); border-radius: 20px; padding: 24px 20px; width: 100%; max-width: 380px; }
+.login-logo {
+  margin-bottom: 40px; text-align: center;
+}
+.login-logo img {
+  max-width: 220px; width: 100%; height: auto;
+  display: block; margin: 0 auto;
+  /* leve sombra para destacar sobre o fundo escuro */
+  filter: drop-shadow(0 2px 12px rgba(0,0,0,0.25));
+}
+/* Fallback caso a imagem não carregue */
+.login-logo-fallback { display: none; }
+.login-logo-fallback-title { font-size: 24px; font-weight: 500; color: #fff; letter-spacing: -0.01em; }
+.login-logo-fallback-sub   { font-size: 12px; color: var(--sage-border); font-family: var(--mono); margin-top: 6px; }
+
+.login-card {
+  background: #fff; border-radius: 20px;
+  padding: 28px 22px; width: 100%; max-width: 380px;
+  box-shadow: 0 8px 32px rgba(11,36,58,0.20);
+}
 .login-card .field label { color: var(--text2); }
 .login-card .field input { font-size: 15px; }
-.login-err { font-size: 12px; color: var(--red); font-family: var(--mono); text-align: center; margin-top: -8px; margin-bottom: 12px; display: none; }
+.login-err {
+  font-size: 12px; color: var(--red); font-family: var(--mono);
+  text-align: center; margin-top: -8px; margin-bottom: 12px; display: none;
+}
 .login-err.visible { display: block; }
 
-.menu-greeting { font-size: 13px; color: #9FE1CB; font-family: var(--mono); margin-top: 3px; }
-.section-title { font-size: 11px; font-weight: 500; color: var(--text3); font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; margin: 20px 0 10px; }
-.section-title:first-child { margin-top: 0; }
-.menu-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 0.12s; }
-.menu-card:active { background: var(--green-bg); }
-.menu-icon { width: 44px; height: 44px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.menu-icon.green { background: var(--green-bg); }
-.menu-icon.amber { background: var(--amber-bg); }
-.menu-icon.blue  { background: #E8F0FE; }
-.menu-texts { flex: 1; }
-.menu-name   { font-size: 15px; font-weight: 500; color: var(--text); }
-.menu-desc   { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
-.menu-arrow  { color: var(--text3); }
+/* ══════════════════════════════════════════════════
+   MENU
+   ══════════════════════════════════════════════════ */
+.menu-greeting { font-size: 13px; color: var(--navy-muted); font-family: var(--mono); margin-top: 3px; }
+.section-title {
+  font-size: 10px; font-weight: 500; color: var(--text3);
+  font-family: var(--mono); letter-spacing: 0.10em; text-transform: uppercase;
+  margin: 22px 0 10px;
+}
+.section-title:first-child { margin-top: 4px; }
 
-.doc-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 14px; padding: 15px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
-.doc-card:active { background: var(--green-bg); }
-.doc-icon { width: 40px; height: 40px; border-radius: 10px; background: #FDECEA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.menu-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 14px; cursor: pointer;
+  transition: background 0.12s, box-shadow 0.12s;
+}
+.menu-card:active { background: var(--navy-light); box-shadow: none; }
+
+.menu-icon {
+  width: 44px; height: 44px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+/* Ícone verde sálvia */
+.menu-icon.sage  { background: var(--sage-light); }
+/* Ícone azul marinho */
+.menu-icon.navy  { background: var(--navy-light); }
+/* Ícone âmbar */
+.menu-icon.amber { background: var(--amber-bg); }
+
+.menu-texts { flex: 1; }
+.menu-name  { font-size: 15px; font-weight: 500; color: var(--text); }
+.menu-desc  { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
+.menu-arrow { color: var(--text3); }
+
+/* ══════════════════════════════════════════════════
+   DOCUMENTOS
+   ══════════════════════════════════════════════════ */
+.doc-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 15px 16px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; text-decoration: none;
+  transition: background 0.12s;
+}
+.doc-card:active { background: var(--navy-light); }
+.doc-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--red-bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .doc-texts { flex: 1; }
 .doc-name { font-size: 14px; font-weight: 500; color: var(--text); }
 .doc-meta { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
 .doc-placeholder { background: var(--surface); border: 1px dashed var(--border); border-radius: 14px; padding: 20px 16px; text-align: center; margin-bottom: 10px; }
 .doc-placeholder p { font-size: 12px; color: var(--text3); font-family: var(--mono); line-height: 1.6; }
 
+/* ══════════════════════════════════════════════════
+   PROGRESSO
+   ══════════════════════════════════════════════════ */
 .prog-wrap { margin-bottom: 14px; }
 .prog-row  { display: flex; justify-content: space-between; margin-bottom: 7px; }
 .prog-label { font-size: 12px; color: var(--text2); font-family: var(--mono); }
 .prog-val   { font-size: 12px; font-weight: 500; font-family: var(--mono); color: var(--text); }
-.prog-bg    { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
-.prog-fill  { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.3s; }
+.prog-bg    { height: 5px; background: var(--navy-light); border-radius: 99px; overflow: hidden; }
+.prog-fill  { height: 100%; background: var(--sage); border-radius: 99px; transition: width 0.3s; }
 
-.item-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 13px; margin-bottom: 8px; transition: background 0.15s, border-color 0.15s; }
-.item-card.ok   { background: var(--green-bg); border-color: var(--green-light); }
-.item-card.fail { background: var(--red-bg);   border-color: var(--red); }
-.item-card.na   { background: #F1EFE8;          border-color: #D3D1C7; }
+/* ══════════════════════════════════════════════════
+   CHECKLIST ITEMS
+   ══════════════════════════════════════════════════ */
+.item-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 13px; margin-bottom: 8px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.item-card.ok   { background: var(--sage-light);  border-color: var(--sage-border); }
+.item-card.fail { background: var(--red-bg);       border-color: #f0b0b0; }
+.item-card.na   { background: #f4f6f8;             border-color: #d0d8e0; }
+
 .item-head  { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
 .item-num   { font-size: 11px; font-family: var(--mono); color: var(--text3); min-width: 20px; padding-top: 2px; }
 .item-texts { flex: 1; }
 .item-name  { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.3; }
 .item-action{ font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
 .item-badge { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; font-family: var(--mono); flex-shrink: 0; }
-.badge-ok   { background: var(--green); color: #fff; }
+.badge-ok   { background: var(--sage);  color: #fff; }
 .badge-fail { background: var(--red);   color: #fff; }
-.badge-na   { background: #D3D1C7;      color: #444441; }
-.tap-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
-.tap-btn { padding: 10px 4px; border-radius: 9px; font-size: 13px; font-weight: 500; font-family: var(--sans); border: 0.5px solid var(--border); background: var(--surface); color: var(--text2); cursor: pointer; }
-.tap-btn:active { opacity: 0.75; }
-.tap-btn.t-ok   { background: var(--green-bg); border-color: var(--green); color: var(--green-dark); }
-.tap-btn.t-fail { background: var(--red-bg);   border-color: var(--red);   color: var(--red-dark); }
-.tap-btn.t-na   { background: #F1EFE8;          border-color: #D3D1C7;      color: #444441; }
+.badge-na   { background: #c8d4dd;      color: #3a5060; }
 
+.tap-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
+.tap-btn {
+  padding: 10px 4px; border-radius: 9px; font-size: 13px; font-weight: 500;
+  font-family: var(--sans); border: 1px solid var(--border);
+  background: var(--surface); color: var(--text2); cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+.tap-btn:active { opacity: 0.75; }
+.tap-btn.t-ok   { background: var(--sage-light);  border-color: var(--sage);  color: var(--sage-dark); }
+.tap-btn.t-fail { background: var(--red-bg);       border-color: var(--red);   color: var(--red-dark); }
+.tap-btn.t-na   { background: #edf1f4;             border-color: #c8d4dd;      color: #3a5060; }
+
+/* ══════════════════════════════════════════════════
+   ASSINATURAS
+   ══════════════════════════════════════════════════ */
 .sig-block  { margin-bottom: 20px; }
-.sig-label  { font-size: 12px; font-family: var(--mono); color: var(--text2); margin-bottom: 6px; letter-spacing: 0.02em; }
+.sig-label  { font-size: 11px; font-family: var(--mono); color: var(--text2); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
 .sig-name   { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
-.sig-wrap   { position: relative; border: 0.5px solid var(--border); border-radius: 12px; background: var(--card); overflow: hidden; }
-.sig-wrap.signed { border-color: var(--green); background: var(--green-bg); }
+.sig-wrap   { position: relative; border: 1px solid var(--border); border-radius: 12px; background: var(--card); overflow: hidden; }
+.sig-wrap.signed { border-color: var(--sage); background: var(--sage-light); }
 .sig-canvas { display: block; width: 100%; height: 160px; cursor: crosshair; touch-action: none; }
-.sig-actions{ display: flex; justify-content: flex-end; padding: 6px 10px; border-top: 0.5px solid var(--border); gap: 8px; }
+.sig-actions{ display: flex; justify-content: flex-end; padding: 6px 10px; border-top: 0.5px solid var(--border-soft); gap: 8px; }
 .sig-clear  { font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 4px 8px; }
 .sig-status { font-size: 11px; font-family: var(--mono); padding: 4px 8px; }
-.sig-status.ok    { color: var(--green-mid); }
+.sig-status.ok    { color: var(--sage-dark); }
 .sig-status.empty { color: var(--text3); }
-.sig-divider{ border: none; border-top: 0.5px solid var(--border); margin: 24px 0 20px; }
+.sig-divider{ border: none; border-top: 1px solid var(--border-soft); margin: 24px 0 20px; }
 
+/* ══════════════════════════════════════════════════
+   RESUMO / REVIEW
+   ══════════════════════════════════════════════════ */
 .stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
-.stat-box  { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
+.stat-box  { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
 .stat-val  { font-size: 26px; font-weight: 500; font-family: var(--mono); }
 .stat-lbl  { font-size: 11px; color: var(--text2); margin-top: 3px; font-family: var(--mono); }
+
 .gonogo    { text-align: center; padding: 18px; border-radius: 14px; margin-bottom: 14px; }
-.gonogo.go   { background: var(--green-bg); border: 1px solid var(--green-light); }
-.gonogo.nogo { background: var(--red-bg);   border: 1px solid var(--red); }
-.gonogo.pend { background: var(--amber-bg); border: 1px solid #EF9F27; }
+.gonogo.go   { background: var(--sage-light); border: 1px solid var(--sage-border); }
+.gonogo.nogo { background: var(--red-bg);     border: 1px solid #f0b0b0; }
+.gonogo.pend { background: var(--amber-bg);   border: 1px solid var(--amber-border); }
 .gonogo-label{ font-size: 28px; font-weight: 500; font-family: var(--mono); letter-spacing: 0.05em; }
-.gonogo.go   .gonogo-label { color: var(--green-dark); }
+.gonogo.go   .gonogo-label { color: var(--sage-dark); }
 .gonogo.nogo .gonogo-label { color: var(--red-dark); }
 .gonogo.pend .gonogo-label { color: var(--amber); }
 .gonogo-sub  { font-size: 12px; margin-top: 5px; font-family: var(--mono); }
-.gonogo.go   .gonogo-sub { color: var(--green-mid); }
+.gonogo.go   .gonogo-sub { color: var(--sage-dark); }
 .gonogo.nogo .gonogo-sub { color: var(--red-dark); }
 .gonogo.pend .gonogo-sub { color: var(--amber); }
-.fail-list        { background: var(--red-bg); border: 0.5px solid var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
+
+.fail-list        { background: var(--red-bg); border: 1px solid #f0b0b0; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
 .fail-list-title  { font-size: 12px; font-weight: 500; color: var(--red-dark); margin-bottom: 7px; font-family: var(--mono); }
 .fail-item        { font-size: 13px; color: var(--red-dark); padding: 3px 0; }
-.sig-preview      { margin-bottom: 14px; }
-.sig-preview-label{ font-size: 11px; font-family: var(--mono); color: var(--text2); margin-bottom: 6px; }
-.sig-preview img  { width: 100%; border-radius: 8px; border: 0.5px solid var(--border); }
 
-.done-center { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 2rem 1.5rem; text-align: center; }
+.sig-preview       { margin-bottom: 14px; }
+.sig-preview-label { font-size: 11px; font-family: var(--mono); color: var(--text2); margin-bottom: 6px; }
+.sig-preview img   { width: 100%; border-radius: 8px; border: 1px solid var(--border); }
 
-.review-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
-.review-row  { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid var(--border); gap: 12px; }
+.review-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
+.review-row  { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 0.5px solid var(--border-soft); gap: 12px; }
 .review-row:last-child { border-bottom: none; }
-.review-key  { font-size: 12px; color: var(--text2); font-family: var(--mono); flex-shrink: 0; }
+.review-key  { font-size: 11px; color: var(--text2); font-family: var(--mono); flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.04em; }
 .review-val  { font-size: 13px; color: var(--text); text-align: right; word-break: break-word; }
+
+/* ── DONE ── */
+.done-center {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; flex: 1; padding: 2rem 1.5rem; text-align: center;
+}
 </style>
 </head>
 <body>
 
-<!-- TELA 0 — LOGIN -->
+<!-- ════════════════════════════════════════
+     TELA 0 — LOGIN
+════════════════════════════════════════ -->
 <div id="s-login" class="screen active">
   <div class="login-wrap">
-   <div class="login-logo">
-  <img src="Logo_DIT.png" 
-       alt="Dit Services"
-       style="max-width:300px; width:100%; display:block; margin: 0 auto;">
-
-  <div class="login-subtitle">Aplicativo de Controle Operacional</div>
-</div>
+    <div class="login-logo">
+      <img
+        src="Logo_DIT.png"
+        alt="Dit Services"
+        onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';"
+      />
+      <div id="logo-fallback" class="login-logo-fallback">
+        <div class="login-logo-fallback-title">Dit Services</div>
+        <div class="login-logo-fallback-sub">Solutions Beyond Vision Into Control</div>
+      </div>
+    </div>
     <div class="login-card">
       <div class="field">
-        <label>E-MAIL CORPORATIVO</label>
+        <label>E-mail Corporativo</label>
         <input type="email" id="l-email" placeholder="seu@empresa.com" autocomplete="email"/>
       </div>
       <div class="field">
-        <label>SENHA</label>
+        <label>Senha</label>
         <input type="password" id="l-senha" placeholder="••••••••" autocomplete="current-password"
           onkeydown="if(event.key==='Enter') doLogin()"/>
       </div>
@@ -224,7 +362,9 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- TELA 1 — MENU -->
+<!-- ════════════════════════════════════════
+     TELA 1 — MENU
+════════════════════════════════════════ -->
 <div id="s-menu" class="screen">
   <div class="topbar">
     <div class="topbar-row">
@@ -237,58 +377,70 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
   <div class="content">
     <div class="section-title">Checklists</div>
+
     <div class="menu-card" onclick="show('s-meta')">
-      <div class="menu-icon green">
+      <div class="menu-icon sage">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <rect x="3" y="2" width="16" height="18" rx="3" stroke="#1D9E75" stroke-width="1.5"/>
-          <polyline points="7,7 9.5,9.5 13,6" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="7" y1="12" x2="15" y2="12" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="7" y1="15.5" x2="13" y2="15.5" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="3" y="2" width="16" height="18" rx="3" stroke="#77a670" stroke-width="1.5"/>
+          <polyline points="7,7 9.5,9.5 13,6" stroke="#77a670" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="7" y1="12" x2="15" y2="12" stroke="#77a670" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="7" y1="15.5" x2="13" y2="15.5" stroke="#77a670" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="menu-texts">
         <div class="menu-name">Checklist Pré-Voo</div>
         <div class="menu-desc">35 itens · assinatura digital · envio para planilha</div>
       </div>
-      <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="menu-arrow">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
     </div>
+
     <div class="menu-card" onclick="show('s-manut-meta')">
       <div class="menu-icon amber">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <path d="M14.5 3.5C13.1 2.1 11 2 9.5 3.5L5 8l2 2 1.5-1.5 5 5-1.5 1.5 2 2 4.5-4.5c1.5-1.5 1.4-3.6 0-5z" stroke="#BA7517" stroke-width="1.4" stroke-linejoin="round"/>
-          <path d="M9 9l-5.5 5.5a1.5 1.5 0 000 2l1 1a1.5 1.5 0 002 0L12 12" stroke="#BA7517" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M14.5 3.5C13.1 2.1 11 2 9.5 3.5L5 8l2 2 1.5-1.5 5 5-1.5 1.5 2 2 4.5-4.5c1.5-1.5 1.4-3.6 0-5z" stroke="#b07a1a" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M9 9l-5.5 5.5a1.5 1.5 0 000 2l1 1a1.5 1.5 0 002 0L12 12" stroke="#b07a1a" stroke-width="1.4" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="menu-texts">
         <div class="menu-name">Manutenção Preventiva</div>
         <div class="menu-desc">Registro de manutenções · histórico de ações</div>
       </div>
-      <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="menu-arrow">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
     </div>
+
     <div class="section-title">Documentos Operacionais</div>
+
     <div class="menu-card" onclick="show('s-docs')">
-      <div class="menu-icon blue">
+      <div class="menu-icon navy">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <rect x="3" y="2" width="16" height="18" rx="3" stroke="#4A7DD4" stroke-width="1.5"/>
-          <line x1="7" y1="7"  x2="15" y2="7"  stroke="#4A7DD4" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="7" y1="11" x2="15" y2="11" stroke="#4A7DD4" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="7" y1="15" x2="11" y2="15" stroke="#4A7DD4" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="3" y="2" width="16" height="18" rx="3" stroke="#0b243a" stroke-width="1.5"/>
+          <line x1="7" y1="7"  x2="15" y2="7"  stroke="#0b243a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="7" y1="11" x2="15" y2="11" stroke="#0b243a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="7" y1="15" x2="11" y2="15" stroke="#0b243a" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="menu-texts">
         <div class="menu-name">Documentos Operacionais</div>
         <div class="menu-desc">PDFs · regulamentos · procedimentos</div>
       </div>
-      <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="menu-arrow">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- TELA 2 — CHECKLIST: DADOS -->
+<!-- ════════════════════════════════════════
+     TELA 2 — CHECKLIST: DADOS
+════════════════════════════════════════ -->
 <div id="s-meta" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-menu')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Menu
     </button>
     <div class="topbar-title">Checklist Pré-Voo</div>
@@ -327,11 +479,13 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- TELA 3 — CHECKLIST: ITENS -->
+<!-- ════════════════════════════════════════
+     TELA 3 — CHECKLIST: ITENS
+════════════════════════════════════════ -->
 <div id="s-check" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-meta')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Voltar
     </button>
     <div class="topbar-title">Checklist Pré-Voo</div>
@@ -352,11 +506,13 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- TELA 4 — ASSINATURAS -->
+<!-- ════════════════════════════════════════
+     TELA 4 — ASSINATURAS
+════════════════════════════════════════ -->
 <div id="s-sign" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-check')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Voltar
     </button>
     <div class="topbar-title">Assinaturas</div>
@@ -364,7 +520,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
   <div class="content">
     <div class="sig-block">
-      <div class="sig-label">ASSINATURA DO PILOTO</div>
+      <div class="sig-label">Assinatura do Piloto</div>
       <div class="sig-name" id="sig-pilot-name"></div>
       <div class="sig-wrap" id="sig-pilot-wrap">
         <canvas class="sig-canvas" id="sig-pilot" width="800" height="320"></canvas>
@@ -376,7 +532,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
     </div>
     <hr class="sig-divider"/>
     <div class="sig-block">
-      <div class="sig-label">ASSINATURA DO OPERADOR</div>
+      <div class="sig-label">Assinatura do Operador</div>
       <div class="sig-name" id="sig-op-name"></div>
       <div class="sig-wrap" id="sig-op-wrap">
         <canvas class="sig-canvas" id="sig-op" width="800" height="320"></canvas>
@@ -392,11 +548,13 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- TELA 5 — RESUMO -->
+<!-- ════════════════════════════════════════
+     TELA 5 — RESUMO PRÉ-VOO
+════════════════════════════════════════ -->
 <div id="s-review" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-sign')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Voltar
     </button>
     <div class="topbar-title">Resumo</div>
@@ -413,26 +571,31 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- TELA 6 — SUCESSO PRÉ-VOO -->
+<!-- ════════════════════════════════════════
+     TELA 6 — SUCESSO PRÉ-VOO
+════════════════════════════════════════ -->
 <div id="s-done" class="screen">
   <div class="topbar"><div class="topbar-title">Dit Services</div></div>
   <div class="done-center">
-    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-      <circle cx="32" cy="32" r="30" fill="#E1F5EE"/>
-      <polyline points="19,33 27,41 45,22" stroke="#0F6E56" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+      <circle cx="36" cy="36" r="34" fill="#eaf3e9"/>
+      <circle cx="36" cy="36" r="34" stroke="#b3d1b0" stroke-width="1"/>
+      <polyline points="22,37 30,46 50,25" stroke="#4d7a46" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <p style="font-size:19px;font-weight:500;margin:16px 0 8px;">Enviado com sucesso!</p>
+    <p style="font-size:19px;font-weight:500;margin:18px 0 8px;color:var(--text);">Enviado com sucesso!</p>
     <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:28px;font-family:var(--mono);">Registro salvo na planilha Google Sheets.</p>
     <button class="btn btn-primary" style="max-width:240px;margin-bottom:12px" onclick="newOp()">Nova operação</button>
     <button class="btn btn-outline" style="max-width:240px" onclick="show('s-menu')">Voltar ao menu</button>
   </div>
 </div>
 
-<!-- TELA 7 — MANUTENÇÃO: DADOS -->
+<!-- ════════════════════════════════════════
+     TELA 7 — MANUTENÇÃO: DADOS
+════════════════════════════════════════ -->
 <div id="s-manut-meta" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-menu')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Menu
     </button>
     <div class="topbar-title">Manutenção Preventiva</div>
@@ -462,23 +625,25 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
         <div class="field-error" id="err-mn-piloto2">Selecione</div>
       </div>
     </div>
-    <div class="field"><label>Nº DE CADASTRO (AERONAVE)</label><input type="text" id="mn-cadastro" placeholder="Ex: BR-12345"/></div>
-    <div class="field"><label>Nº TRANSMISSOR</label><input type="text" id="mn-transmissor" placeholder="Ex: TX-0042"/></div>
-    <div class="field"><label>DATA DA MANUTENÇÃO</label><input type="date" id="mn-data"/></div>
-    <div class="field"><label>ALARME / LOG APRESENTADO</label><textarea id="mn-alarme" placeholder="Descreva o alarme ou log registrado..."></textarea></div>
-    <div class="field"><label>O QUE FOI RESOLVIDO / AÇÃO TOMADA</label><textarea id="mn-acao" placeholder="Descreva a ação tomada..."></textarea></div>
-    <div class="field"><label>DATA DA PRÓXIMA REVISÃO</label><input type="date" id="mn-proxima"/></div>
+    <div class="field"><label>Nº de Cadastro (Aeronave)</label><input type="text" id="mn-cadastro" placeholder="Ex: BR-12345"/></div>
+    <div class="field"><label>Nº Transmissor</label><input type="text" id="mn-transmissor" placeholder="Ex: TX-0042"/></div>
+    <div class="field"><label>Data da Manutenção</label><input type="date" id="mn-data"/></div>
+    <div class="field"><label>Alarme / Log Apresentado</label><textarea id="mn-alarme" placeholder="Descreva o alarme ou log registrado..."></textarea></div>
+    <div class="field"><label>O que foi Resolvido / Ação Tomada</label><textarea id="mn-acao" placeholder="Descreva a ação tomada..."></textarea></div>
+    <div class="field"><label>Data da Próxima Revisão</label><input type="date" id="mn-proxima"/></div>
   </div>
   <div class="footer">
     <button class="btn btn-primary" onclick="goManutReview()">Revisar e enviar</button>
   </div>
 </div>
 
-<!-- TELA 8 — MANUTENÇÃO: REVISÃO -->
+<!-- ════════════════════════════════════════
+     TELA 8 — MANUTENÇÃO: REVISÃO
+════════════════════════════════════════ -->
 <div id="s-manut-review" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-manut-meta')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Voltar
     </button>
     <div class="topbar-title">Revisar Registro</div>
@@ -492,26 +657,31 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- TELA 9 — MANUTENÇÃO: SUCESSO -->
+<!-- ════════════════════════════════════════
+     TELA 9 — MANUTENÇÃO: SUCESSO
+════════════════════════════════════════ -->
 <div id="s-manut-done" class="screen">
   <div class="topbar"><div class="topbar-title">Dit Services</div></div>
   <div class="done-center">
-    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-      <circle cx="32" cy="32" r="30" fill="#FAEEDA"/>
-      <polyline points="19,33 27,41 45,22" stroke="#BA7517" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+      <circle cx="36" cy="36" r="34" fill="#fdf4e3"/>
+      <circle cx="36" cy="36" r="34" stroke="#e8c46a" stroke-width="1"/>
+      <polyline points="22,37 30,46 50,25" stroke="#b07a1a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <p style="font-size:19px;font-weight:500;margin:16px 0 8px;">Manutenção registrada!</p>
+    <p style="font-size:19px;font-weight:500;margin:18px 0 8px;color:var(--text);">Manutenção registrada!</p>
     <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:28px;font-family:var(--mono);">Registro salvo na planilha Google Sheets.</p>
     <button class="btn btn-primary" style="max-width:240px;margin-bottom:12px" onclick="newManut()">Novo registro</button>
     <button class="btn btn-outline" style="max-width:240px" onclick="show('s-menu')">Voltar ao menu</button>
   </div>
 </div>
 
-<!-- TELA 10 — DOCUMENTOS -->
+<!-- ════════════════════════════════════════
+     TELA 10 — DOCUMENTOS
+════════════════════════════════════════ -->
 <div id="s-docs" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-menu')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Menu
     </button>
     <div class="topbar-title">Documentos Operacionais</div>
@@ -520,6 +690,9 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   <div class="content" id="docs-body"></div>
 </div>
 
+<!-- ════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyH9BCfOMPzdg6Qr-JcrKFj7RXNur0hruWvCzKs5HcT4CTVQIgJnyy7AIzgae74HlJl/exec";
 
@@ -527,60 +700,50 @@ const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corc
 const PESSOAS     = ["Eduardo","Tiago","Cleverson","Paulo M","Lucas Khul","Lucas Cruz","Guilherme","Diorge","Matheus","Wallace","Ivinin","Bruno V","Augusto T","Augusto C"];
 
 const DOCS_LIST = [
-  {
-    name: "MOARP",
-    meta: "Manual de Operações de Aeronaves Remotamente Pilotadas",
-    url:  "https://drive.google.com/file/d/1Cm_QrtRH0w_XLGiAu1H-q0GEClLOQ5Uq/view?usp=drive_link"
-  },
-  {
-    name: "Guia de Uso — Petrobras",
-    meta: "Procedimentos operacionais para operações Petrobras",
-    url:  "https://drive.google.com/file/d/1FNY0HH7v1izn-wUyMFbfIL6sbEF0PmZH/view?usp=sharing"
-  },
-  {
-    name: "Manutenção Preventiva Semanal",
-    meta: "Checklist e registro de manutenção semanal",
-    url:  "https://drive.google.com/file/d/1oosNQ3cpNftvDLob_jOknrcxR3TYJVmI/view?usp=drive_link"
-  },
-];
-const ITEMS = [
-  {id:1,  name:"EPI completo",                              action:"Luvas, capacete e auricular — retirar a luva (operador)"},
-  {id:2,  name:"Documentações",                             action:"Sarpas, Anac e Seguro"},
-  {id:3,  name:"Vento / Chuva / Visibilidade",              action:"Verificar condições de vento, presença de chuva e visibilidade"},
-  {id:4,  name:"Condições do Céu (Sky conditions)",         action:"Avaliar cobertura de nuvens e condições meteorológicas gerais"},
-  {id:5,  name:"Espaço Aéreo livre?",                       action:"Sem helicópteros ou aves próximas à área de operação"},
-  {id:6,  name:"Distância adequada de terceiros?",          action:"Verificar afastamento seguro de pessoas e embarcações"},
-  {id:7,  name:"Balanço (Pitch/Roll)",                      action:"Verificar balanço da aeronave"},
-  {id:8,  name:"Índice KP < 3",                             action:"Verificar interferência geomagnética"},
-  {id:9,  name:"Corpo da aeronave",                         action:"Limpo, seco e sem danos"},
-  {id:10, name:"Braços (rotor arms)",                       action:"Desdobrar e destravar com segurança"},
-  {id:11, name:"Hélices",                                   action:"Verificar danos ou parafusos soltos"},
-  {id:12, name:"Câmera",                                    action:"Destravar antes de ligar o RPA/UAS"},
-  {id:13, name:"Baterias do UAS",                           action:"Acima de 80%, sem danos ou inchaço, travas OK"},
-  {id:14, name:"Bateria do RC",                             action:"Instalar bateria auxiliar e verificar carga"},
-  {id:15, name:"Antena do RC",                              action:"Desdobrar na posição ideal"},
-  {id:16, name:"Controle remoto",                           action:"Ligar e aguardar inicialização do sistema"},
-  {id:17, name:"UAS / RPA",                                 action:"Ligar e aguardar inicialização do sistema"},
-  {id:18, name:"Luzes LED / Alarmes",                       action:"Verificar se estão normais"},
-  {id:19, name:"Status bateria UAS",                        action:"Temperatura, equilíbrio celular e potência suficiente"},
-  {id:20, name:"Status bateria RC",                         action:"Potência suficiente + contingência"},
-  {id:21, name:"Altitude RTH",                              action:"Definir conforme o ambiente"},
-  {id:22, name:"Fora de controle / C2",                     action:"Configurar Return to Home (RTH)"},
-  {id:23, name:"Cerca geográfica",                          action:"Definir distância e altura máximas"},
-  {id:24, name:"Home point",                                action:"Selecionar e verificar no mapa"},
-  {id:25, name:"Avisos de bateria",                         action:"35% baixo / 25% crítico"},
-  {id:26, name:"GNSS / Satélite",                           action:"Acima de 10 satélites"},
-  {id:27, name:"Sinal do RC",                               action:"Sinal bom/forte"},
-  {id:28, name:"Mapa",                                      action:"Verificar mapa, home point e posição do UAS"},
-  {id:29, name:"SD Card",                                   action:"Verificar capacidade; formatar se possível"},
-  {id:30, name:"Modo de controle",                          action:"Sempre no Modo 2"},
-  {id:31, name:"Modo de voo",                               action:"Modo padrão selecionado"},
-  {id:32, name:"Câmera (modo)",                             action:"Verificar câmera no modo automático"},
-  {id:33, name:"Função Timestamp",                          action:"Telemetria: data, coordenada e texto"},
-  {id:34, name:"Função CWZI",                               action:"Todas as funções selecionadas"},
-  {id:35, name:"GO / NO GO",                                action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
+  { name:"MOARP",                       meta:"Manual de Operações de Aeronaves Remotamente Pilotadas", url:"https://drive.google.com/file/d/1Cm_QrtRH0w_XLGiAu1H-q0GEClLOQ5Uq/view?usp=drive_link" },
+  { name:"Guia de Uso — Petrobras",     meta:"Procedimentos operacionais para operações Petrobras",   url:"https://drive.google.com/file/d/1FNY0HH7v1izn-wUyMFbfIL6sbEF0PmZH/view?usp=sharing" },
+  { name:"Manutenção Preventiva Semanal", meta:"Checklist e registro de manutenção semanal",          url:"https://drive.google.com/file/d/1oosNQ3cpNftvDLob_jOknrcxR3TYJVmI/view?usp=drive_link" },
 ];
 
+const ITEMS = [
+  {id:1,  name:"EPI completo",                     action:"Luvas, capacete e auricular — retirar a luva (operador)"},
+  {id:2,  name:"Documentações",                    action:"Sarpas, Anac e Seguro"},
+  {id:3,  name:"Vento / Chuva / Visibilidade",     action:"Verificar condições de vento, presença de chuva e visibilidade"},
+  {id:4,  name:"Condições do Céu (Sky conditions)",action:"Avaliar cobertura de nuvens e condições meteorológicas gerais"},
+  {id:5,  name:"Espaço Aéreo livre?",              action:"Sem helicópteros ou aves próximas à área de operação"},
+  {id:6,  name:"Distância adequada de terceiros?", action:"Verificar afastamento seguro de pessoas e embarcações"},
+  {id:7,  name:"Balanço (Pitch/Roll)",             action:"Verificar balanço da aeronave"},
+  {id:8,  name:"Índice KP < 3",                    action:"Verificar interferência geomagnética"},
+  {id:9,  name:"Corpo da aeronave",                action:"Limpo, seco e sem danos"},
+  {id:10, name:"Braços (rotor arms)",              action:"Desdobrar e destravar com segurança"},
+  {id:11, name:"Hélices",                          action:"Verificar danos ou parafusos soltos"},
+  {id:12, name:"Câmera",                           action:"Destravar antes de ligar o RPA/UAS"},
+  {id:13, name:"Baterias do UAS",                  action:"Acima de 80%, sem danos ou inchaço, travas OK"},
+  {id:14, name:"Bateria do RC",                    action:"Instalar bateria auxiliar e verificar carga"},
+  {id:15, name:"Antena do RC",                     action:"Desdobrar na posição ideal"},
+  {id:16, name:"Controle remoto",                  action:"Ligar e aguardar inicialização do sistema"},
+  {id:17, name:"UAS / RPA",                        action:"Ligar e aguardar inicialização do sistema"},
+  {id:18, name:"Luzes LED / Alarmes",              action:"Verificar se estão normais"},
+  {id:19, name:"Status bateria UAS",               action:"Temperatura, equilíbrio celular e potência suficiente"},
+  {id:20, name:"Status bateria RC",                action:"Potência suficiente + contingência"},
+  {id:21, name:"Altitude RTH",                     action:"Definir conforme o ambiente"},
+  {id:22, name:"Fora de controle / C2",            action:"Configurar Return to Home (RTH)"},
+  {id:23, name:"Cerca geográfica",                 action:"Definir distância e altura máximas"},
+  {id:24, name:"Home point",                       action:"Selecionar e verificar no mapa"},
+  {id:25, name:"Avisos de bateria",                action:"35% baixo / 25% crítico"},
+  {id:26, name:"GNSS / Satélite",                  action:"Acima de 10 satélites"},
+  {id:27, name:"Sinal do RC",                      action:"Sinal bom/forte"},
+  {id:28, name:"Mapa",                             action:"Verificar mapa, home point e posição do UAS"},
+  {id:29, name:"SD Card",                          action:"Verificar capacidade; formatar se possível"},
+  {id:30, name:"Modo de controle",                 action:"Sempre no Modo 2"},
+  {id:31, name:"Modo de voo",                      action:"Modo padrão selecionado"},
+  {id:32, name:"Câmera (modo)",                    action:"Verificar câmera no modo automático"},
+  {id:33, name:"Função Timestamp",                 action:"Telemetria: data, coordenada e texto"},
+  {id:34, name:"Função CWZI",                      action:"Todas as funções selecionadas"},
+  {id:35, name:"GO / NO GO",                       action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
+];
+
+// ── STATE ──
 let currentUser = null;
 let resp = {}, meta = {};
 const sigState = { pilot: false, op: false };
@@ -786,9 +949,8 @@ function renderItems() {
 function setR(id, val) {
   resp[id] = val;
   const item = ITEMS[id - 1];
-  const cls  = val === 'OK' ? 'ok' : val === 'FALHA' ? 'fail' : 'na';
   const card = document.getElementById('card-' + id);
-  card.className = 'item-card ' + cls;
+  card.className = 'item-card ' + (val==='OK'?'ok':val==='FALHA'?'fail':'na');
   card.querySelector('.item-head').innerHTML = `
     <span class="item-num">${id}</span>
     <div class="item-texts">
@@ -797,9 +959,9 @@ function setR(id, val) {
     </div>
     <span class="item-badge badge-${val==='OK'?'ok':val==='FALHA'?'fail':'na'}">${val==='OK'?'Conforme':val==='FALHA'?'Não Conforme':'N/A'}</span>`;
   const btns = card.querySelectorAll('.tap-btn');
-  btns[0].className = 'tap-btn' + (val === 'OK'    ? ' t-ok'   : '');
-  btns[1].className = 'tap-btn' + (val === 'FALHA' ? ' t-fail' : '');
-  btns[2].className = 'tap-btn' + (val === 'N/A'   ? ' t-na'   : '');
+  btns[0].className = 'tap-btn' + (val==='OK'    ? ' t-ok'   : '');
+  btns[1].className = 'tap-btn' + (val==='FALHA' ? ' t-fail' : '');
+  btns[2].className = 'tap-btn' + (val==='N/A'   ? ' t-na'   : '');
   updateProg();
 }
 
@@ -810,7 +972,7 @@ function updateProg() {
   document.getElementById('ck-prog-fill').style.width  = Math.round(done / 35 * 100) + '%';
 }
 
-// ── SIGNATURES ──
+// ── ASSINATURAS ──
 function initSigCanvases() {
   document.getElementById('sig-pilot-name').textContent = meta.piloto;
   document.getElementById('sig-op-name').textContent    = meta.operador;
@@ -826,7 +988,7 @@ function setupCanvas(canvasId, key) {
   canvas.width  = (rect.width  || 340) * dpr;
   canvas.height = (rect.height || 160) * dpr;
   ctx.scale(dpr, dpr);
-  ctx.strokeStyle = '#0A4A38'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#0b243a'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   let drawing = false, lx = 0, ly = 0;
   function getPos(e) {
     const r = canvas.getBoundingClientRect();
@@ -870,6 +1032,7 @@ function clearSig(key) {
   markSigned(key, false);
 }
 
+// ── RESUMO ──
 function goReview() {
   const okCnt   = Object.values(resp).filter(v => v === 'OK').length;
   const failCnt = Object.values(resp).filter(v => v === 'FALHA').length;
@@ -877,9 +1040,9 @@ function goReview() {
   const pend    = 35 - okCnt - failCnt - naCnt;
   document.getElementById('rv-meta').textContent = meta.aeronave + ' · ' + meta.piloto + ' · ' + meta.data;
   document.getElementById('rv-stats').innerHTML = `
-    <div class="stat-box"><div class="stat-val" style="color:var(--green)">${okCnt}</div><div class="stat-lbl">Conformes</div></div>
-    <div class="stat-box"><div class="stat-val" style="color:var(--red)">${failCnt}</div><div class="stat-lbl">Não Conf.</div></div>
-    <div class="stat-box"><div class="stat-val" style="color:var(--text3)">${naCnt}</div><div class="stat-lbl">N/A</div></div>`;
+    <div class="stat-box"><div class="stat-val" style="color:#77a670">${okCnt}</div><div class="stat-lbl">Conformes</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:#d94f4f">${failCnt}</div><div class="stat-lbl">Não Conf.</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:#8fa5b5">${naCnt}</div><div class="stat-lbl">N/A</div></div>`;
   let ggClass, ggLabel, ggSub;
   if      (pend > 0)    { ggClass='pend'; ggLabel='PENDENTE'; ggSub = pend + ' item(ns) sem resposta'; }
   else if (failCnt > 0) { ggClass='nogo'; ggLabel='NO GO';    ggSub = failCnt + ' item(ns) não conforme(s)'; }
@@ -892,13 +1055,14 @@ function goReview() {
   const pc = document.getElementById('sig-pilot');
   const oc = document.getElementById('sig-op');
   document.getElementById('rv-sigs').innerHTML = `
-    <div class="sig-preview"><div class="sig-preview-label">ASSINATURA — ${meta.piloto.toUpperCase()} (PILOTO)</div><img src="${pc.toDataURL()}"/></div>
-    <div class="sig-preview"><div class="sig-preview-label">ASSINATURA — ${meta.operador.toUpperCase()} (OPERADOR)</div><img src="${oc.toDataURL()}"/></div>`;
+    <div class="sig-preview"><div class="sig-preview-label">Assinatura — ${meta.piloto.toUpperCase()} (Piloto)</div><img src="${pc.toDataURL()}"/></div>
+    <div class="sig-preview"><div class="sig-preview-label">Assinatura — ${meta.operador.toUpperCase()} (Operador)</div><img src="${oc.toDataURL()}"/></div>`;
   show('s-review');
 }
 
+// ── ENVIO PRÉ-VOO ──
 function sendSheets() {
-  const btn     = document.getElementById('send-btn');
+  const btn = document.getElementById('send-btn');
   btn.textContent = 'Enviando…'; btn.disabled = true;
   const okCnt   = Object.values(resp).filter(v => v === 'OK').length;
   const failCnt = Object.values(resp).filter(v => v === 'FALHA').length;
@@ -907,25 +1071,22 @@ function sendSheets() {
   for (let i = 1; i <= 35; i++) itens['i' + i] = resp[i] || 'Pendente';
   fetch(SCRIPT_URL, {
     method: 'POST',
-    body: JSON.stringify({
-      tipo: 'prevoo', ...meta, itens,
-      ok: okCnt, fail: failCnt, na: naCnt,
+    body: JSON.stringify({ tipo:'prevoo', ...meta, itens, ok:okCnt, fail:failCnt, na:naCnt,
       sig_piloto:   document.getElementById('sig-pilot').toDataURL(),
-      sig_operador: document.getElementById('sig-op').toDataURL()
-    })
+      sig_operador: document.getElementById('sig-op').toDataURL() })
   })
   .then(r => r.json())
   .then(d => {
     if (d.status === 'ok') show('s-done');
-    else { alert('Erro: ' + (d.mensagem || 'desconhecido')); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; }
+    else { alert('Erro: ' + (d.mensagem||'desconhecido')); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; }
   })
-  .catch(err => { alert('Falha de rede: ' + err); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; });
+  .catch(err => { alert('Falha de rede: ' + err); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; });
 }
 
 function newOp() {
   resp = {}; meta = {};
   sigState.pilot = false; sigState.op = false;
-  sel.pv = { aero: '', piloto: '', operador: '' };
+  sel.pv = { aero:'', piloto:'', operador:'' };
   ['aero','piloto','operador'].forEach(k => {
     const inp = document.getElementById('m-' + k);
     inp.value = ''; inp.classList.remove('selected','error');
@@ -944,20 +1105,13 @@ function setManutDefaults() {
 function goManutReview() {
   let valid = true;
   const ddFields = [
-    { id: 'mn-aero',    errId: 'err-mn-aero',    val: sel.mn.aero },
-    { id: 'mn-piloto1', errId: 'err-mn-piloto1', val: sel.mn.piloto1 },
-    { id: 'mn-piloto2', errId: 'err-mn-piloto2', val: sel.mn.piloto2 },
+    { id:'mn-aero',    errId:'err-mn-aero',    val:sel.mn.aero },
+    { id:'mn-piloto1', errId:'err-mn-piloto1', val:sel.mn.piloto1 },
+    { id:'mn-piloto2', errId:'err-mn-piloto2', val:sel.mn.piloto2 },
   ];
+  ddFields.forEach(f => { document.getElementById(f.id).classList.remove('error'); document.getElementById(f.errId).classList.remove('visible'); });
   ddFields.forEach(f => {
-    document.getElementById(f.id).classList.remove('error');
-    document.getElementById(f.errId).classList.remove('visible');
-  });
-  ddFields.forEach(f => {
-    if (!f.val) {
-      document.getElementById(f.id).classList.add('error');
-      document.getElementById(f.errId).classList.add('visible');
-      valid = false;
-    }
+    if (!f.val) { document.getElementById(f.id).classList.add('error'); document.getElementById(f.errId).classList.add('visible'); valid = false; }
   });
   ['mn-cadastro','mn-transmissor','mn-data','mn-alarme','mn-acao','mn-proxima'].forEach(id => {
     const el = document.getElementById(id);
@@ -986,33 +1140,25 @@ function sendManut() {
   btn.textContent = 'Enviando…'; btn.disabled = true;
   fetch(SCRIPT_URL, {
     method: 'POST',
-    body: JSON.stringify({
-      tipo:        'manutencao',
-      aeronave:    sel.mn.aero,
-      piloto1:     sel.mn.piloto1,
-      piloto2:     sel.mn.piloto2,
+    body: JSON.stringify({ tipo:'manutencao', aeronave:sel.mn.aero, piloto1:sel.mn.piloto1, piloto2:sel.mn.piloto2,
       cadastro:    document.getElementById('mn-cadastro').value,
       transmissor: document.getElementById('mn-transmissor').value,
       data:        document.getElementById('mn-data').value,
       alarme:      document.getElementById('mn-alarme').value,
       acao:        document.getElementById('mn-acao').value,
-      proxima:     document.getElementById('mn-proxima').value,
-    })
+      proxima:     document.getElementById('mn-proxima').value })
   })
   .then(r => r.json())
   .then(d => {
     if (d.status === 'ok') show('s-manut-done');
-    else { alert('Erro: ' + (d.mensagem || 'desconhecido')); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; }
+    else { alert('Erro: ' + (d.mensagem||'desconhecido')); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; }
   })
-  .catch(err => { alert('Falha de rede: ' + err); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; });
+  .catch(err => { alert('Falha de rede: ' + err); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; });
 }
 
 function newManut() {
-  sel.mn = { aero: '', piloto1: '', piloto2: '' };
-  ['mn-aero','mn-piloto1','mn-piloto2'].forEach(id => {
-    const el = document.getElementById(id);
-    el.value = ''; el.classList.remove('selected','error');
-  });
+  sel.mn = { aero:'', piloto1:'', piloto2:'' };
+  ['mn-aero','mn-piloto1','mn-piloto2'].forEach(id => { const el=document.getElementById(id); el.value=''; el.classList.remove('selected','error'); });
   ['mn-cadastro','mn-transmissor','mn-alarme','mn-acao'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('mn-proxima').value = '';
   setManutDefaults();
@@ -1023,24 +1169,24 @@ function newManut() {
 function renderDocs() {
   const body = document.getElementById('docs-body');
   if (!DOCS_LIST.length) {
-    body.innerHTML = `<div class="doc-placeholder"><p>Nenhum documento cadastrado ainda.<br>Edite a variável <strong>DOCS_LIST</strong> no código<br>e adicione os links do Google Drive.</p></div>`;
+    body.innerHTML = `<div class="doc-placeholder"><p>Nenhum documento cadastrado ainda.</p></div>`;
     return;
   }
   body.innerHTML = DOCS_LIST.map(doc => `
     <a class="doc-card" href="${doc.url}" target="_blank" rel="noopener">
       <div class="doc-icon">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <rect x="3" y="1" width="14" height="18" rx="2" stroke="#E24B4A" stroke-width="1.4"/>
-          <line x1="6" y1="6"  x2="14" y2="6"  stroke="#E24B4A" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="6" y1="9"  x2="14" y2="9"  stroke="#E24B4A" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="6" y1="12" x2="10" y2="12" stroke="#E24B4A" stroke-width="1.2" stroke-linecap="round"/>
+          <rect x="3" y="1" width="14" height="18" rx="2" stroke="#d94f4f" stroke-width="1.4"/>
+          <line x1="6" y1="6"  x2="14" y2="6"  stroke="#d94f4f" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="6" y1="9"  x2="14" y2="9"  stroke="#d94f4f" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="6" y1="12" x2="10" y2="12" stroke="#d94f4f" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="doc-texts">
         <div class="doc-name">${doc.name}</div>
         <div class="doc-meta">${doc.meta || 'PDF'}</div>
       </div>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>`).join('');
 }
 
