@@ -684,7 +684,9 @@ function gerarPdfPrevoo(){
   let y=15;
 
   // Logo
-  try{doc.addImage(Logo_DIT.png,'PNG',ml,y,55,18);}catch(e){}
+doc.setFillColor(255,255,255);
+doc.rect(ml, y, 53, 18, 'F');
+try{ doc.addImage(LOGO_B64,'PNG',ml,y,53,18); }catch(e){}
 
   // Cabeçalho
   doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
@@ -840,7 +842,9 @@ function gerarPdfManut(){
   const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
   let y=15;
 
-  try{doc.addImage(Logo_DIT.png,'PNG',ml,y,55,18);}catch(e){}
+  doc.setFillColor(255,255,255);
+doc.rect(ml, y, 53, 18, 'F');
+try{ doc.addImage(LOGO_B64,'PNG',ml,y,53,18); }catch(e){}
   doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
   doc.text('MANUTENÇÃO PREVENTIVA',pw/2,y+8,{align:'center'});
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(74,96,112);
