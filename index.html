@@ -32,11 +32,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; background: var(--surface); font-family: var(--sans); color: var(--text); }
 
-/* ── SCREENS ── */
 .screen { display: none; flex-direction: column; min-height: 100vh; }
 .screen.active { display: flex; }
 
-/* ── TOPBAR ── */
 .topbar {
   background: var(--green-dark);
   padding: env(safe-area-inset-top, 16px) 20px 14px;
@@ -49,17 +47,14 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .topbar-row   { display: flex; align-items: flex-start; justify-content: space-between; }
 .topbar-logout { background: none; border: 1px solid rgba(159,225,203,0.35); border-radius: 8px; color: #9FE1CB; font-size: 12px; font-family: var(--mono); cursor: pointer; padding: 5px 10px; margin-top: 2px; }
 
-/* ── LAYOUT ── */
 .content { flex: 1; overflow-y: auto; padding: 16px; -webkit-overflow-scrolling: touch; }
 .footer  { padding: 12px 16px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); background: var(--card); border-top: 0.5px solid var(--border); flex-shrink: 0; }
 
-/* ── BUTTONS ── */
 .btn { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 500; font-family: var(--sans); cursor: pointer; border: none; transition: opacity 0.1s; }
 .btn:active { opacity: 0.8; }
 .btn-primary { background: var(--green-dark); color: #fff; }
 .btn-outline { background: transparent; color: var(--green-dark); border: 1px solid var(--green-dark); }
 
-/* ── FIELDS ── */
 .field { margin-bottom: 16px; position: relative; }
 .field label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.02em; }
 .field input, .field textarea {
@@ -77,7 +72,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .field-error { font-size: 11px; color: var(--red); font-family: var(--mono); margin-top: 4px; display: none; }
 .field-error.visible { display: block; }
 
-/* ── DROPDOWN ── */
 .dropdown {
   display: none; position: absolute; top: 100%; left: 0; right: 0;
   background: var(--card); border: 0.5px solid var(--border); border-radius: 10px;
@@ -91,44 +85,28 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .dropdown-item.disabled { color: var(--text3); pointer-events: none; font-style: italic; font-size: 13px; }
 .dropdown-item.disabled::after { content: " (outro campo)"; font-size: 11px; }
 
-/* ── LOGIN SCREEN ── */
 .login-wrap {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 32px 24px;
   background: var(--green-dark);
 }
-.login-logo {
-  margin-bottom: 36px; text-align: center;
-}
+.login-logo { margin-bottom: 36px; text-align: center; }
 .login-logo svg { display: block; margin: 0 auto 14px; }
 .login-logo-title { font-size: 22px; font-weight: 500; color: #fff; letter-spacing: -0.01em; }
 .login-logo-sub   { font-size: 12px; color: #9FE1CB; font-family: var(--mono); margin-top: 4px; }
-.login-card {
-  background: var(--card); border-radius: 20px;
-  padding: 24px 20px; width: 100%; max-width: 380px;
-}
+.login-card { background: var(--card); border-radius: 20px; padding: 24px 20px; width: 100%; max-width: 380px; }
 .login-card .field label { color: var(--text2); }
 .login-card .field input { font-size: 15px; }
 .login-err { font-size: 12px; color: var(--red); font-family: var(--mono); text-align: center; margin-top: -8px; margin-bottom: 12px; display: none; }
 .login-err.visible { display: block; }
 
-/* ── MENU SCREEN ── */
 .menu-greeting { font-size: 13px; color: #9FE1CB; font-family: var(--mono); margin-top: 3px; }
 .section-title { font-size: 11px; font-weight: 500; color: var(--text3); font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; margin: 20px 0 10px; }
 .section-title:first-child { margin-top: 0; }
-.menu-card {
-  background: var(--card); border: 0.5px solid var(--border);
-  border-radius: 14px; padding: 16px; margin-bottom: 10px;
-  display: flex; align-items: center; gap: 14px; cursor: pointer;
-  transition: background 0.12s;
-}
+.menu-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 0.12s; }
 .menu-card:active { background: var(--green-bg); }
-.menu-icon {
-  width: 44px; height: 44px; border-radius: 11px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
+.menu-icon { width: 44px; height: 44px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .menu-icon.green { background: var(--green-bg); }
 .menu-icon.amber { background: var(--amber-bg); }
 .menu-icon.blue  { background: #E8F0FE; }
@@ -137,13 +115,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .menu-desc   { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
 .menu-arrow  { color: var(--text3); }
 
-/* ── DOCS SCREEN ── */
-.doc-card {
-  background: var(--card); border: 0.5px solid var(--border);
-  border-radius: 14px; padding: 15px 16px; margin-bottom: 10px;
-  display: flex; align-items: center; gap: 12px; cursor: pointer;
-  text-decoration: none;
-}
+.doc-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 14px; padding: 15px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
 .doc-card:active { background: var(--green-bg); }
 .doc-icon { width: 40px; height: 40px; border-radius: 10px; background: #FDECEA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .doc-texts { flex: 1; }
@@ -152,7 +124,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .doc-placeholder { background: var(--surface); border: 1px dashed var(--border); border-radius: 14px; padding: 20px 16px; text-align: center; margin-bottom: 10px; }
 .doc-placeholder p { font-size: 12px; color: var(--text3); font-family: var(--mono); line-height: 1.6; }
 
-/* ── PROGRESS ── */
 .prog-wrap { margin-bottom: 14px; }
 .prog-row  { display: flex; justify-content: space-between; margin-bottom: 7px; }
 .prog-label { font-size: 12px; color: var(--text2); font-family: var(--mono); }
@@ -160,7 +131,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .prog-bg    { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
 .prog-fill  { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.3s; }
 
-/* ── CHECKLIST ITEMS ── */
 .item-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 13px; margin-bottom: 8px; transition: background 0.15s, border-color 0.15s; }
 .item-card.ok   { background: var(--green-bg); border-color: var(--green-light); }
 .item-card.fail { background: var(--red-bg);   border-color: var(--red); }
@@ -181,7 +151,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .tap-btn.t-fail { background: var(--red-bg);   border-color: var(--red);   color: var(--red-dark); }
 .tap-btn.t-na   { background: #F1EFE8;          border-color: #D3D1C7;      color: #444441; }
 
-/* ── SIGNATURES ── */
 .sig-block  { margin-bottom: 20px; }
 .sig-label  { font-size: 12px; font-family: var(--mono); color: var(--text2); margin-bottom: 6px; letter-spacing: 0.02em; }
 .sig-name   { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
@@ -195,7 +164,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .sig-status.empty { color: var(--text3); }
 .sig-divider{ border: none; border-top: 0.5px solid var(--border); margin: 24px 0 20px; }
 
-/* ── REVIEW ── */
 .stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
 .stat-box  { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
 .stat-val  { font-size: 26px; font-weight: 500; font-family: var(--mono); }
@@ -219,10 +187,8 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 .sig-preview-label{ font-size: 11px; font-family: var(--mono); color: var(--text2); margin-bottom: 6px; }
 .sig-preview img  { width: 100%; border-radius: 8px; border: 0.5px solid var(--border); }
 
-/* ── DONE ── */
 .done-center { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 2rem 1.5rem; text-align: center; }
 
-/* ── MANUT REVIEW CARD ── */
 .review-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
 .review-row  { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid var(--border); gap: 12px; }
 .review-row:last-child { border-bottom: none; }
@@ -232,9 +198,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 0 — LOGIN
-════════════════════════════════════════════════════════ -->
+<!-- TELA 0 — LOGIN -->
 <div id="s-login" class="screen active">
   <div class="login-wrap">
     <div class="login-logo">
@@ -266,9 +230,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 1 — MENU PRINCIPAL
-════════════════════════════════════════════════════════ -->
+<!-- TELA 1 — MENU -->
 <div id="s-menu" class="screen">
   <div class="topbar">
     <div class="topbar-row">
@@ -281,7 +243,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
   <div class="content">
     <div class="section-title">Checklists</div>
-
     <div class="menu-card" onclick="show('s-meta')">
       <div class="menu-icon green">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -295,11 +256,8 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
         <div class="menu-name">Checklist Pré-Voo</div>
         <div class="menu-desc">35 itens · assinatura digital · envio para planilha</div>
       </div>
-      <div class="menu-arrow">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
-
     <div class="menu-card" onclick="show('s-manut-meta')">
       <div class="menu-icon amber">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -311,13 +269,9 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
         <div class="menu-name">Manutenção Preventiva</div>
         <div class="menu-desc">Registro de manutenções · histórico de ações</div>
       </div>
-      <div class="menu-arrow">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
-
     <div class="section-title">Documentos Operacionais</div>
-
     <div class="menu-card" onclick="show('s-docs')">
       <div class="menu-icon blue">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -331,16 +285,12 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
         <div class="menu-name">Documentos Operacionais</div>
         <div class="menu-desc">PDFs · regulamentos · procedimentos</div>
       </div>
-      <div class="menu-arrow">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#A0A09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 2 — CHECKLIST PRÉ-VOO: DADOS
-════════════════════════════════════════════════════════ -->
+<!-- TELA 2 — CHECKLIST: DADOS -->
 <div id="s-meta" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-menu')">
@@ -354,7 +304,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
     <div class="field"><label>Data</label><input type="date" id="m-data"/></div>
     <div class="field"><label>Hora</label><input type="time" id="m-hora"/></div>
     <div class="field"><label>Drone (modelo / ID)</label><input type="text" id="m-drone" placeholder="Ex: DJI Mavic 3 – #001"/></div>
-
     <div class="field" id="field-aero">
       <label>Embarcação</label>
       <input type="text" id="m-aero" placeholder="Digite para buscar..." autocomplete="off"
@@ -362,7 +311,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
       <div class="dropdown" id="dd-pv-aero"></div>
       <div class="field-error" id="err-pv-aero">Selecione uma embarcação da lista</div>
     </div>
-
     <div class="field-row">
       <div class="field" id="field-piloto">
         <label>Piloto</label>
@@ -385,9 +333,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 3 — CHECKLIST PRÉ-VOO: ITENS
-════════════════════════════════════════════════════════ -->
+<!-- TELA 3 — CHECKLIST: ITENS -->
 <div id="s-check" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-meta')">
@@ -412,9 +358,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 4 — CHECKLIST PRÉ-VOO: ASSINATURAS
-════════════════════════════════════════════════════════ -->
+<!-- TELA 4 — ASSINATURAS -->
 <div id="s-sign" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-check')">
@@ -454,9 +398,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 5 — CHECKLIST PRÉ-VOO: RESUMO
-════════════════════════════════════════════════════════ -->
+<!-- TELA 5 — RESUMO -->
 <div id="s-review" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-sign')">
@@ -477,9 +419,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 6 — PRÉ-VOO: SUCESSO
-════════════════════════════════════════════════════════ -->
+<!-- TELA 6 — SUCESSO PRÉ-VOO -->
 <div id="s-done" class="screen">
   <div class="topbar"><div class="topbar-title">Dit Services</div></div>
   <div class="done-center">
@@ -494,9 +434,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 7 — MANUTENÇÃO PREVENTIVA: DADOS
-════════════════════════════════════════════════════════ -->
+<!-- TELA 7 — MANUTENÇÃO: DADOS -->
 <div id="s-manut-meta" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-menu')">
@@ -507,8 +445,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
     <div class="topbar-sub">novo registro</div>
   </div>
   <div class="content">
-
-    <!-- Embarcação -->
     <div class="field" id="field-mn-aero">
       <label>Embarcação</label>
       <input type="text" id="mn-aero" placeholder="Digite para buscar..." autocomplete="off"
@@ -516,8 +452,6 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
       <div class="dropdown" id="dd-mn-aero"></div>
       <div class="field-error" id="err-mn-aero">Selecione uma embarcação</div>
     </div>
-
-    <!-- Pilotos lado a lado -->
     <div class="field-row">
       <div class="field">
         <label>Piloto 1</label>
@@ -534,46 +468,19 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
         <div class="field-error" id="err-mn-piloto2">Selecione</div>
       </div>
     </div>
-
-    <div class="field">
-      <label>Nº DE CADASTRO (AERONAVE)</label>
-      <input type="text" id="mn-cadastro" placeholder="Ex: BR-12345"/>
-    </div>
-
-    <div class="field">
-      <label>Nº TRANSMISSOR</label>
-      <input type="text" id="mn-transmissor" placeholder="Ex: TX-0042"/>
-    </div>
-
-    <div class="field">
-      <label>DATA DA MANUTENÇÃO</label>
-      <input type="date" id="mn-data"/>
-    </div>
-
-    <div class="field">
-      <label>ALARME / LOG APRESENTADO</label>
-      <textarea id="mn-alarme" placeholder="Descreva o alarme ou log registrado..."></textarea>
-    </div>
-
-    <div class="field">
-      <label>O QUE FOI RESOLVIDO / AÇÃO TOMADA</label>
-      <textarea id="mn-acao" placeholder="Descreva a ação tomada..."></textarea>
-    </div>
-
-    <div class="field">
-      <label>DATA DA PRÓXIMA REVISÃO</label>
-      <input type="date" id="mn-proxima"/>
-    </div>
-
+    <div class="field"><label>Nº DE CADASTRO (AERONAVE)</label><input type="text" id="mn-cadastro" placeholder="Ex: BR-12345"/></div>
+    <div class="field"><label>Nº TRANSMISSOR</label><input type="text" id="mn-transmissor" placeholder="Ex: TX-0042"/></div>
+    <div class="field"><label>DATA DA MANUTENÇÃO</label><input type="date" id="mn-data"/></div>
+    <div class="field"><label>ALARME / LOG APRESENTADO</label><textarea id="mn-alarme" placeholder="Descreva o alarme ou log registrado..."></textarea></div>
+    <div class="field"><label>O QUE FOI RESOLVIDO / AÇÃO TOMADA</label><textarea id="mn-acao" placeholder="Descreva a ação tomada..."></textarea></div>
+    <div class="field"><label>DATA DA PRÓXIMA REVISÃO</label><input type="date" id="mn-proxima"/></div>
   </div>
   <div class="footer">
     <button class="btn btn-primary" onclick="goManutReview()">Revisar e enviar</button>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 8 — MANUTENÇÃO PREVENTIVA: REVISÃO
-════════════════════════════════════════════════════════ -->
+<!-- TELA 8 — MANUTENÇÃO: REVISÃO -->
 <div id="s-manut-review" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-manut-meta')">
@@ -591,9 +498,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 9 — MANUTENÇÃO: SUCESSO
-════════════════════════════════════════════════════════ -->
+<!-- TELA 9 — MANUTENÇÃO: SUCESSO -->
 <div id="s-manut-done" class="screen">
   <div class="topbar"><div class="topbar-title">Dit Services</div></div>
   <div class="done-center">
@@ -608,9 +513,7 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     TELA 10 — DOCUMENTOS OPERACIONAIS
-════════════════════════════════════════════════════════ -->
+<!-- TELA 10 — DOCUMENTOS -->
 <div id="s-docs" class="screen">
   <div class="topbar">
     <button class="topbar-back" onclick="show('s-menu')">
@@ -620,146 +523,101 @@ html, body { height: 100%; background: var(--surface); font-family: var(--sans);
     <div class="topbar-title">Documentos Operacionais</div>
     <div class="topbar-sub">PDFs disponíveis</div>
   </div>
-  <div class="content" id="docs-body">
-    <!-- Documentos são renderizados pelo JS — edite DOCS_LIST abaixo -->
-  </div>
+  <div class="content" id="docs-body"></div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════════════════ -->
 <script>
-// ══════════════════════════════════════════════════
-// CONFIG — edite aqui
-// ══════════════════════════════════════════════════
-// URL única do App Script — login, pré-voo e manutenção
-const SCRIPT_URL       = "https://script.google.com/macros/s/AKfycbyhaisxQvNzeTrmYNzaog3JnuHNzrZTC-TZ6mr0p94UJvPECckAgYFhYGVmt_-kEPWV/exec";
-const SCRIPT_URL_MANUT = SCRIPT_URL;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZ57-rnpuk-NgAqwzpcheq9olpVOjc8RvXK49zf3stVPem29a9Qn49XnQOyRoi3iCy/exec";
 
-// Usuários autorizados — gerenciados pela planilha "Usuários" (col A = email, col B = senha, col C = nome)
+const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"];
+const PESSOAS     = ["Eduardo","Tiago","Cleverson","Paulo M","Lucas Khul","Lucas Cruz","Guilherme","Diorge","Matheus","Wallace","Ivinin","Bruno V","Augusto T","Augusto C"];
 
-const EMBARCACOES = [
-  "C Agressor","C-Atlas","Olin Conqueror","Elizabeth C",
-  "Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"
-];
-
-const PESSOAS = [
-  "Eduardo","Tiago","Cleverson","Paulo M","Lucas Khul",
-  "Lucas Cruz","Guilherme","Diorge","Matheus",
-  "Wallace","Ivinin","Bruno V","Augusto T","Augusto C"
-];
-
-// Documentos Operacionais — adicione seus links do Google Drive aqui
 const DOCS_LIST = [
-  // { name: "Manual de Operações",      meta: "PDF · 24 páginas", url: "https://drive.google.com/drive/u/0/folders/1U6_tSDmvf-m9TPD7JnypNqtlOz9aWn2L" },
-  // { name: "Regulamento ANAC",          meta: "PDF · 48 páginas", url: "https://drive.google.com/..." },
-  // { name: "Procedimento de Segurança", meta: "PDF · 12 páginas", url: "https://drive.google.com/..." },
+  // { name: "Manual de Operações", meta: "PDF · 24 páginas", url: "https://drive.google.com/..." },
 ];
 
 const ITEMS = [
-  {id:1,  name:"EPI completo",                       action:"Luvas, capacete e auricular — retirar a luva (operador)"},
-  {id:2,  name:"Documentações",                      action:"Sarpas, Anac e Seguro"},
-  {id:3,  name:"Vento (Wind) / Chuva (Rain) / Visibilidade", action:"Verificar condições de vento, presença de chuva e visibilidade"},
-  {id:4,  name:"Condições do Céu (Sky conditions)",  action:"Avaliar cobertura de nuvens e condições meteorológicas gerais"},
-  {id:5,  name:"Espaço Aéreo livre?",                action:"Sem helicópteros ou aves próximas à área de operação"},
-  {id:6,  name:"Distância adequada de terceiros?",   action:"Verificar afastamento seguro de pessoas e embarcações"},
-  {id:7,  name:"Balanço (Pitch/Roll)",               action:"Verificar balanço da aeronave"},
-  {id:8,  name:"Índice KP < 3",                      action:"Verificar interferência geomagnética"},
-  {id:9,  name:"Corpo da aeronave",                  action:"Limpo, seco e sem danos"},
-  {id:10, name:"Braços (rotor arms)",                action:"Desdobrar e destravar com segurança"},
-  {id:11, name:"Hélices",                            action:"Verificar danos ou parafusos soltos"},
-  {id:12, name:"Câmera",                             action:"Destravar antes de ligar o RPA/UAS"},
-  {id:13, name:"Baterias do UAS",                    action:"Acima de 80%, sem danos ou inchaço, travas OK"},
-  {id:14, name:"Bateria do RC",                      action:"Instalar bateria auxiliar e verificar carga"},
-  {id:15, name:"Antena do RC",                       action:"Desdobrar na posição ideal"},
-  {id:16, name:"Controle remoto",                    action:"Ligar e aguardar inicialização do sistema"},
-  {id:17, name:"UAS / RPA",                          action:"Ligar e aguardar inicialização do sistema"},
-  {id:18, name:"Luzes LED / Alarmes",                action:"Verificar se estão normais"},
-  {id:19, name:"Status bateria UAS",                 action:"Temperatura, equilíbrio celular e potência suficiente"},
-  {id:20, name:"Status bateria RC",                  action:"Potência suficiente + contingência"},
-  {id:21, name:"Altitude RTH",                       action:"Definir conforme o ambiente"},
-  {id:22, name:"Fora de controle / C2",              action:"Configurar Return to Home (RTH)"},
-  {id:23, name:"Cerca geográfica",                   action:"Definir distância e altura máximas"},
-  {id:24, name:"Home point",                         action:"Selecionar e verificar no mapa"},
-  {id:25, name:"Avisos de bateria",                  action:"35% baixo / 25% crítico"},
-  {id:26, name:"GNSS / Satélite",                    action:"Acima de 10 satélites"},
-  {id:27, name:"Sinal do RC",                        action:"Sinal bom/forte"},
-  {id:28, name:"Mapa",                               action:"Verificar mapa, home point e posição do UAS"},
-  {id:29, name:"SD Card",                            action:"Verificar capacidade; formatar se possível"},
-  {id:30, name:"Modo de controle",                   action:"Sempre no Modo 2"},
-  {id:31, name:"Modo de voo",                        action:"Modo padrão selecionado"},
-  {id:32, name:"Câmera (modo)",                      action:"Verificar câmera no modo automático"},
-  {id:33, name:"Função Timestamp",                   action:"Telemetria: data, coordenada e texto"},
-  {id:34, name:"Função CWZI",                        action:"Todas as funções selecionadas"},
-  {id:35, name:"GO / NO GO",                         action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
+  {id:1,  name:"EPI completo",                              action:"Luvas, capacete e auricular — retirar a luva (operador)"},
+  {id:2,  name:"Documentações",                             action:"Sarpas, Anac e Seguro"},
+  {id:3,  name:"Vento / Chuva / Visibilidade",              action:"Verificar condições de vento, presença de chuva e visibilidade"},
+  {id:4,  name:"Condições do Céu (Sky conditions)",         action:"Avaliar cobertura de nuvens e condições meteorológicas gerais"},
+  {id:5,  name:"Espaço Aéreo livre?",                       action:"Sem helicópteros ou aves próximas à área de operação"},
+  {id:6,  name:"Distância adequada de terceiros?",          action:"Verificar afastamento seguro de pessoas e embarcações"},
+  {id:7,  name:"Balanço (Pitch/Roll)",                      action:"Verificar balanço da aeronave"},
+  {id:8,  name:"Índice KP < 3",                             action:"Verificar interferência geomagnética"},
+  {id:9,  name:"Corpo da aeronave",                         action:"Limpo, seco e sem danos"},
+  {id:10, name:"Braços (rotor arms)",                       action:"Desdobrar e destravar com segurança"},
+  {id:11, name:"Hélices",                                   action:"Verificar danos ou parafusos soltos"},
+  {id:12, name:"Câmera",                                    action:"Destravar antes de ligar o RPA/UAS"},
+  {id:13, name:"Baterias do UAS",                           action:"Acima de 80%, sem danos ou inchaço, travas OK"},
+  {id:14, name:"Bateria do RC",                             action:"Instalar bateria auxiliar e verificar carga"},
+  {id:15, name:"Antena do RC",                              action:"Desdobrar na posição ideal"},
+  {id:16, name:"Controle remoto",                           action:"Ligar e aguardar inicialização do sistema"},
+  {id:17, name:"UAS / RPA",                                 action:"Ligar e aguardar inicialização do sistema"},
+  {id:18, name:"Luzes LED / Alarmes",                       action:"Verificar se estão normais"},
+  {id:19, name:"Status bateria UAS",                        action:"Temperatura, equilíbrio celular e potência suficiente"},
+  {id:20, name:"Status bateria RC",                         action:"Potência suficiente + contingência"},
+  {id:21, name:"Altitude RTH",                              action:"Definir conforme o ambiente"},
+  {id:22, name:"Fora de controle / C2",                     action:"Configurar Return to Home (RTH)"},
+  {id:23, name:"Cerca geográfica",                          action:"Definir distância e altura máximas"},
+  {id:24, name:"Home point",                                action:"Selecionar e verificar no mapa"},
+  {id:25, name:"Avisos de bateria",                         action:"35% baixo / 25% crítico"},
+  {id:26, name:"GNSS / Satélite",                           action:"Acima de 10 satélites"},
+  {id:27, name:"Sinal do RC",                               action:"Sinal bom/forte"},
+  {id:28, name:"Mapa",                                      action:"Verificar mapa, home point e posição do UAS"},
+  {id:29, name:"SD Card",                                   action:"Verificar capacidade; formatar se possível"},
+  {id:30, name:"Modo de controle",                          action:"Sempre no Modo 2"},
+  {id:31, name:"Modo de voo",                               action:"Modo padrão selecionado"},
+  {id:32, name:"Câmera (modo)",                             action:"Verificar câmera no modo automático"},
+  {id:33, name:"Função Timestamp",                          action:"Telemetria: data, coordenada e texto"},
+  {id:34, name:"Função CWZI",                               action:"Todas as funções selecionadas"},
+  {id:35, name:"GO / NO GO",                                action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
 ];
 
-// ══════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════
 let currentUser = null;
 let resp = {}, meta = {};
 const sigState = { pilot: false, op: false };
-
-// selection state — prefixed by form: pv = pré-voo, mn = manutenção
 const sel = {
-  pv:  { aero: '', piloto: '', operador: '' },
-  mn:  { aero: '', piloto1: '', piloto2: '' },
+  pv: { aero: '', piloto: '', operador: '' },
+  mn: { aero: '', piloto1: '', piloto2: '' },
 };
 
-// ══════════════════════════════════════════════════
-// SCREEN NAV
-// ══════════════════════════════════════════════════
+// ── SCREENS ──
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
-  if (id === 's-sign')  initSigCanvases();
-  if (id === 's-docs')  renderDocs();
+  if (id === 's-sign') initSigCanvases();
+  if (id === 's-docs') renderDocs();
 }
 
-// ══════════════════════════════════════════════════
-// LOGIN — autenticação via Google Sheets
-// ══════════════════════════════════════════════════
+// ── LOGIN ──
 function doLogin() {
   const email = document.getElementById('l-email').value.trim().toLowerCase();
   const senha = document.getElementById('l-senha').value;
   const btn   = document.getElementById('login-btn');
   const err   = document.getElementById('login-err');
-
-  if (!email || !senha) {
-    err.textContent = 'Preencha e-mail e senha.';
-    err.classList.add('visible');
-    return;
-  }
-
-  btn.textContent = 'Verificando…';
-  btn.disabled    = true;
+  if (!email || !senha) { err.textContent = 'Preencha e-mail e senha.'; err.classList.add('visible'); return; }
+  btn.textContent = 'Verificando…'; btn.disabled = true;
   err.classList.remove('visible');
-
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify({ tipo: 'login', email, senha }),
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.status === 'ok') {
-      currentUser = { email, nome: d.nome || email };
-      document.getElementById('menu-greeting').textContent = 'Olá, ' + currentUser.nome;
-      show('s-menu');
-    } else {
-      err.textContent = 'E-mail ou senha incorretos.';
+  fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ tipo: 'login', email, senha }) })
+    .then(r => r.json())
+    .then(d => {
+      if (d.status === 'ok') {
+        currentUser = { email, nome: d.nome || email };
+        document.getElementById('menu-greeting').textContent = 'Olá, ' + currentUser.nome;
+        show('s-menu');
+      } else {
+        err.textContent = 'E-mail ou senha incorretos.';
+        err.classList.add('visible');
+      }
+      btn.textContent = 'Entrar'; btn.disabled = false;
+    })
+    .catch(() => {
+      err.textContent = 'Erro de conexão. Tente novamente.';
       err.classList.add('visible');
-    }
-    btn.textContent = 'Entrar';
-    btn.disabled    = false;
-  })
-  .catch(() => {
-    err.textContent = 'Erro de conexão. Tente novamente.';
-    err.classList.add('visible');
-    btn.textContent = 'Entrar';
-    btn.disabled    = false;
-  });
+      btn.textContent = 'Entrar'; btn.disabled = false;
+    });
 }
 
 function doLogout() {
@@ -770,19 +628,13 @@ function doLogout() {
   show('s-login');
 }
 
-// ══════════════════════════════════════════════════
-// GENERIC DROPDOWN — prefix: 'pv' | 'mn'
-// key examples: 'aero', 'piloto', 'operador', 'piloto1', 'piloto2'
-// ══════════════════════════════════════════════════
-function _listForKey(key) {
-  return key === 'aero' ? EMBARCACOES : PESSOAS;
-}
-function _inputId(key, prefix)    { return prefix === 'pv' ? 'm-' + key : 'mn-' + key; }
-function _dropId(key, prefix)     { return 'dd-' + prefix + '-' + key; }
-function _errId(key, prefix)      { return 'err-' + prefix + '-' + key; }
+// ── DROPDOWNS ──
+function _listForKey(key) { return key === 'aero' ? EMBARCACOES : PESSOAS; }
+function _inputId(key, prefix) { return prefix === 'pv' ? 'm-' + key : 'mn-' + key; }
+function _dropId(key, prefix)  { return 'dd-' + prefix + '-' + key; }
+function _errId(key, prefix)   { return 'err-' + prefix + '-' + key; }
 
 function _conflictFor(key, prefix) {
-  // returns the value that should be disabled in this dropdown
   if (prefix === 'pv') {
     if (key === 'piloto')   return sel.pv.operador;
     if (key === 'operador') return sel.pv.piloto;
@@ -795,18 +647,17 @@ function _conflictFor(key, prefix) {
 }
 
 function _buildDD(key, prefix, list) {
-  const dd      = document.getElementById(_dropId(key, prefix));
-  const conflict= _conflictFor(key, prefix);
-  dd.innerHTML  = '';
+  const dd = document.getElementById(_dropId(key, prefix));
+  const conflict = _conflictFor(key, prefix);
+  dd.innerHTML = '';
   if (!list.length) {
     const el = document.createElement('div');
-    el.className   = 'dropdown-item disabled';
-    el.textContent = 'Nenhum resultado';
+    el.className = 'dropdown-item disabled'; el.textContent = 'Nenhum resultado';
     dd.appendChild(el); return;
   }
   list.forEach(item => {
     const el = document.createElement('div');
-    el.className   = 'dropdown-item' + (item === conflict ? ' disabled' : '');
+    el.className = 'dropdown-item' + (item === conflict ? ' disabled' : '');
     el.textContent = item;
     el.addEventListener('mousedown', e => { e.preventDefault(); selectItem(key, prefix, item); });
     el.addEventListener('touchend',  e => { e.preventDefault(); selectItem(key, prefix, item); });
@@ -815,45 +666,33 @@ function _buildDD(key, prefix, list) {
 }
 
 function openDD(key, prefix) {
-  const query = document.getElementById(_inputId(key, prefix)).value.toLowerCase();
-  const list  = _listForKey(key).filter(i => i.toLowerCase().includes(query));
-  _buildDD(key, prefix, list);
+  const q = document.getElementById(_inputId(key, prefix)).value.toLowerCase();
+  _buildDD(key, prefix, _listForKey(key).filter(i => i.toLowerCase().includes(q)));
   document.getElementById(_dropId(key, prefix)).classList.add('open');
 }
 
 function filterDD(key, prefix) {
-  const val  = document.getElementById(_inputId(key, prefix)).value.toLowerCase();
-  const list = _listForKey(key).filter(i => i.toLowerCase().includes(val));
+  const val = document.getElementById(_inputId(key, prefix)).value.toLowerCase();
   sel[prefix][key] = '';
   document.getElementById(_inputId(key, prefix)).classList.remove('selected');
-  _buildDD(key, prefix, list);
+  _buildDD(key, prefix, _listForKey(key).filter(i => i.toLowerCase().includes(val)));
   document.getElementById(_dropId(key, prefix)).classList.add('open');
-  // refresh sibling to update disabled state
   _refreshSibling(key, prefix);
 }
 
 function _refreshSibling(key, prefix) {
-  let sibling = null;
-  if (prefix === 'pv') {
-    if (key === 'piloto')   sibling = 'operador';
-    if (key === 'operador') sibling = 'piloto';
-  }
-  if (prefix === 'mn') {
-    if (key === 'piloto1') sibling = 'piloto2';
-    if (key === 'piloto2') sibling = 'piloto1';
-  }
-  if (!sibling) return;
-  const v    = document.getElementById(_inputId(sibling, prefix)).value.toLowerCase();
-  const list = _listForKey(sibling).filter(i => i.toLowerCase().includes(v));
-  _buildDD(sibling, prefix, list);
+  let sib = null;
+  if (prefix === 'pv') { if (key==='piloto') sib='operador'; else if (key==='operador') sib='piloto'; }
+  if (prefix === 'mn') { if (key==='piloto1') sib='piloto2'; else if (key==='piloto2') sib='piloto1'; }
+  if (!sib) return;
+  const v = document.getElementById(_inputId(sib, prefix)).value.toLowerCase();
+  _buildDD(sib, prefix, _listForKey(sib).filter(i => i.toLowerCase().includes(v)));
 }
 
 function selectItem(key, prefix, value) {
   sel[prefix][key] = value;
   const inp = document.getElementById(_inputId(key, prefix));
-  inp.value = value;
-  inp.classList.add('selected');
-  inp.classList.remove('error');
+  inp.value = value; inp.classList.add('selected'); inp.classList.remove('error');
   document.getElementById(_dropId(key, prefix)).classList.remove('open');
   const errEl = document.getElementById(_errId(key, prefix));
   if (errEl) errEl.classList.remove('visible');
@@ -870,9 +709,7 @@ function blurDD(key, prefix) {
   }, 180);
 }
 
-// ══════════════════════════════════════════════════
-// PRÉ-VOO
-// ══════════════════════════════════════════════════
+// ── PRÉ-VOO ──
 function setDefaults() {
   const n = new Date();
   document.getElementById('m-data').value = n.toISOString().split('T')[0];
@@ -881,19 +718,14 @@ function setDefaults() {
 
 function startChecklist() {
   let valid = true;
-  const checks = [
-    { key: 'aero',     err: 'err-pv-aero',     val: sel.pv.aero },
-    { key: 'piloto',   err: 'err-pv-piloto',   val: sel.pv.piloto },
-    { key: 'operador', err: 'err-pv-operador', val: sel.pv.operador },
-  ];
-  checks.forEach(c => {
-    document.getElementById('m-' + c.key).classList.remove('error');
-    document.getElementById(c.err).classList.remove('visible');
+  ['aero','piloto','operador'].forEach(k => {
+    document.getElementById('m-' + k).classList.remove('error');
+    document.getElementById('err-pv-' + k).classList.remove('visible');
   });
-  checks.forEach(c => {
-    if (!c.val) {
-      document.getElementById('m-' + c.key).classList.add('error');
-      document.getElementById(c.err).classList.add('visible');
+  ['aero','piloto','operador'].forEach(k => {
+    if (!sel.pv[k]) {
+      document.getElementById('m-' + k).classList.add('error');
+      document.getElementById('err-pv-' + k).classList.add('visible');
       valid = false;
     }
   });
@@ -971,7 +803,7 @@ function updateProg() {
   document.getElementById('ck-prog-fill').style.width  = Math.round(done / 35 * 100) + '%';
 }
 
-// ── Signatures ──
+// ── SIGNATURES ──
 function initSigCanvases() {
   document.getElementById('sig-pilot-name').textContent = meta.piloto;
   document.getElementById('sig-op-name').textContent    = meta.operador;
@@ -987,51 +819,46 @@ function setupCanvas(canvasId, key) {
   canvas.width  = (rect.width  || 340) * dpr;
   canvas.height = (rect.height || 160) * dpr;
   ctx.scale(dpr, dpr);
-  ctx.strokeStyle = '#0A4A38';
-  ctx.lineWidth   = 2.5;
-  ctx.lineCap     = 'round';
-  ctx.lineJoin    = 'round';
-  let drawing = false, lastX = 0, lastY = 0;
+  ctx.strokeStyle = '#0A4A38'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  let drawing = false, lx = 0, ly = 0;
   function getPos(e) {
     const r = canvas.getBoundingClientRect();
     if (e.touches) return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   }
-  function startDraw(e) { e.preventDefault(); drawing = true; const p = getPos(e); lastX = p.x; lastY = p.y; }
+  function startDraw(e) { e.preventDefault(); drawing = true; const p = getPos(e); lx = p.x; ly = p.y; }
   function draw(e) {
     if (!drawing) return; e.preventDefault();
     const p = getPos(e);
-    ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
-    lastX = p.x; lastY = p.y;
-    markSigned(key, true);
+    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(p.x, p.y); ctx.stroke();
+    lx = p.x; ly = p.y; markSigned(key, true);
   }
   function endDraw() { drawing = false; }
-  canvas.removeEventListener('mousedown', canvas._sd);
-  canvas.removeEventListener('mousemove', canvas._d);
-  canvas.removeEventListener('mouseup',   canvas._ed);
-  canvas.removeEventListener('touchstart',canvas._sd);
-  canvas.removeEventListener('touchmove', canvas._d);
-  canvas.removeEventListener('touchend',  canvas._ed);
+  canvas.removeEventListener('mousedown',  canvas._sd || null);
+  canvas.removeEventListener('mousemove',  canvas._d  || null);
+  canvas.removeEventListener('mouseup',    canvas._ed || null);
+  canvas.removeEventListener('touchstart', canvas._sd || null);
+  canvas.removeEventListener('touchmove',  canvas._d  || null);
+  canvas.removeEventListener('touchend',   canvas._ed || null);
   canvas._sd = startDraw; canvas._d = draw; canvas._ed = endDraw;
-  canvas.addEventListener('mousedown', startDraw);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup',   endDraw);
-  canvas.addEventListener('touchstart',startDraw, { passive: false });
-  canvas.addEventListener('touchmove', draw,       { passive: false });
-  canvas.addEventListener('touchend',  endDraw);
+  canvas.addEventListener('mousedown',  startDraw);
+  canvas.addEventListener('mousemove',  draw);
+  canvas.addEventListener('mouseup',    endDraw);
+  canvas.addEventListener('touchstart', startDraw, { passive: false });
+  canvas.addEventListener('touchmove',  draw,       { passive: false });
+  canvas.addEventListener('touchend',   endDraw);
 }
 
 function markSigned(key, val) {
   sigState[key] = val;
-  const wrap   = document.getElementById('sig-' + key + '-wrap');
-  const status = document.getElementById('sig-' + key + '-status');
-  if (val) { wrap.classList.add('signed'); status.textContent = 'Assinado'; status.className = 'sig-status ok'; }
-  else      { wrap.classList.remove('signed'); status.textContent = 'Aguardando assinatura'; status.className = 'sig-status empty'; }
+  const wrap = document.getElementById('sig-' + key + '-wrap');
+  const s    = document.getElementById('sig-' + key + '-status');
+  if (val) { wrap.classList.add('signed'); s.textContent = 'Assinado'; s.className = 'sig-status ok'; }
+  else      { wrap.classList.remove('signed'); s.textContent = 'Aguardando assinatura'; s.className = 'sig-status empty'; }
 }
 
 function clearSig(key) {
-  const id     = key === 'pilot' ? 'sig-pilot' : 'sig-op';
-  const canvas = document.getElementById(id);
+  const canvas = document.getElementById(key === 'pilot' ? 'sig-pilot' : 'sig-op');
   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   markSigned(key, false);
 }
@@ -1047,15 +874,14 @@ function goReview() {
     <div class="stat-box"><div class="stat-val" style="color:var(--red)">${failCnt}</div><div class="stat-lbl">Não Conf.</div></div>
     <div class="stat-box"><div class="stat-val" style="color:var(--text3)">${naCnt}</div><div class="stat-lbl">N/A</div></div>`;
   let ggClass, ggLabel, ggSub;
-  if (pend > 0)       { ggClass='pend'; ggLabel='PENDENTE'; ggSub=pend+' item(ns) sem resposta'; }
-  else if (failCnt>0) { ggClass='nogo'; ggLabel='NO GO';    ggSub=failCnt+' item(ns) não conforme(s)'; }
-  else                { ggClass='go';   ggLabel='GO';        ggSub='Todos os itens conformes ou N/A'; }
+  if      (pend > 0)    { ggClass='pend'; ggLabel='PENDENTE'; ggSub = pend + ' item(ns) sem resposta'; }
+  else if (failCnt > 0) { ggClass='nogo'; ggLabel='NO GO';    ggSub = failCnt + ' item(ns) não conforme(s)'; }
+  else                  { ggClass='go';   ggLabel='GO';        ggSub = 'Todos os itens conformes ou N/A'; }
   document.getElementById('rv-gonogo').innerHTML =
     `<div class="gonogo ${ggClass}"><div class="gonogo-label">${ggLabel}</div><div class="gonogo-sub">${ggSub}</div></div>`;
   const failItems = ITEMS.filter(i => resp[i.id] === 'FALHA');
   document.getElementById('rv-fails').innerHTML = failItems.length
-    ? `<div class="fail-list"><div class="fail-list-title">ITENS NÃO CONFORMES</div>${failItems.map(i=>`<div class="fail-item">· ${i.id}. ${i.name}</div>`).join('')}</div>`
-    : '';
+    ? `<div class="fail-list"><div class="fail-list-title">ITENS NÃO CONFORMES</div>${failItems.map(i => `<div class="fail-item">· ${i.id}. ${i.name}</div>`).join('')}</div>` : '';
   const pc = document.getElementById('sig-pilot');
   const oc = document.getElementById('sig-op');
   document.getElementById('rv-sigs').innerHTML = `
@@ -1065,89 +891,83 @@ function goReview() {
 }
 
 function sendSheets() {
-  const btn = document.getElementById('send-btn');
+  const btn     = document.getElementById('send-btn');
   btn.textContent = 'Enviando…'; btn.disabled = true;
-  const okCnt   = Object.values(resp).filter(v=>v==='OK').length;
-  const failCnt = Object.values(resp).filter(v=>v==='FALHA').length;
-  const naCnt   = Object.values(resp).filter(v=>v==='N/A').length;
+  const okCnt   = Object.values(resp).filter(v => v === 'OK').length;
+  const failCnt = Object.values(resp).filter(v => v === 'FALHA').length;
+  const naCnt   = Object.values(resp).filter(v => v === 'N/A').length;
   const itens   = {};
-  for (let i = 1; i <= 35; i++) itens['i'+i] = resp[i] || 'Pendente';
+  for (let i = 1; i <= 35; i++) itens['i' + i] = resp[i] || 'Pendente';
   fetch(SCRIPT_URL, {
     method: 'POST',
-    body: JSON.stringify({ tipo: 'prevoo', ...meta, itens, ok: okCnt, fail: failCnt, na: naCnt,
+    body: JSON.stringify({
+      tipo: 'prevoo', ...meta, itens,
+      ok: okCnt, fail: failCnt, na: naCnt,
       sig_piloto:   document.getElementById('sig-pilot').toDataURL(),
-      sig_operador: document.getElementById('sig-op').toDataURL() }),
+      sig_operador: document.getElementById('sig-op').toDataURL()
+    })
   })
-  .then(r=>r.json())
+  .then(r => r.json())
   .then(d => {
-    if (d.status==='ok') show('s-done');
-    else { alert('Erro: '+(d.mensagem||'desconhecido')); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; }
+    if (d.status === 'ok') show('s-done');
+    else { alert('Erro: ' + (d.mensagem || 'desconhecido')); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; }
   })
-  .catch(err => { alert('Falha de rede: '+err); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; });
+  .catch(err => { alert('Falha de rede: ' + err); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; });
 }
 
 function newOp() {
-  resp={}; meta={};
-  sigState.pilot=false; sigState.op=false;
-  sel.pv = { aero:'', piloto:'', operador:'' };
+  resp = {}; meta = {};
+  sigState.pilot = false; sigState.op = false;
+  sel.pv = { aero: '', piloto: '', operador: '' };
   ['aero','piloto','operador'].forEach(k => {
-    const inp = document.getElementById('m-'+k);
-    inp.value=''; inp.classList.remove('selected','error');
-    document.getElementById('err-pv-'+k).classList.remove('visible');
+    const inp = document.getElementById('m-' + k);
+    inp.value = ''; inp.classList.remove('selected','error');
+    document.getElementById('err-pv-' + k).classList.remove('visible');
   });
-  document.getElementById('m-drone').value='';
+  document.getElementById('m-drone').value = '';
   setDefaults();
   show('s-meta');
 }
 
-// ══════════════════════════════════════════════════
-// MANUTENÇÃO PREVENTIVA
-// ══════════════════════════════════════════════════
+// ── MANUTENÇÃO ──
 function setManutDefaults() {
-  const n = new Date();
-  document.getElementById('mn-data').value = n.toISOString().split('T')[0];
+  document.getElementById('mn-data').value = new Date().toISOString().split('T')[0];
 }
 
 function goManutReview() {
-  // Validação
   let valid = true;
-  const required = [
-    { id: 'mn-aero',        errId: 'err-mn-aero',    val: sel.mn.aero,    label: 'Embarcação' },
-    { id: 'mn-piloto1',     errId: 'err-mn-piloto1', val: sel.mn.piloto1, label: 'Piloto 1' },
-    { id: 'mn-piloto2',     errId: 'err-mn-piloto2', val: sel.mn.piloto2, label: 'Piloto 2' },
+  const ddFields = [
+    { id: 'mn-aero',    errId: 'err-mn-aero',    val: sel.mn.aero },
+    { id: 'mn-piloto1', errId: 'err-mn-piloto1', val: sel.mn.piloto1 },
+    { id: 'mn-piloto2', errId: 'err-mn-piloto2', val: sel.mn.piloto2 },
   ];
-  required.forEach(f => {
+  ddFields.forEach(f => {
     document.getElementById(f.id).classList.remove('error');
-    const err = document.getElementById(f.errId);
-    if (err) err.classList.remove('visible');
+    document.getElementById(f.errId).classList.remove('visible');
   });
-  required.forEach(f => {
+  ddFields.forEach(f => {
     if (!f.val) {
       document.getElementById(f.id).classList.add('error');
-      const err = document.getElementById(f.errId);
-      if (err) err.classList.add('visible');
+      document.getElementById(f.errId).classList.add('visible');
       valid = false;
     }
   });
-  // Text fields
   ['mn-cadastro','mn-transmissor','mn-data','mn-alarme','mn-acao','mn-proxima'].forEach(id => {
     const el = document.getElementById(id);
     el.classList.remove('error');
     if (!el.value.trim()) { el.classList.add('error'); valid = false; }
   });
   if (!valid) { alert('Preencha todos os campos antes de continuar.'); return; }
-
-  // Build review
   const rows = [
-    ['Embarcação',          sel.mn.aero],
-    ['Piloto 1',            sel.mn.piloto1],
-    ['Piloto 2',            sel.mn.piloto2],
-    ['Nº Cadastro',         document.getElementById('mn-cadastro').value],
-    ['Nº Transmissor',      document.getElementById('mn-transmissor').value],
-    ['Data da Manutenção',  document.getElementById('mn-data').value],
-    ['Alarme / Log',        document.getElementById('mn-alarme').value],
-    ['Ação Tomada',         document.getElementById('mn-acao').value],
-    ['Próxima Revisão',     document.getElementById('mn-proxima').value],
+    ['Embarcação',         sel.mn.aero],
+    ['Piloto 1',           sel.mn.piloto1],
+    ['Piloto 2',           sel.mn.piloto2],
+    ['Nº Cadastro',        document.getElementById('mn-cadastro').value],
+    ['Nº Transmissor',     document.getElementById('mn-transmissor').value],
+    ['Data da Manutenção', document.getElementById('mn-data').value],
+    ['Alarme / Log',       document.getElementById('mn-alarme').value],
+    ['Ação Tomada',        document.getElementById('mn-acao').value],
+    ['Próxima Revisão',    document.getElementById('mn-proxima').value],
   ];
   document.getElementById('manut-review-body').innerHTML =
     rows.map(([k,v]) => `<div class="review-row"><span class="review-key">${k}</span><span class="review-val">${v}</span></div>`).join('');
@@ -1157,53 +977,46 @@ function goManutReview() {
 function sendManut() {
   const btn = document.getElementById('manut-send-btn');
   btn.textContent = 'Enviando…'; btn.disabled = true;
-  const payload = {
-    tipo:         'manutencao',
-    aeronave:     sel.mn.aero,
-    piloto1:      sel.mn.piloto1,
-    piloto2:      sel.mn.piloto2,
-    cadastro:     document.getElementById('mn-cadastro').value,
-    transmissor:  document.getElementById('mn-transmissor').value,
-    data:         document.getElementById('mn-data').value,
-    alarme:       document.getElementById('mn-alarme').value,
-    acao:         document.getElementById('mn-acao').value,
-    proxima:      document.getElementById('mn-proxima').value,
-  };
-  fetch(SCRIPT_URL_MANUT, { method:'POST', body: JSON.stringify(payload) })
-  .then(r=>r.json())
-  .then(d => {
-    if (d.status==='ok') show('s-manut-done');
-    else { alert('Erro: '+(d.mensagem||'desconhecido')); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; }
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify({
+      tipo:        'manutencao',
+      aeronave:    sel.mn.aero,
+      piloto1:     sel.mn.piloto1,
+      piloto2:     sel.mn.piloto2,
+      cadastro:    document.getElementById('mn-cadastro').value,
+      transmissor: document.getElementById('mn-transmissor').value,
+      data:        document.getElementById('mn-data').value,
+      alarme:      document.getElementById('mn-alarme').value,
+      acao:        document.getElementById('mn-acao').value,
+      proxima:     document.getElementById('mn-proxima').value,
+    })
   })
-  .catch(err => { alert('Falha de rede: '+err); btn.textContent='Enviar para Google Sheets'; btn.disabled=false; });
+  .then(r => r.json())
+  .then(d => {
+    if (d.status === 'ok') show('s-manut-done');
+    else { alert('Erro: ' + (d.mensagem || 'desconhecido')); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; }
+  })
+  .catch(err => { alert('Falha de rede: ' + err); btn.textContent = 'Enviar para Google Sheets'; btn.disabled = false; });
 }
 
 function newManut() {
-  sel.mn = { aero:'', piloto1:'', piloto2:'' };
+  sel.mn = { aero: '', piloto1: '', piloto2: '' };
   ['mn-aero','mn-piloto1','mn-piloto2'].forEach(id => {
     const el = document.getElementById(id);
-    el.value=''; el.classList.remove('selected','error');
+    el.value = ''; el.classList.remove('selected','error');
   });
-  ['mn-cadastro','mn-transmissor','mn-alarme','mn-acao'].forEach(id =>
-    document.getElementById(id).value = ''
-  );
-  setManutDefaults();
+  ['mn-cadastro','mn-transmissor','mn-alarme','mn-acao'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('mn-proxima').value = '';
+  setManutDefaults();
   show('s-manut-meta');
 }
 
-// ══════════════════════════════════════════════════
-// DOCUMENTOS OPERACIONAIS
-// ══════════════════════════════════════════════════
+// ── DOCUMENTOS ──
 function renderDocs() {
   const body = document.getElementById('docs-body');
   if (!DOCS_LIST.length) {
-    body.innerHTML = `
-      <div class="doc-placeholder">
-        <p>Nenhum documento cadastrado ainda.<br>
-        Edite a variável <strong>DOCS_LIST</strong> no código<br>
-        e adicione os links do Google Drive.</p>
-      </div>`;
+    body.innerHTML = `<div class="doc-placeholder"><p>Nenhum documento cadastrado ainda.<br>Edite a variável <strong>DOCS_LIST</strong> no código<br>e adicione os links do Google Drive.</p></div>`;
     return;
   }
   body.innerHTML = DOCS_LIST.map(doc => `
@@ -1224,9 +1037,7 @@ function renderDocs() {
     </a>`).join('');
 }
 
-// ══════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════
+// ── INIT ──
 setDefaults();
 setManutDefaults();
 </script>
