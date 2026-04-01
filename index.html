@@ -1015,7 +1015,7 @@ function newManut() {
 // ── DOCUMENTOS ──
 function renderDocs() {
   const body = document.getElementById('docs-body');
-  if (https://drive.google.com/file/d/1FNY0HH7v1izn-wUyMFbfIL6sbEF0PmZH/view?usp=drive_link) {
+  if (!DOCS_LIST.length) {
     body.innerHTML = `<div class="doc-placeholder"><p>Nenhum documento cadastrado ainda.<br>Edite a variável <strong>DOCS_LIST</strong> no código<br>e adicione os links do Google Drive.</p></div>`;
     return;
   }
