@@ -699,7 +699,7 @@ function addLogoPdf(doc, ml, y) {
     // Detecta o formato a partir do data URL (png ou jpeg)
     const fmt = pdfLogoB64.startsWith('data:image/png') ? 'PNG' : 'JPEG';
     // Logo alinhada à direita do cabeçalho, 45mm × 15mm
-    doc.addImage(pdfLogoB64, fmt, ml, y, 70, 15);
+    doc.addImage(pdfLogoB64, fmt, ml, y, 45, 20);
   } catch(e) {
     console.warn('Erro ao inserir logo no PDF:', e);
   }
