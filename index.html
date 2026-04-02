@@ -699,7 +699,7 @@ function addLogoPdf(doc, ml, y) {
     // Detecta o formato a partir do data URL (png ou jpeg)
     const fmt = pdfLogoB64.startsWith('data:image/png') ? 'PNG' : 'JPEG';
     // Logo alinhada à direita do cabeçalho, 45mm × 15mm
-    doc.addImage(pdfLogoB64, fmt, ml, y, 45, 15);
+    doc.addImage(pdfLogoB64, fmt, ml, y, 40, 17);
   } catch(e) {
     console.warn('Erro ao inserir logo no PDF:', e);
   }
@@ -717,10 +717,10 @@ function gerarPdfPrevoo(){
 
   // Cabeçalho
   doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
-  doc.text('CHECKLIST PRÉ-VOO',pw/2,y+8,{align:'center'});
+  doc.text('CHECKLIST PRÉ-VOO',pw/2,y+9,{align:'center'});
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(74,96,112);
-  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+14,{align:'center'});
-  y+=26;
+  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+16,{align:'center'});
+  y+=27;
 
   // Linha separadora
   doc.setDrawColor(119,166,112);doc.setLineWidth(0.5);doc.line(ml,y,pw-mr,y);y+=6;
@@ -873,10 +873,10 @@ function gerarPdfManut(){
   addLogoPdf(doc, ml, y);
 
   doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
-  doc.text('MANUTENÇÃO PREVENTIVA',pw/2,y+8,{align:'center'});
+  doc.text('MANUTENÇÃO PREVENTIVA',pw/2,y+9,{align:'center'});
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(74,96,112);
-  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+14,{align:'center'});
-  y+=26;
+  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+16,{align:'center'});
+  y+=27;
 
   doc.setDrawColor(176,122,26);doc.setLineWidth(0.5);doc.line(ml,y,pw-mr,y);y+=6;
 
