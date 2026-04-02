@@ -6,6 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="theme-color" content="#0b243a"/>
+<link rel="manifest" href="/manifest.json"/>
 <title>Dit Services</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -149,9 +150,39 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 .sending-spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;}
 .sending-msg{color:#fff;font-family:var(--mono);font-size:13px;}
 @keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── BANNER DE STATUS OFFLINE/FILA ─────────────────────── */
+#offline-banner{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:900;
+  background:var(--amber);color:#fff;font-family:var(--mono);font-size:12px;
+  padding:10px 16px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px);
+  display:flex;align-items:center;gap:10px;
+}
+#offline-banner.hidden{display:none!important;}
+#offline-banner .banner-dot{width:8px;height:8px;border-radius:50%;background:#fff;flex-shrink:0;animation:blink 1.2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3;}}
+#fila-badge{
+  display:none;position:absolute;top:-6px;right:-6px;
+  background:var(--amber);color:#fff;font-size:10px;font-family:var(--mono);
+  font-weight:500;border-radius:99px;padding:2px 6px;min-width:18px;text-align:center;
+}
+.menu-card{position:relative;}
+
+/* ── TELA DE FILA OFFLINE ───────────────────────────────── */
+.fila-item{background:var(--card);border:1px solid var(--amber-border);border-radius:12px;padding:14px;margin-bottom:10px;}
+.fila-item-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;}
+.fila-item-meta{font-size:11px;color:var(--text3);font-family:var(--mono);}
+.fila-item-badge{display:inline-block;margin-top:6px;font-size:10px;font-weight:500;font-family:var(--mono);padding:2px 8px;border-radius:20px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+.fila-empty{text-align:center;padding:40px 20px;color:var(--text3);font-family:var(--mono);font-size:13px;}
 </style>
 </head>
 <body>
+
+<!-- BANNER OFFLINE -->
+<div id="offline-banner" class="hidden">
+  <div class="banner-dot"></div>
+  <span id="offline-msg">Sem conexão — dados salvos localmente</span>
+</div>
 
 <!-- OVERLAY DE ENVIO -->
 <div class="sending-overlay" id="sending-overlay">
@@ -163,8 +194,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 <div id="s-login" class="screen active">
   <div class="login-wrap">
     <div class="login-logo">
-      <img src="Logo_DIT.png" alt="Dit Services"
-        onerror="this.style.display='none'"/>
+      <img src="Logo_DIT.png" alt="Dit Services" onerror="this.style.display='none'"/>
     </div>
     <div class="login-card">
       <div class="field">
@@ -195,7 +225,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
   </div>
   <div class="content">
     <div class="section-title">Checklists</div>
-    <div class="menu-card" onclick="show('s-meta')">
+    <div class="menu-card" onclick="show('s-meta')" style="position:relative;">
       <div class="menu-icon sage">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
           <rect x="3" y="2" width="16" height="18" rx="3" stroke="#77a670" stroke-width="1.5"/>
@@ -210,7 +240,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
       </div>
       <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
-    <div class="menu-card" onclick="show('s-manut-meta')">
+    <div class="menu-card" onclick="show('s-manut-meta')" style="position:relative;">
       <div class="menu-icon amber">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
           <path d="M14.5 3.5C13.1 2.1 11 2 9.5 3.5L5 8l2 2 1.5-1.5 5 5-1.5 1.5 2 2 4.5-4.5c1.5-1.5 1.4-3.6 0-5z" stroke="#b07a1a" stroke-width="1.4" stroke-linejoin="round"/>
@@ -223,6 +253,23 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
       </div>
       <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
+
+    <!-- Fila pendente — só aparece quando há itens -->
+    <div id="menu-fila-card" class="menu-card" onclick="show('s-fila')" style="display:none;">
+      <div class="menu-icon amber">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="9" stroke="#b07a1a" stroke-width="1.4"/>
+          <line x1="11" y1="7" x2="11" y2="11.5" stroke="#b07a1a" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="11" cy="14.5" r="0.8" fill="#b07a1a"/>
+        </svg>
+      </div>
+      <div class="menu-texts">
+        <div class="menu-name">Registros pendentes</div>
+        <div class="menu-desc" id="fila-desc">Aguardando conexão para enviar</div>
+      </div>
+      <div class="menu-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
     <div class="section-title">Documentos Operacionais</div>
     <div class="menu-card" onclick="show('s-docs')">
       <div class="menu-icon navy">
@@ -312,7 +359,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-pilot"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-pilot-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('pilot','pv')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('pilot')">Limpar</button>
         </div>
       </div>
     </div>
@@ -324,7 +371,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-op"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-op-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('op','pv')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('op')">Limpar</button>
         </div>
       </div>
     </div>
@@ -356,8 +403,8 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
       <circle cx="36" cy="36" r="34" fill="#eaf3e9"/><circle cx="36" cy="36" r="34" stroke="#b3d1b0" stroke-width="1"/>
       <polyline points="22,37 30,46 50,25" stroke="#4d7a46" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <p style="font-size:19px;font-weight:500;margin:18px 0 8px;">Enviado com sucesso!</p>
-    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:28px;font-family:var(--mono);">PDF gerado e salvo na planilha Google Sheets.</p>
+    <p id="done-title" style="font-size:19px;font-weight:500;margin:18px 0 8px;">Enviado com sucesso!</p>
+    <p id="done-sub" style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:28px;font-family:var(--mono);">PDF gerado e salvo na planilha Google Sheets.</p>
     <button class="btn btn-primary" style="max-width:240px;margin-bottom:12px" onclick="newOp()">Nova operação</button>
     <button class="btn btn-outline" style="max-width:240px" onclick="show('s-menu')">Voltar ao menu</button>
   </div>
@@ -419,7 +466,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-mn-p1"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-mn-p1-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('mn-p1','mn')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('mn-p1')">Limpar</button>
         </div>
       </div>
     </div>
@@ -431,7 +478,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-mn-p2"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-mn-p2-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('mn-p2','mn')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('mn-p2')">Limpar</button>
         </div>
       </div>
     </div>
@@ -461,8 +508,8 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
       <circle cx="36" cy="36" r="34" fill="#fdf4e3"/><circle cx="36" cy="36" r="34" stroke="#e8c46a" stroke-width="1"/>
       <polyline points="22,37 30,46 50,25" stroke="#b07a1a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <p style="font-size:19px;font-weight:500;margin:18px 0 8px;">Manutenção registrada!</p>
-    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:28px;font-family:var(--mono);">PDF gerado e salvo na planilha Google Sheets.</p>
+    <p id="manut-done-title" style="font-size:19px;font-weight:500;margin:18px 0 8px;">Manutenção registrada!</p>
+    <p id="manut-done-sub" style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:28px;font-family:var(--mono);">PDF gerado e salvo na planilha Google Sheets.</p>
     <button class="btn btn-primary" style="max-width:240px;margin-bottom:12px" onclick="newManut()">Novo registro</button>
     <button class="btn btn-outline" style="max-width:240px" onclick="show('s-menu')">Voltar ao menu</button>
   </div>
@@ -478,8 +525,24 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
   <div class="content" id="docs-body"></div>
 </div>
 
+<!-- TELA 12 — FILA OFFLINE -->
+<div id="s-fila" class="screen">
+  <div class="topbar">
+    <button class="topbar-back" onclick="show('s-menu')"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="10,3 5,8 10,13" stroke="#9aabbf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Menu</button>
+    <div class="topbar-title">Registros pendentes</div>
+    <div class="topbar-sub">salvos localmente — aguardando envio</div>
+  </div>
+  <div class="content" id="fila-body"></div>
+  <div class="footer">
+    <button class="btn btn-primary" onclick="tentarReenviarFila()">Tentar enviar agora</button>
+  </div>
+</div>
+
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTEcvdmxac6zkHhwxUch2hr7uMIeUE-QHkjm5RLD0CPwhvmw2i3fCGKiyvc_h0bU6G/exec";
+// ════════════════════════════════════════════════════════════
+// CONFIGURAÇÃO
+// ════════════════════════════════════════════════════════════
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFdi0UNYppvKrMJ055JmVKBO64xENpr0DEOfV-YK9LrhRDSXlLoYSatYZVDmgw1YhZ/exec";
 
 const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"];
 const PESSOAS     = ["Eduardo","Tiago","Cleverson","Paulo M","Lucas Khul","Lucas Cruz","Guilherme","Diorge","Matheus","Wallace","Ivinin","Bruno V","Augusto T","Augusto C"];
@@ -527,43 +590,239 @@ const ITEMS = [
   {id:35, name:"GO / NO GO",                       action:"Decisão do piloto — o sistema UAS é seguro para voar?"}
 ];
 
-// ── STATE ──
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
 let currentUser = null, resp = {}, meta = {};
-const sigState = { pilot:false, op:false, 'mn-p1':false, 'mn-p2':false };
-const sel = { pv:{aero:'',piloto:'',operador:''}, mn:{aero:'',piloto1:'',piloto2:''} };
+const sigState  = { pilot:false, op:false, 'mn-p1':false, 'mn-p2':false };
+const sel       = { pv:{aero:'',piloto:'',operador:''}, mn:{aero:'',piloto1:'',piloto2:''} };
+let pdfLogoB64  = null;
 
-// ── LOGO PARA PDF ──
-// Carrega Logo_DIT_B.png uma vez e guarda como base64 para usar nos PDFs
-let pdfLogoB64 = null;
+// ════════════════════════════════════════════════════════════
+// PWA — REGISTRO DO SERVICE WORKER
+// ════════════════════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js').then(reg => {
+    console.log('SW registrado:', reg.scope);
+  });
 
+  // Ouve mensagens do SW (sync-ok = item da fila foi enviado)
+  navigator.serviceWorker.addEventListener('message', async event => {
+    if (event.data && event.data.tipo === 'sync-ok') {
+      await atualizarMenuFila();
+      mostrarToast('Registro enviado automaticamente!', 'ok');
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// OFFLINE — INDEXEDDB
+// ════════════════════════════════════════════════════════════
+function abrirDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('dit-offline', 1);
+    req.onupgradeneeded = e => {
+      e.target.result.createObjectStore('fila', { keyPath: 'id', autoIncrement: true });
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
+async function salvarNaFila(payload) {
+  const db    = await abrirDB();
+  const store = db.transaction('fila', 'readwrite').objectStore('fila');
+  return new Promise((resolve, reject) => {
+    const req = store.add({ dados: { SCRIPT_URL, payload }, salvoCem: new Date().toISOString() });
+    req.onsuccess = () => resolve(req.result);
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
+async function lerFila() {
+  const db    = await abrirDB();
+  const store = db.transaction('fila', 'readonly').objectStore('fila');
+  return new Promise((resolve, reject) => {
+    const req = store.getAll();
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
+async function deletarDaFila(id) {
+  const db    = await abrirDB();
+  const store = db.transaction('fila', 'readwrite').objectStore('fila');
+  return new Promise((resolve, reject) => {
+    const req = store.delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// OFFLINE — STATUS DE REDE E BANNER
+// ════════════════════════════════════════════════════════════
+function atualizarBannerRede() {
+  const banner = document.getElementById('offline-banner');
+  if (!navigator.onLine) {
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+
+window.addEventListener('online',  async () => {
+  atualizarBannerRede();
+  // Tenta disparar o Background Sync quando volta online
+  if ('serviceWorker' in navigator && 'SyncManager' in window) {
+    const reg = await navigator.serviceWorker.ready;
+    try { await reg.sync.register('dit-sync-fila'); } catch(e) {}
+  } else {
+    // Fallback: tenta enviar manualmente se o browser não suporta BG Sync
+    tentarReenviarFila(true);
+  }
+});
+window.addEventListener('offline', atualizarBannerRede);
+
+// ════════════════════════════════════════════════════════════
+// OFFLINE — MENU: CARD DE FILA E REENVIO MANUAL
+// ════════════════════════════════════════════════════════════
+async function atualizarMenuFila() {
+  const itens = await lerFila();
+  const card  = document.getElementById('menu-fila-card');
+  const desc  = document.getElementById('fila-desc');
+  if (itens.length > 0) {
+    card.style.display = 'flex';
+    desc.textContent   = itens.length + ' registro(s) aguardando envio';
+  } else {
+    card.style.display = 'none';
+  }
+}
+
+async function renderFila() {
+  const itens = await lerFila();
+  const body  = document.getElementById('fila-body');
+  if (!itens.length) {
+    body.innerHTML = '<div class="fila-empty">Nenhum registro pendente.<br>Tudo enviado!</div>';
+    return;
+  }
+  body.innerHTML = itens.map(item => {
+    const p = item.dados.payload;
+    const titulo = p.tipo === 'prevoo'
+      ? 'Pré-Voo — ' + (p.aeronave || '') + ' · ' + (p.piloto || '')
+      : 'Manutenção — ' + (p.aeronave || '');
+    const data = p.data || p.tipo;
+    const salvo = new Date(item.salvoCem).toLocaleString('pt-BR');
+    return `<div class="fila-item">
+      <div class="fila-item-title">${titulo}</div>
+      <div class="fila-item-meta">Data: ${data}</div>
+      <div class="fila-item-meta">Salvo em: ${salvo}</div>
+      <span class="fila-item-badge">Pendente</span>
+    </div>`;
+  }).join('');
+}
+
+async function tentarReenviarFila(silencioso = false) {
+  const itens = await lerFila();
+  if (!itens.length) {
+    if (!silencioso) mostrarToast('Nenhum registro pendente.', 'ok');
+    return;
+  }
+  if (!navigator.onLine) {
+    if (!silencioso) mostrarToast('Ainda sem conexão. Tente novamente.', 'erro');
+    return;
+  }
+
+  showOverlay('Reenviando registros pendentes...');
+  let enviados = 0, erros = 0;
+
+  for (const item of itens) {
+    try {
+      const r = await fetch(item.dados.SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(item.dados.payload)
+      });
+      const d = await r.json();
+      if (d.status === 'ok') {
+        await deletarDaFila(item.id);
+        enviados++;
+      } else {
+        erros++;
+      }
+    } catch (e) {
+      erros++;
+    }
+  }
+
+  hideOverlay();
+  await atualizarMenuFila();
+  await renderFila();
+
+  if (!silencioso) {
+    mostrarToast(
+      enviados + ' enviado(s)' + (erros ? ', ' + erros + ' erro(s)' : '') + '.',
+      erros ? 'erro' : 'ok'
+    );
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// TOAST — MENSAGEM FLUTUANTE
+// ════════════════════════════════════════════════════════════
+function mostrarToast(msg, tipo = 'ok') {
+  let t = document.getElementById('dit-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'dit-toast';
+    t.style.cssText = 'position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font-family:var(--mono);font-size:12px;padding:10px 18px;border-radius:99px;z-index:1000;transition:opacity 0.3s;white-space:nowrap;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.background = tipo === 'ok' ? 'var(--sage-dark)' : 'var(--red)';
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+}
+
+// ════════════════════════════════════════════════════════════
+// LOGO PARA PDF
+// ════════════════════════════════════════════════════════════
 async function loadPdfLogo() {
   try {
     const response = await fetch('Logo_DIT_B.png');
     if (!response.ok) return;
     const blob = await response.blob();
-    const reader = new FileReader();
-    reader.onloadend = () => { pdfLogoB64 = reader.result; };
-    reader.readAsDataURL(blob);
-  } catch (e) {
-    console.warn('Logo_DIT_B.png não carregada:', e);
-  }
+    await new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onloadend = () => { pdfLogoB64 = reader.result; resolve(); };
+      reader.readAsDataURL(blob);
+    });
+  } catch (e) { console.warn('Logo_DIT_B.png não carregada:', e); }
 }
 
-// ── OVERLAY ──
+// ════════════════════════════════════════════════════════════
+// OVERLAY
+// ════════════════════════════════════════════════════════════
 function showOverlay(msg){ const o=document.getElementById('sending-overlay'); document.getElementById('sending-msg').textContent=msg||'Aguarde...'; o.classList.add('active'); }
 function hideOverlay(){ document.getElementById('sending-overlay').classList.remove('active'); }
 
-// ── SCREENS ──
+// ════════════════════════════════════════════════════════════
+// SCREENS
+// ════════════════════════════════════════════════════════════
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='s-sign') initSigCanvases('pv');
+  if(id==='s-sign')       initSigCanvases('pv');
   if(id==='s-manut-sign') initSigCanvases('mn');
-  if(id==='s-docs') renderDocs();
+  if(id==='s-docs')       renderDocs();
+  if(id==='s-fila')       renderFila();
+  if(id==='s-menu')       atualizarMenuFila();
 }
 
-// ── LOGIN ──
+// ════════════════════════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════════════════════════
 function doLogin(){
   const email=document.getElementById('l-email').value.trim().toLowerCase();
   const senha=document.getElementById('l-senha').value;
@@ -579,7 +838,9 @@ function doLogin(){
 }
 function doLogout(){currentUser=null;document.getElementById('l-email').value='';document.getElementById('l-senha').value='';document.getElementById('login-err').classList.remove('visible');show('s-login');}
 
-// ── DROPDOWNS ──
+// ════════════════════════════════════════════════════════════
+// DROPDOWNS
+// ════════════════════════════════════════════════════════════
 function _listForKey(k){return k==='aero'?EMBARCACOES:PESSOAS;}
 function _inputId(k,p){return p==='pv'?'m-'+k:'mn-'+k;}
 function _dropId(k,p){return 'dd-'+p+'-'+k;}
@@ -604,8 +865,11 @@ function _refreshSib(k,p){let sib=null;if(p==='pv'){if(k==='piloto')sib='operado
 function selectItem(k,p,val){sel[p][k]=val;const inp=document.getElementById(_inputId(k,p));inp.value=val;inp.classList.add('selected');inp.classList.remove('error');document.getElementById(_dropId(k,p)).classList.remove('open');const e=document.getElementById(_errId(k,p));if(e)e.classList.remove('visible');_refreshSib(k,p);}
 function blurDD(k,p){setTimeout(()=>{document.getElementById(_dropId(k,p)).classList.remove('open');if(!sel[p][k]){document.getElementById(_inputId(k,p)).value='';document.getElementById(_inputId(k,p)).classList.remove('selected');}},180);}
 
-// ── PRÉ-VOO ──
+// ════════════════════════════════════════════════════════════
+// PRÉ-VOO
+// ════════════════════════════════════════════════════════════
 function setDefaults(){const n=new Date();document.getElementById('m-data').value=n.toISOString().split('T')[0];document.getElementById('m-hora').value=n.toTimeString().slice(0,5);}
+
 function startChecklist(){
   let valid=true;
   ['aero','piloto','operador'].forEach(k=>{document.getElementById('m-'+k).classList.remove('error');document.getElementById('err-pv-'+k).classList.remove('visible');});
@@ -615,6 +879,7 @@ function startChecklist(){
   meta={data:document.getElementById('m-data').value,hora:document.getElementById('m-hora').value,drone:document.getElementById('m-drone').value||'Não informado',aeronave:sel.pv.aero,piloto:sel.pv.piloto,operador:sel.pv.operador};
   resp={};renderItems();show('s-check');
 }
+
 function renderItems(){
   const body=document.getElementById('items-body');body.innerHTML='';
   ITEMS.forEach(item=>{const r=resp[item.id],cls=r==='OK'?'ok':r==='FALHA'?'fail':r==='N/A'?'na':'';
@@ -622,6 +887,7 @@ function renderItems(){
     card.innerHTML=`<div class="item-head"><span class="item-num">${item.id}</span><div class="item-texts"><div class="item-name">${item.name}</div><div class="item-action">${item.action}</div></div>${r?`<span class="item-badge badge-${r==='OK'?'ok':r==='FALHA'?'fail':'na'}">${r==='OK'?'Conforme':r==='FALHA'?'Não Conforme':'N/A'}</span>`:''}</div><div class="tap-row"><button class="tap-btn${r==='OK'?' t-ok':''}" onclick="setR(${item.id},'OK')">Conforme</button><button class="tap-btn${r==='FALHA'?' t-fail':''}" onclick="setR(${item.id},'FALHA')">Não Conforme</button><button class="tap-btn${r==='N/A'?' t-na':''}" onclick="setR(${item.id},'N/A')">N/A</button></div>`;
     body.appendChild(card);});updateProg();
 }
+
 function setR(id,val){
   resp[id]=val;const item=ITEMS[id-1],card=document.getElementById('card-'+id);
   card.className='item-card '+(val==='OK'?'ok':val==='FALHA'?'fail':'na');
@@ -629,9 +895,12 @@ function setR(id,val){
   const btns=card.querySelectorAll('.tap-btn');btns[0].className='tap-btn'+(val==='OK'?' t-ok':'');btns[1].className='tap-btn'+(val==='FALHA'?' t-fail':'');btns[2].className='tap-btn'+(val==='N/A'?' t-na':'');
   updateProg();
 }
+
 function updateProg(){const done=Object.keys(resp).length;document.getElementById('ck-prog-txt').textContent=done+' / 35';document.getElementById('ck-sub').textContent=done+' de 35 itens respondidos';document.getElementById('ck-prog-fill').style.width=Math.round(done/35*100)+'%';}
 
-// ── CANVAS SIGNATURES ──
+// ════════════════════════════════════════════════════════════
+// CANVAS — ASSINATURAS
+// ════════════════════════════════════════════════════════════
 function initSigCanvases(form){
   if(form==='pv'){
     document.getElementById('sig-pilot-name').textContent=meta.piloto;
@@ -645,6 +914,7 @@ function initSigCanvases(form){
     setupCanvas('sig-mn-p2','mn-p2');
   }
 }
+
 function setupCanvas(canvasId,key){
   const canvas=document.getElementById(canvasId),ctx=canvas.getContext('2d');
   const rect=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
@@ -661,6 +931,7 @@ function setupCanvas(canvasId,key){
   canvas.addEventListener('mousedown',startDraw);canvas.addEventListener('mousemove',draw);canvas.addEventListener('mouseup',endDraw);
   canvas.addEventListener('touchstart',startDraw,{passive:false});canvas.addEventListener('touchmove',draw,{passive:false});canvas.addEventListener('touchend',endDraw);
 }
+
 function markSigned(key,val){
   sigState[key]=val;
   const sfx=key==='pilot'?'pilot':key==='op'?'op':key==='mn-p1'?'mn-p1':'mn-p2';
@@ -668,6 +939,7 @@ function markSigned(key,val){
   if(val){wrap.classList.add('signed');s.textContent='Assinado';s.className='sig-status ok';}
   else{wrap.classList.remove('signed');s.textContent='Aguardando assinatura';s.className='sig-status empty';}
 }
+
 function clearSig(key){
   const ids={pilot:'sig-pilot',op:'sig-op','mn-p1':'sig-mn-p1','mn-p2':'sig-mn-p2'};
   const canvas=document.getElementById(ids[key]);
@@ -675,7 +947,9 @@ function clearSig(key){
   markSigned(key,false);
 }
 
-// ── REVIEW PRÉ-VOO ──
+// ════════════════════════════════════════════════════════════
+// REVIEW PRÉ-VOO
+// ════════════════════════════════════════════════════════════
 function goReview(){
   if(!sigState.pilot||!sigState.op){alert('Ambos devem assinar antes de continuar.');return;}
   const okCnt=Object.values(resp).filter(v=>v==='OK').length,failCnt=Object.values(resp).filter(v=>v==='FALHA').length,naCnt=Object.values(resp).filter(v=>v==='N/A').length,pend=35-okCnt-failCnt-naCnt;
@@ -692,67 +966,51 @@ function goReview(){
   show('s-review');
 }
 
-// ── HELPER: adiciona logo ao PDF na página atual ──
-function addLogoPdf(doc, ml, y) {
-  if (!pdfLogoB64) return;
-  try {
-    // Detecta o formato a partir do data URL (png ou jpeg)
-    const fmt = pdfLogoB64.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-    // Logo alinhada à direita do cabeçalho, 45mm × 15mm
-    doc.addImage(pdfLogoB64, fmt, ml, y, 53,17);
-  } catch(e) {
-    console.warn('Erro ao inserir logo no PDF:', e);
+// ════════════════════════════════════════════════════════════
+// CABEÇALHO PDF (helper)
+// ════════════════════════════════════════════════════════════
+function pdfCabecalho(doc, pw, ml, mr, titulo, corLinha) {
+  let y = 14;
+  if (pdfLogoB64) {
+    try {
+      const fmt = pdfLogoB64.startsWith('data:image/png') ? 'PNG' : 'JPEG';
+      doc.addImage(pdfLogoB64, fmt, (pw - 60) / 2, y, 60, 20);
+    } catch(e) {}
   }
+  y += 24;
+  doc.setDrawColor(...corLinha); doc.setLineWidth(0.6); doc.line(ml, y, pw - mr, y); y += 6;
+  doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(11,36,58);
+  doc.text(titulo, pw/2, y, {align:'center'}); y += 6;
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(74,96,112);
+  doc.text('Dit Services — Solutions Beyond Vision Into Control', pw/2, y, {align:'center'}); y += 8;
+  doc.setDrawColor(200,212,221); doc.setLineWidth(0.3); doc.line(ml, y, pw - mr, y); y += 6;
+  return y;
 }
 
-// ── PDF PRÉ-VOO ──
+// ════════════════════════════════════════════════════════════
+// PDF PRÉ-VOO
+// ════════════════════════════════════════════════════════════
 function gerarPdfPrevoo(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
-  let y=19;
-
-  // Logo — primeira página, canto esquerdo
-  addLogoPdf(doc, ml, y);
-
-  // Cabeçalho
-  doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
-  doc.text('CHECKLIST PRÉ-VOO',pw/2,y+9,{align:'center'});
-  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(74,96,112);
-  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+16,{align:'center'});
-  y+=65;
-
-  // Linha separadora
-  doc.setDrawColor(119,166,112);doc.setLineWidth(0.5);doc.line(ml,y,pw-mr,y);y+=6;
-
-  // Dados da operação
+  let y=pdfCabecalho(doc,pw,ml,mr,'CHECKLIST PRÉ-VOO',[119,166,112]);
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('DADOS DA OPERAÇÃO',ml,y);y+=5;
   const campos=[['Data',meta.data],['Hora',meta.hora],['Drone',meta.drone],['Embarcação',meta.aeronave],['Piloto',meta.piloto],['Operador',meta.operador]];
   doc.setFont('helvetica','normal');doc.setFontSize(9);
-  campos.forEach(([k,v],i)=>{
-    const col=i%2===0?ml:ml+cw/2+5,row=Math.floor(i/2);
-    if(i%2===0&&i>0)y+=6;
-    doc.setTextColor(74,96,112);doc.text(k+':',col,y);
-    doc.setTextColor(13,31,45);doc.text(v||'-',col+28,y);
-  });
+  campos.forEach(([k,v],i)=>{const col=i%2===0?ml:ml+cw/2+5;if(i%2===0&&i>0)y+=6;doc.setTextColor(74,96,112);doc.text(k+':',col,y);doc.setTextColor(13,31,45);doc.text(v||'-',col+28,y);});
   y+=10;
-
-  // Linha
   doc.setDrawColor(200,212,221);doc.setLineWidth(0.3);doc.line(ml,y,pw-mr,y);y+=6;
-
-  // Checklist
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('ITENS DO CHECKLIST',ml,y);y+=6;
-
   const statusColor={'OK':[77,122,70],'FALHA':[217,79,79],'N/A':[58,80,96]};
   const statusLabel={'OK':'CONFORME','FALHA':'NÃO CONFORME','N/A':'N/A'};
-
   ITEMS.forEach((item,idx)=>{
     if(y>ph-50){doc.addPage();y=15;}
     const r=resp[item.id]||'PENDENTE';
     const bg=idx%2===0?[248,250,252]:[255,255,255];
-    doc.setFillColor(...bg);doc.rect(ml,y-4,cw,7,5==='F'?'F':'F');
+    doc.setFillColor(...bg);doc.rect(ml,y-4,cw,7,'F');
     doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(13,31,45);
     doc.text(item.id+'. '+item.name,ml+2,y);
     const sc=statusColor[r]||[143,165,181];
@@ -761,8 +1019,6 @@ function gerarPdfPrevoo(){
     y+=6;
   });
   y+=4;
-
-  // GO/NO GO
   if(y>ph-40){doc.addPage();y=15;}
   const okCnt=Object.values(resp).filter(v=>v==='OK').length;
   const failCnt=Object.values(resp).filter(v=>v==='FALHA').length;
@@ -771,77 +1027,110 @@ function gerarPdfPrevoo(){
   const ggColor=gg==='GO'?[77,122,70]:gg==='NO GO'?[217,79,79]:[176,122,26];
   doc.setFillColor(...ggColor);doc.roundedRect(ml,y,cw,12,2,2,'F');
   doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(255,255,255);
-  doc.text(gg,pw/2,y+8,{align:'center'});
-  y+=18;
-
-  // Totais
+  doc.text(gg,pw/2,y+8,{align:'center'});y+=18;
   doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);
-  doc.text(`Conformes: ${okCnt}   Não Conformes: ${failCnt}   N/A: ${Object.values(resp).filter(v=>v==='N/A').length}   Pendentes: ${pend}`,pw/2,y,{align:'center'});
-  y+=10;
-
-  // Assinaturas Piloto / Operador
+  doc.text(`Conformes: ${okCnt}   Não Conformes: ${failCnt}   N/A: ${Object.values(resp).filter(v=>v==='N/A').length}   Pendentes: ${pend}`,pw/2,y,{align:'center'});y+=10;
   if(y>ph-60){doc.addPage();y=15;}
   doc.setDrawColor(200,212,221);doc.setLineWidth(0.3);doc.line(ml,y,pw-mr,y);y+=8;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('ASSINATURAS',ml,y);y+=6;
   const hw=(cw-10)/2;
-  // Piloto
   try{doc.addImage(document.getElementById('sig-pilot').toDataURL(),'PNG',ml,y,hw,25);}catch(e){}
   doc.setDrawColor(179,209,176);doc.setLineWidth(0.4);doc.line(ml,y+26,ml+hw,y+26);
   doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);
   doc.text('Piloto: '+meta.piloto,ml,y+30);
-  // Operador
   try{doc.addImage(document.getElementById('sig-op').toDataURL(),'PNG',ml+hw+10,y,hw,25);}catch(e){}
   doc.line(ml+hw+10,y+26,pw-mr,y+26);
-  doc.text('Operador: '+meta.operador,ml+hw+10,y+30);
-  y+=38;
-
-  // Aprovação — Diretor e Supervisor
+  doc.text('Operador: '+meta.operador,ml+hw+10,y+30);y+=38;
   if(y>ph-50){doc.addPage();y=15;}
   doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('APROVAÇÃO',ml,y);y+=6;
   doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);
-  // Diretor
   doc.rect(ml,y,hw,18);doc.text('Assinatura do Diretor',ml+2,y+5);
   doc.setDrawColor(179,209,176);doc.line(ml+2,y+14,ml+hw-2,y+14);
-  // Supervisor
   doc.rect(ml+hw+10,y,hw,18);doc.text('Assinatura do Supervisor',ml+hw+12,y+5);
   doc.line(ml+hw+12,y+14,pw-mr-2,y+14);
-  y+=24;
-
-  // Rodapé em todas as páginas
   const pageCount=doc.internal.getNumberOfPages();
-  for(let i=1;i<=pageCount;i++){
-    doc.setPage(i);
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(143,165,181);
-    doc.text('Dit Services · Checklist Pré-Voo · Gerado em '+new Date().toLocaleString('pt-BR'),pw/2,ph-8,{align:'center'});
-    doc.text('Página '+i+' de '+pageCount,pw-mr,ph-8,{align:'right'});
-  }
-
+  for(let i=1;i<=pageCount;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(143,165,181);doc.text('Dit Services · Checklist Pré-Voo · Gerado em '+new Date().toLocaleString('pt-BR'),pw/2,ph-8,{align:'center'});doc.text('Página '+i+' de '+pageCount,pw-mr,ph-8,{align:'right'});}
   return doc.output('datauristring').split(',')[1];
 }
 
-// ── ENVIO PRÉ-VOO ──
+// ════════════════════════════════════════════════════════════
+// ENVIO PRÉ-VOO (com fallback offline)
+// ════════════════════════════════════════════════════════════
 async function sendSheets(){
   const btn=document.getElementById('send-btn');btn.disabled=true;
   showOverlay('Gerando PDF...');
   await new Promise(r=>setTimeout(r,100));
   let pdfB64='';
   try{pdfB64=gerarPdfPrevoo();}catch(e){console.error(e);}
-  showOverlay('Enviando para a planilha...');
-  const okCnt=Object.values(resp).filter(v=>v==='OK').length,failCnt=Object.values(resp).filter(v=>v==='FALHA').length,naCnt=Object.values(resp).filter(v=>v==='N/A').length;
-  const itens={};for(let i=1;i<=35;i++)itens['i'+i]=resp[i]||'Pendente';
-  try{
-    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'prevoo',...meta,itens,ok:okCnt,fail:failCnt,na:naCnt,sig_piloto:document.getElementById('sig-pilot').toDataURL(),sig_operador:document.getElementById('sig-op').toDataURL(),pdf_b64:pdfB64})});
-    const d=await r.json();
-    if(d.status==='ok'){hideOverlay();show('s-done');}
-    else{hideOverlay();alert('Erro: '+(d.mensagem||'desconhecido'));btn.disabled=false;}
-  }catch(e){hideOverlay();alert('Falha de rede: '+e);btn.disabled=false;}
-}
-function newOp(){resp={};meta={};sigState.pilot=false;sigState.op=false;sel.pv={aero:'',piloto:'',operador:''};['aero','piloto','operador'].forEach(k=>{const inp=document.getElementById('m-'+k);inp.value='';inp.classList.remove('selected','error');document.getElementById('err-pv-'+k).classList.remove('visible');});document.getElementById('m-drone').value='';setDefaults();show('s-meta');}
 
-// ── MANUTENÇÃO ──
+  const okCnt=Object.values(resp).filter(v=>v==='OK').length;
+  const failCnt=Object.values(resp).filter(v=>v==='FALHA').length;
+  const naCnt=Object.values(resp).filter(v=>v==='N/A').length;
+  const itens={};for(let i=1;i<=35;i++)itens['i'+i]=resp[i]||'Pendente';
+
+  const payload={
+    tipo:'prevoo',...meta,itens,ok:okCnt,fail:failCnt,na:naCnt,
+    sig_piloto:document.getElementById('sig-pilot').toDataURL(),
+    sig_operador:document.getElementById('sig-op').toDataURL(),
+    pdf_b64:pdfB64
+  };
+
+  // ── Sem conexão: salva na fila e mostra tela de sucesso offline ──
+  if(!navigator.onLine){
+    hideOverlay();
+    await salvarNaFila(payload);
+    // Registra Background Sync para quando a internet voltar
+    if('serviceWorker' in navigator && 'SyncManager' in window){
+      const reg = await navigator.serviceWorker.ready;
+      try{ await reg.sync.register('dit-sync-fila'); }catch(e){}
+    }
+    await atualizarMenuFila();
+    document.getElementById('done-title').textContent = 'Salvo localmente!';
+    document.getElementById('done-sub').textContent   = 'Sem conexão agora. O PDF será enviado automaticamente quando a internet voltar.';
+    show('s-done');
+    btn.disabled=false;
+    return;
+  }
+
+  // ── Com conexão: envia normalmente ──
+  showOverlay('Enviando para a planilha...');
+  try{
+    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(d.status==='ok'){
+      document.getElementById('done-title').textContent='Enviado com sucesso!';
+      document.getElementById('done-sub').textContent='PDF gerado e salvo na planilha Google Sheets.';
+      hideOverlay();show('s-done');
+    } else {
+      hideOverlay();alert('Erro: '+(d.mensagem||'desconhecido'));btn.disabled=false;
+    }
+  }catch(e){
+    // Falha de rede inesperada: salva offline
+    hideOverlay();
+    await salvarNaFila(payload);
+    await atualizarMenuFila();
+    document.getElementById('done-title').textContent='Salvo localmente!';
+    document.getElementById('done-sub').textContent='Falha de rede. O PDF será reenviado automaticamente.';
+    show('s-done');
+    btn.disabled=false;
+  }
+}
+
+function newOp(){
+  resp={};meta={};sigState.pilot=false;sigState.op=false;sel.pv={aero:'',piloto:'',operador:''};
+  ['aero','piloto','operador'].forEach(k=>{const inp=document.getElementById('m-'+k);inp.value='';inp.classList.remove('selected','error');document.getElementById('err-pv-'+k).classList.remove('visible');});
+  document.getElementById('m-drone').value='';
+  document.getElementById('done-title').textContent='Enviado com sucesso!';
+  document.getElementById('done-sub').textContent='PDF gerado e salvo na planilha Google Sheets.';
+  setDefaults();show('s-meta');
+}
+
+// ════════════════════════════════════════════════════════════
+// MANUTENÇÃO
+// ════════════════════════════════════════════════════════════
 function setManutDefaults(){document.getElementById('mn-data').value=new Date().toISOString().split('T')[0];}
 
 function goManutSign(){
@@ -862,56 +1151,32 @@ function goManutReview(){
   show('s-manut-review');
 }
 
-// ── PDF MANUTENÇÃO ──
+// ════════════════════════════════════════════════════════════
+// PDF MANUTENÇÃO
+// ════════════════════════════════════════════════════════════
 function gerarPdfManut(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
-  let y=19;
-
-  // Logo — primeira página, canto esquerdo
-  addLogoPdf(doc, ml, y);
-
-  doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
-  doc.text('MANUTENÇÃO PREVENTIVA',pw/2,y+9,{align:'center'});
-  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(74,96,112);
-  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+16,{align:'center'});
-  y+=27;
-
-  doc.setDrawColor(176,122,26);doc.setLineWidth(0.5);doc.line(ml,y,pw-mr,y);y+=6;
-
+  let y=pdfCabecalho(doc,pw,ml,mr,'MANUTENÇÃO PREVENTIVA',[176,122,26]);
   const campos=[['Embarcação',sel.mn.aero],['Piloto 1',sel.mn.piloto1],['Piloto 2',sel.mn.piloto2],['Nº Cadastro',document.getElementById('mn-cadastro').value],['Nº Transmissor',document.getElementById('mn-transmissor').value],['Data',document.getElementById('mn-data').value],['Próxima Revisão',document.getElementById('mn-proxima').value]];
-
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('DADOS DO REGISTRO',ml,y);y+=5;
   doc.setFont('helvetica','normal');doc.setFontSize(9);
-  campos.forEach(([k,v],i)=>{
-    const col=i%2===0?ml:ml+cw/2+5;
-    if(i%2===0&&i>0)y+=6;
-    doc.setTextColor(74,96,112);doc.text(k+':',col,y);
-    doc.setTextColor(13,31,45);doc.text(v||'-',col+32,y);
-  });
+  campos.forEach(([k,v],i)=>{const col=i%2===0?ml:ml+cw/2+5;if(i%2===0&&i>0)y+=6;doc.setTextColor(74,96,112);doc.text(k+':',col,y);doc.setTextColor(13,31,45);doc.text(v||'-',col+32,y);});
   y+=10;
-
-  // Alarme
   doc.setDrawColor(200,212,221);doc.setLineWidth(0.3);doc.line(ml,y,pw-mr,y);y+=6;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('ALARME / LOG APRESENTADO',ml,y);y+=5;
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(13,31,45);
   const alarmeLines=doc.splitTextToSize(document.getElementById('mn-alarme').value||'-',cw);
-  alarmeLines.forEach(line=>{if(y>ph-50){doc.addPage();y=15;}doc.text(line,ml,y);y+=5;});
-  y+=4;
-
-  // Ação tomada
+  alarmeLines.forEach(line=>{if(y>ph-50){doc.addPage();y=15;}doc.text(line,ml,y);y+=5;});y+=4;
   doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=6;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('AÇÃO TOMADA / O QUE FOI RESOLVIDO',ml,y);y+=5;
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(13,31,45);
   const acaoLines=doc.splitTextToSize(document.getElementById('mn-acao').value||'-',cw);
-  acaoLines.forEach(line=>{if(y>ph-50){doc.addPage();y=15;}doc.text(line,ml,y);y+=5;});
-  y+=8;
-
-  // Assinaturas Pilotos
+  acaoLines.forEach(line=>{if(y>ph-50){doc.addPage();y=15;}doc.text(line,ml,y);y+=5;});y+=8;
   if(y>ph-60){doc.addPage();y=15;}
   doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
@@ -923,10 +1188,7 @@ function gerarPdfManut(){
   doc.text('Piloto 1: '+sel.mn.piloto1,ml,y+30);
   try{doc.addImage(document.getElementById('sig-mn-p2').toDataURL(),'PNG',ml+hw+10,y,hw,25);}catch(e){}
   doc.line(ml+hw+10,y+26,pw-mr,y+26);
-  doc.text('Piloto 2: '+sel.mn.piloto2,ml+hw+10,y+30);
-  y+=38;
-
-  // Aprovação
+  doc.text('Piloto 2: '+sel.mn.piloto2,ml+hw+10,y+30);y+=38;
   if(y>ph-50){doc.addPage();y=15;}
   doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
@@ -936,45 +1198,100 @@ function gerarPdfManut(){
   doc.setDrawColor(179,209,176);doc.line(ml+2,y+14,ml+hw-2,y+14);
   doc.rect(ml+hw+10,y,hw,18);doc.text('Assinatura do Supervisor',ml+hw+12,y+5);
   doc.line(ml+hw+12,y+14,pw-mr-2,y+14);
-  y+=24;
-
-  // Rodapé em todas as páginas
   const pageCount=doc.internal.getNumberOfPages();
-  for(let i=1;i<=pageCount;i++){
-    doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(143,165,181);
-    doc.text('Dit Services · Manutenção Preventiva · Gerado em '+new Date().toLocaleString('pt-BR'),pw/2,ph-8,{align:'center'});
-    doc.text('Página '+i+' de '+pageCount,pw-mr,ph-8,{align:'right'});
-  }
+  for(let i=1;i<=pageCount;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(143,165,181);doc.text('Dit Services · Manutenção Preventiva · Gerado em '+new Date().toLocaleString('pt-BR'),pw/2,ph-8,{align:'center'});doc.text('Página '+i+' de '+pageCount,pw-mr,ph-8,{align:'right'});}
   return doc.output('datauristring').split(',')[1];
 }
 
-// ── ENVIO MANUTENÇÃO ──
+// ════════════════════════════════════════════════════════════
+// ENVIO MANUTENÇÃO (com fallback offline)
+// ════════════════════════════════════════════════════════════
 async function sendManut(){
   const btn=document.getElementById('manut-send-btn');btn.disabled=true;
   showOverlay('Gerando PDF...');
   await new Promise(r=>setTimeout(r,100));
   let pdfB64='';
   try{pdfB64=gerarPdfManut();}catch(e){console.error(e);}
+
+  const payload={
+    tipo:'manutencao',
+    aeronave:sel.mn.aero, piloto1:sel.mn.piloto1, piloto2:sel.mn.piloto2,
+    cadastro:document.getElementById('mn-cadastro').value,
+    transmissor:document.getElementById('mn-transmissor').value,
+    data:document.getElementById('mn-data').value,
+    alarme:document.getElementById('mn-alarme').value,
+    acao:document.getElementById('mn-acao').value,
+    proxima:document.getElementById('mn-proxima').value,
+    sig_piloto1:document.getElementById('sig-mn-p1').toDataURL(),
+    sig_piloto2:document.getElementById('sig-mn-p2').toDataURL(),
+    pdf_b64:pdfB64
+  };
+
+  // ── Sem conexão ──
+  if(!navigator.onLine){
+    hideOverlay();
+    await salvarNaFila(payload);
+    if('serviceWorker' in navigator && 'SyncManager' in window){
+      const reg = await navigator.serviceWorker.ready;
+      try{ await reg.sync.register('dit-sync-fila'); }catch(e){}
+    }
+    await atualizarMenuFila();
+    document.getElementById('manut-done-title').textContent='Salvo localmente!';
+    document.getElementById('manut-done-sub').textContent='Sem conexão agora. O PDF será enviado automaticamente quando a internet voltar.';
+    show('s-manut-done');
+    btn.disabled=false;
+    return;
+  }
+
+  // ── Com conexão ──
   showOverlay('Enviando para a planilha...');
   try{
-    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'manutencao',aeronave:sel.mn.aero,piloto1:sel.mn.piloto1,piloto2:sel.mn.piloto2,cadastro:document.getElementById('mn-cadastro').value,transmissor:document.getElementById('mn-transmissor').value,data:document.getElementById('mn-data').value,alarme:document.getElementById('mn-alarme').value,acao:document.getElementById('mn-acao').value,proxima:document.getElementById('mn-proxima').value,sig_piloto1:document.getElementById('sig-mn-p1').toDataURL(),sig_piloto2:document.getElementById('sig-mn-p2').toDataURL(),pdf_b64:pdfB64})});
+    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
     const d=await r.json();
-    if(d.status==='ok'){hideOverlay();show('s-manut-done');}
-    else{hideOverlay();alert('Erro: '+(d.mensagem||'desconhecido'));btn.disabled=false;}
-  }catch(e){hideOverlay();alert('Falha de rede: '+e);btn.disabled=false;}
+    if(d.status==='ok'){
+      document.getElementById('manut-done-title').textContent='Manutenção registrada!';
+      document.getElementById('manut-done-sub').textContent='PDF gerado e salvo na planilha Google Sheets.';
+      hideOverlay();show('s-manut-done');
+    } else {
+      hideOverlay();alert('Erro: '+(d.mensagem||'desconhecido'));btn.disabled=false;
+    }
+  }catch(e){
+    hideOverlay();
+    await salvarNaFila(payload);
+    await atualizarMenuFila();
+    document.getElementById('manut-done-title').textContent='Salvo localmente!';
+    document.getElementById('manut-done-sub').textContent='Falha de rede. O PDF será reenviado automaticamente.';
+    show('s-manut-done');
+    btn.disabled=false;
+  }
 }
-function newManut(){sigState['mn-p1']=false;sigState['mn-p2']=false;sel.mn={aero:'',piloto1:'',piloto2:''};['mn-aero','mn-piloto1','mn-piloto2'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('selected','error');});['mn-cadastro','mn-transmissor','mn-alarme','mn-acao'].forEach(id=>document.getElementById(id).value='');document.getElementById('mn-proxima').value='';setManutDefaults();show('s-manut-meta');}
 
-// ── DOCUMENTOS ──
+function newManut(){
+  sigState['mn-p1']=false;sigState['mn-p2']=false;sel.mn={aero:'',piloto1:'',piloto2:''};
+  ['mn-aero','mn-piloto1','mn-piloto2'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('selected','error');});
+  ['mn-cadastro','mn-transmissor','mn-alarme','mn-acao'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mn-proxima').value='';
+  document.getElementById('manut-done-title').textContent='Manutenção registrada!';
+  document.getElementById('manut-done-sub').textContent='PDF gerado e salvo na planilha Google Sheets.';
+  setManutDefaults();show('s-manut-meta');
+}
+
+// ════════════════════════════════════════════════════════════
+// DOCUMENTOS
+// ════════════════════════════════════════════════════════════
 function renderDocs(){
   const body=document.getElementById('docs-body');
   body.innerHTML=DOCS_LIST.map(doc=>`<a class="doc-card" href="${doc.url}" target="_blank" rel="noopener"><div class="doc-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="1" width="14" height="18" rx="2" stroke="#d94f4f" stroke-width="1.4"/><line x1="6" y1="6" x2="14" y2="6" stroke="#d94f4f" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="9" x2="14" y2="9" stroke="#d94f4f" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="12" x2="10" y2="12" stroke="#d94f4f" stroke-width="1.2" stroke-linecap="round"/></svg></div><div class="doc-texts"><div class="doc-name">${doc.name}</div><div class="doc-meta">${doc.meta||'PDF'}</div></div><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="6,3 11,8 6,13" stroke="#8fa5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`).join('');
 }
 
-// ── INIT ──
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
 setDefaults();
 setManutDefaults();
-loadPdfLogo(); // Carrega Logo_DIT_B.png ao iniciar
+loadPdfLogo();
+atualizarBannerRede();
+atualizarMenuFila();
 </script>
 </body>
 </html>
