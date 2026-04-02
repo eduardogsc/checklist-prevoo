@@ -163,8 +163,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 <div id="s-login" class="screen active">
   <div class="login-wrap">
     <div class="login-logo">
-      <img src="Logo_DIT.png" alt="Dit Services"
-        onerror="this.style.display='none'"/>
+      <img src="Logo_DIT.png" alt="Dit Services" onerror="this.style.display='none'"/>
     </div>
     <div class="login-card">
       <div class="field">
@@ -312,7 +311,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-pilot"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-pilot-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('pilot','pv')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('pilot')">Limpar</button>
         </div>
       </div>
     </div>
@@ -324,7 +323,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-op"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-op-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('op','pv')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('op')">Limpar</button>
         </div>
       </div>
     </div>
@@ -419,7 +418,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-mn-p1"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-mn-p1-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('mn-p1','mn')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('mn-p1')">Limpar</button>
         </div>
       </div>
     </div>
@@ -431,7 +430,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
         <canvas class="sig-canvas" id="sig-mn-p2"></canvas>
         <div class="sig-actions">
           <span class="sig-status empty" id="sig-mn-p2-status">Aguardando assinatura</span>
-          <button class="sig-clear" onclick="clearSig('mn-p2','mn')">Limpar</button>
+          <button class="sig-clear" onclick="clearSig('mn-p2')">Limpar</button>
         </div>
       </div>
     </div>
@@ -533,7 +532,7 @@ const sigState = { pilot:false, op:false, 'mn-p1':false, 'mn-p2':false };
 const sel = { pv:{aero:'',piloto:'',operador:''}, mn:{aero:'',piloto1:'',piloto2:''} };
 
 // ── LOGO PARA PDF ──
-// Carrega Logo_DIT_B.png uma vez e guarda como base64 para usar nos PDFs
+// Carrega Logo_DIT_B.png uma vez ao iniciar e guarda como base64
 let pdfLogoB64 = null;
 
 async function loadPdfLogo() {
@@ -541,9 +540,11 @@ async function loadPdfLogo() {
     const response = await fetch('Logo_DIT_B.png');
     if (!response.ok) return;
     const blob = await response.blob();
-    const reader = new FileReader();
-    reader.onloadend = () => { pdfLogoB64 = reader.result; };
-    reader.readAsDataURL(blob);
+    await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => { pdfLogoB64 = reader.result; resolve(); };
+      reader.readAsDataURL(blob);
+    });
   } catch (e) {
     console.warn('Logo_DIT_B.png não carregada:', e);
   }
@@ -692,17 +693,59 @@ function goReview(){
   show('s-review');
 }
 
-// ── HELPER: adiciona logo ao PDF na página atual ──
-function addLogoPdf(doc, ml, y) {
-  if (!pdfLogoB64) return;
-  try {
-    // Detecta o formato a partir do data URL (png ou jpeg)
-    const fmt = pdfLogoB64.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-    // Logo alinhada à direita do cabeçalho, 45mm × 15mm
-    doc.addImage(pdfLogoB64, fmt, ml, y, 53,17);
-  } catch(e) {
-    console.warn('Erro ao inserir logo no PDF:', e);
+// ────────────────────────────────────────────────────────────
+// HELPER: insere cabeçalho com logo no topo de cada PDF
+// Estrutura:
+//   [  LOGO centralizada, 60×20mm  ]
+//   [  linha separadora colorida   ]
+//   [  título (texto)              ]
+//   [  subtítulo Dit Services      ]
+//   [  linha separadora leve       ]
+// Retorna o valor de y após o cabeçalho, pronto para o conteúdo.
+// ────────────────────────────────────────────────────────────
+function pdfCabecalho(doc, pw, ml, mr, titulo, corLinha) {
+  const cw = pw - ml - mr;
+  let y = 14;
+
+  // 1) Logo centralizada no topo
+  if (pdfLogoB64) {
+    try {
+      const fmt = pdfLogoB64.startsWith('data:image/png') ? 'PNG' : 'JPEG';
+      const logoW = 60;   // largura 60 mm
+      const logoH = 20;   // altura  20 mm
+      const logoX = (pw - logoW) / 2; // centralizado
+      doc.addImage(pdfLogoB64, fmt, logoX, y, logoW, logoH);
+    } catch(e) { console.warn('Logo PDF:', e); }
   }
+  y += 24; // espaço abaixo da logo
+
+  // 2) Linha separadora colorida
+  doc.setDrawColor(...corLinha);
+  doc.setLineWidth(0.6);
+  doc.line(ml, y, pw - mr, y);
+  y += 6;
+
+  // 3) Título do documento
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(11, 36, 58);
+  doc.text(titulo, pw / 2, y, { align: 'center' });
+  y += 6;
+
+  // 4) Subtítulo
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(74, 96, 112);
+  doc.text('Dit Services — Solutions Beyond Vision Into Control', pw / 2, y, { align: 'center' });
+  y += 8;
+
+  // 5) Linha separadora leve
+  doc.setDrawColor(200, 212, 221);
+  doc.setLineWidth(0.3);
+  doc.line(ml, y, pw - mr, y);
+  y += 6;
+
+  return y;
 }
 
 // ── PDF PRÉ-VOO ──
@@ -710,20 +753,9 @@ function gerarPdfPrevoo(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
-  let y=19;
 
-  // Logo — primeira página, canto esquerdo
-  addLogoPdf(doc, ml, y);
-
-  // Cabeçalho
-  doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
-  doc.text('CHECKLIST PRÉ-VOO',pw/2,y+9,{align:'center'});
-  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(74,96,112);
-  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+16,{align:'center'});
-  y+=65;
-
-  // Linha separadora
-  doc.setDrawColor(119,166,112);doc.setLineWidth(0.5);doc.line(ml,y,pw-mr,y);y+=6;
+  // Cabeçalho com logo no topo
+  let y = pdfCabecalho(doc, pw, ml, mr, 'CHECKLIST PRÉ-VOO', [119,166,112]);
 
   // Dados da operação
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
@@ -731,7 +763,7 @@ function gerarPdfPrevoo(){
   const campos=[['Data',meta.data],['Hora',meta.hora],['Drone',meta.drone],['Embarcação',meta.aeronave],['Piloto',meta.piloto],['Operador',meta.operador]];
   doc.setFont('helvetica','normal');doc.setFontSize(9);
   campos.forEach(([k,v],i)=>{
-    const col=i%2===0?ml:ml+cw/2+5,row=Math.floor(i/2);
+    const col=i%2===0?ml:ml+cw/2+5;
     if(i%2===0&&i>0)y+=6;
     doc.setTextColor(74,96,112);doc.text(k+':',col,y);
     doc.setTextColor(13,31,45);doc.text(v||'-',col+28,y);
@@ -752,7 +784,7 @@ function gerarPdfPrevoo(){
     if(y>ph-50){doc.addPage();y=15;}
     const r=resp[item.id]||'PENDENTE';
     const bg=idx%2===0?[248,250,252]:[255,255,255];
-    doc.setFillColor(...bg);doc.rect(ml,y-4,cw,7,5==='F'?'F':'F');
+    doc.setFillColor(...bg);doc.rect(ml,y-4,cw,7,'F');
     doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(13,31,45);
     doc.text(item.id+'. '+item.name,ml+2,y);
     const sc=statusColor[r]||[143,165,181];
@@ -779,38 +811,33 @@ function gerarPdfPrevoo(){
   doc.text(`Conformes: ${okCnt}   Não Conformes: ${failCnt}   N/A: ${Object.values(resp).filter(v=>v==='N/A').length}   Pendentes: ${pend}`,pw/2,y,{align:'center'});
   y+=10;
 
-  // Assinaturas Piloto / Operador
+  // Assinaturas
   if(y>ph-60){doc.addPage();y=15;}
   doc.setDrawColor(200,212,221);doc.setLineWidth(0.3);doc.line(ml,y,pw-mr,y);y+=8;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('ASSINATURAS',ml,y);y+=6;
   const hw=(cw-10)/2;
-  // Piloto
   try{doc.addImage(document.getElementById('sig-pilot').toDataURL(),'PNG',ml,y,hw,25);}catch(e){}
   doc.setDrawColor(179,209,176);doc.setLineWidth(0.4);doc.line(ml,y+26,ml+hw,y+26);
   doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);
   doc.text('Piloto: '+meta.piloto,ml,y+30);
-  // Operador
   try{doc.addImage(document.getElementById('sig-op').toDataURL(),'PNG',ml+hw+10,y,hw,25);}catch(e){}
   doc.line(ml+hw+10,y+26,pw-mr,y+26);
   doc.text('Operador: '+meta.operador,ml+hw+10,y+30);
   y+=38;
 
-  // Aprovação — Diretor e Supervisor
+  // Aprovação
   if(y>ph-50){doc.addPage();y=15;}
   doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
   doc.text('APROVAÇÃO',ml,y);y+=6;
   doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);
-  // Diretor
   doc.rect(ml,y,hw,18);doc.text('Assinatura do Diretor',ml+2,y+5);
   doc.setDrawColor(179,209,176);doc.line(ml+2,y+14,ml+hw-2,y+14);
-  // Supervisor
   doc.rect(ml+hw+10,y,hw,18);doc.text('Assinatura do Supervisor',ml+hw+12,y+5);
   doc.line(ml+hw+12,y+14,pw-mr-2,y+14);
-  y+=24;
 
-  // Rodapé em todas as páginas
+  // Rodapé
   const pageCount=doc.internal.getNumberOfPages();
   for(let i=1;i<=pageCount;i++){
     doc.setPage(i);
@@ -867,18 +894,9 @@ function gerarPdfManut(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
-  let y=19;
 
-  // Logo — primeira página, canto esquerdo
-  addLogoPdf(doc, ml, y);
-
-  doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(11,36,58);
-  doc.text('MANUTENÇÃO PREVENTIVA',pw/2,y+9,{align:'center'});
-  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(74,96,112);
-  doc.text('Dit Services — Solutions Beyond Vision Into Control',pw/2,y+16,{align:'center'});
-  y+=27;
-
-  doc.setDrawColor(176,122,26);doc.setLineWidth(0.5);doc.line(ml,y,pw-mr,y);y+=6;
+  // Cabeçalho com logo no topo
+  let y = pdfCabecalho(doc, pw, ml, mr, 'MANUTENÇÃO PREVENTIVA', [176,122,26]);
 
   const campos=[['Embarcação',sel.mn.aero],['Piloto 1',sel.mn.piloto1],['Piloto 2',sel.mn.piloto2],['Nº Cadastro',document.getElementById('mn-cadastro').value],['Nº Transmissor',document.getElementById('mn-transmissor').value],['Data',document.getElementById('mn-data').value],['Próxima Revisão',document.getElementById('mn-proxima').value]];
 
@@ -911,7 +929,7 @@ function gerarPdfManut(){
   acaoLines.forEach(line=>{if(y>ph-50){doc.addPage();y=15;}doc.text(line,ml,y);y+=5;});
   y+=8;
 
-  // Assinaturas Pilotos
+  // Assinaturas
   if(y>ph-60){doc.addPage();y=15;}
   doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;
   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);
@@ -936,9 +954,8 @@ function gerarPdfManut(){
   doc.setDrawColor(179,209,176);doc.line(ml+2,y+14,ml+hw-2,y+14);
   doc.rect(ml+hw+10,y,hw,18);doc.text('Assinatura do Supervisor',ml+hw+12,y+5);
   doc.line(ml+hw+12,y+14,pw-mr-2,y+14);
-  y+=24;
 
-  // Rodapé em todas as páginas
+  // Rodapé
   const pageCount=doc.internal.getNumberOfPages();
   for(let i=1;i<=pageCount;i++){
     doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(143,165,181);
