@@ -710,7 +710,7 @@ function gerarPdfPrevoo(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
-  let y=15;
+  let y=19;
 
   // Logo — primeira página, canto esquerdo
   addLogoPdf(doc, ml, y);
@@ -867,7 +867,7 @@ function gerarPdfManut(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
-  let y=15;
+  let y=19;
 
   // Logo — primeira página, canto esquerdo
   addLogoPdf(doc, ml, y);
