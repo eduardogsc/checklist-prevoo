@@ -383,7 +383,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 // ════════════════════════════════════════════════════════════
 // CONFIGURAÇÃO
 // ════════════════════════════════════════════════════════════
-const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbx_C24Xs-nhzLYxXsec8oXoP18qwUBXwiFlWV6hnHj9GuTs5AZanThq7blgOtmdBMrs/exec";
+const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxFdi0UNYppvKrMJ055JmVKBO64xENpr0DEOfV-YK9LrhRDSXlLoYSatYZVDmgw1YhZ/exec";
 const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"];
 const PESSOAS     = ["Andre","Augusto Távora","Bruno Vidal","Carlos","Diorge","Eduardo","Emanuel Lins","Gabriel Patricio","Guilherme","Jackson","Lucas Cruz","Luiz Gustavo","Marcelo Ceto","Matheus Gomes","Raphael Neves","Rodrigo Vinhosa","Ronald","Sanderson","Tiago Sampaio","Wallace"];
 const DOCS_LIST   = [
@@ -569,6 +569,19 @@ function newManut(){sigState['mn-p1']=false;sigState['mn-p2']=false;sel.mn={aero
 // ════════════════════════════════════════════════════════════
 // ESCALA DE EMBARCAÇÕES
 // ════════════════════════════════════════════════════════════
+
+// Converte dd/mm/yyyy → yyyy-MM-dd (para input type=date)
+function brToIso(d) {
+  if (!d || !d.includes('/')) return d || '';
+  var p = d.split('/');
+  return p[2] + '-' + p[1] + '-' + p[0];
+}
+// Converte yyyy-MM-dd → dd/mm/yyyy (para exibição e envio ao GAS)
+function isoToBr(d) {
+  if (!d || !d.includes('-')) return d || '';
+  var p = d.split('-');
+  return p[2] + '/' + p[1] + '/' + p[0];
+}
 async function carregarEscala() {
   const body = document.getElementById('escala-body');
   const sub  = document.getElementById('escala-topbar-sub');
@@ -611,7 +624,7 @@ function renderEscala(registros, isAdmin) {
       `<div class="escala-field"><label>${label}</label><input type="text" value="${val}" readonly/></div>`;
 
     const editField = (label, inputId, val) =>
-      `<div class="escala-field"><label>${label}</label><input type="date" id="${inputId}" value="${val}"/></div>`;
+      `<div class="escala-field"><label>${label}</label><input type="date" id="${inputId}" value="${brToIso(val)}"/></div>`;
 
     const ddField = (label, inputId, ddId, val, linha) =>
       `<div class="escala-field" style="position:relative">
@@ -723,7 +736,9 @@ async function salvarEscalaLinha(linha, embarcacao) {
   const payload = {
     tipo: 'salvar_escala',
     linha, embarcacao, nome1, nome2,
-    dataEmbarque, dataViagem, dataDesembarque,
+    dataEmbarque:    isoToBr(dataEmbarque),
+    dataViagem:      isoToBr(dataViagem),
+    dataDesembarque: isoToBr(dataDesembarque),
     alteradoPor: currentUser ? currentUser.nome : 'admin'
   };
 
