@@ -590,7 +590,23 @@ function updateProg(){const done=Object.keys(resp).length;document.getElementByI
 // ASSINATURAS — exibe SARPAS abaixo do nome
 function getSarpas(nome){
   if(!nome)return '';
-  return sarpasPorNome[nome.toLowerCase().trim()]||'';
+  const n=nome.toLowerCase().trim();
+  // 1. busca exata
+  if(sarpasPorNome[n])return sarpasPorNome[n];
+  // 2. busca pelas primeiras palavras do nome da escala dentro do nome completo
+  const palavras=n.split(' ').filter(p=>p.length>1);
+  if(!palavras.length)return '';
+  let melhor='',melhorPontos=0;
+  for(const [chave,sarpas] of Object.entries(sarpasPorNome)){
+    const palavrasChave=chave.split(' ');
+    // conta quantas palavras do nome da escala aparecem no nome completo
+    const pontos=palavras.filter(p=>palavrasChave.some(c=>c===p)).length;
+    // só aceita se todas as palavras do nome abreviado bateram
+    if(pontos===palavras.length&&pontos>melhorPontos){
+      melhor=sarpas;melhorPontos=pontos;
+    }
+  }
+  return melhor;
 }
 function initSigCanvases(form){
   if(form==='pv'){
