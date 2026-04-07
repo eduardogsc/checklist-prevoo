@@ -402,7 +402,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 </div>
 
 <script>
-const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxMKLxFCUr9KAmm2eI-nal5jDckMmQXGOjktCwhqz104GDqrqmnLQ7kiwcO-HQx8XNG/exec";
+const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbw0RfzGeEk_Zg6Auy92VLVr0pqdepvZMG3V6arvrKhbFW3ZoU8drQDqjzwoaGGLSdTj/exec";
 const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"];
 const PESSOAS     = ["Andre","Augusto Távora","Bruno Vidal","Carlos","Diorge","Eduardo","Emanuel Lins","Gabriel Patricio","Guilherme","Jackson","Lucas Cruz","Luiz Gustavo","Marcelo Ceto","Matheus Gomes","Raphael Neves","Rodrigo Vinhosa","Ronald","Sanderson","Tiago Sampaio","Wallace"];
 const DOCS_LIST   = [
@@ -493,7 +493,7 @@ function show(id){
 }
 
 // LOGIN — agora captura sarpas
-function doLogin(){
+async function doLogin(){
   const email=document.getElementById('l-email').value.trim().toLowerCase();
   const senha=document.getElementById('l-senha').value;
   const btn=document.getElementById('login-btn'),err=document.getElementById('login-err');
@@ -510,35 +510,42 @@ function doLogin(){
         document.getElementById('menu-greeting').textContent='Olá, '+c.nome;
         document.getElementById('menu-sarpas').textContent=c.sarpas?'SARPAS: '+c.sarpas:'';
         // Tenta carregar sarpas dos outros tripulantes se tiver conexão
-        if(navigator.onLine)fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'get_sarpas'})})
-          .then(r=>r.json()).then(d=>{if(d.status==='ok')Object.values(d.sarpas).forEach(u=>{
+        if(navigator.onLine){try{
+          const sr=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'get_sarpas'})});
+          const sd=await sr.json();
+          if(sd.status==='ok')Object.values(sd.sarpas).forEach(u=>{
             if(u.nome&&u.sarpas)sarpasPorNome[u.nome.toLowerCase()]=u.sarpas;
-          });}).catch(()=>{});
+          });
+        }catch(e){}}
         show('s-menu');btn.textContent='Entrar';btn.disabled=false;return;
       }
     }
     err.textContent='Sem conexão. Faça login online pelo menos uma vez.';err.classList.add('visible');btn.textContent='Entrar';btn.disabled=false;return;
   }
 
-  fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'login',email,senha})})
-    .then(r=>r.json()).then(d=>{
-      if(d.status==='ok'){
-        localStorage.setItem('dit_login_cache',JSON.stringify({email,senha,nome:d.nome||email,nivel:d.nivel||'',sarpas:d.sarpas||''}));
-        currentUser={email,nome:d.nome||email,nivel:d.nivel||'',sarpas:d.sarpas||''};
-        if(currentUser.nome&&currentUser.sarpas)sarpasPorNome[currentUser.nome.toLowerCase()]=currentUser.sarpas;
-        document.getElementById('menu-greeting').textContent='Olá, '+currentUser.nome;
-        document.getElementById('menu-sarpas').textContent=currentUser.sarpas?'SARPAS: '+currentUser.sarpas:'';
-        // Carrega sarpas de todos os tripulantes em background
-        fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'get_sarpas'})})
-          .then(r=>r.json()).then(d=>{if(d.status==='ok')Object.values(d.sarpas).forEach(u=>{
-            if(u.nome&&u.sarpas)sarpasPorNome[u.nome.toLowerCase()]=u.sarpas;
-          });}).catch(()=>{});
-        show('s-menu');
-      } else {
-        err.textContent='E-mail ou senha incorretos.';err.classList.add('visible');
-      }
-      btn.textContent='Entrar';btn.disabled=false;
-    }).catch(()=>{err.textContent='Erro de conexão.';err.classList.add('visible');btn.textContent='Entrar';btn.disabled=false;});
+  try {
+    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'login',email,senha})});
+    const d=await r.json();
+    if(d.status==='ok'){
+      localStorage.setItem('dit_login_cache',JSON.stringify({email,senha,nome:d.nome||email,nivel:d.nivel||'',sarpas:d.sarpas||''}));
+      currentUser={email,nome:d.nome||email,nivel:d.nivel||'',sarpas:d.sarpas||''};
+      if(currentUser.nome&&currentUser.sarpas)sarpasPorNome[currentUser.nome.toLowerCase()]=currentUser.sarpas;
+      document.getElementById('menu-greeting').textContent='Olá, '+currentUser.nome;
+      document.getElementById('menu-sarpas').textContent=currentUser.sarpas?'SARPAS: '+currentUser.sarpas:'';
+      // Carrega sarpas de TODOS os tripulantes antes de mostrar o menu
+      try{
+        const sr=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'get_sarpas'})});
+        const sd=await sr.json();
+        if(sd.status==='ok')Object.values(sd.sarpas).forEach(u=>{
+          if(u.nome&&u.sarpas)sarpasPorNome[u.nome.toLowerCase()]=u.sarpas;
+        });
+      }catch(e){}
+      show('s-menu');
+    } else {
+      err.textContent='E-mail ou senha incorretos.';err.classList.add('visible');
+    }
+  } catch(e){err.textContent='Erro de conexão.';err.classList.add('visible');}
+  btn.textContent='Entrar';btn.disabled=false;
 }
 function doLogout(){currentUser=null;sarpasPorNome={};localStorage.removeItem('dit_login_cache');document.getElementById('l-email').value='';document.getElementById('l-senha').value='';document.getElementById('login-err').classList.remove('visible');show('s-login');}
 
@@ -618,9 +625,11 @@ async function carregarEscala() {
     const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'get_escala'})});
     const d=await r.json();
     if(d.status==='ok'){
-      // Constrói mapa sarpas a partir dos registros
-      sarpasPorNome={};
+      // Enriquece sarpas dos registros com o mapa global (não zera o mapa)
       d.registros.forEach(reg=>{
+        if(reg.nome1&&!reg.sarpas1)reg.sarpas1=sarpasPorNome[reg.nome1.toLowerCase()]||'';
+        if(reg.nome2&&!reg.sarpas2)reg.sarpas2=sarpasPorNome[reg.nome2.toLowerCase()]||'';
+        // também adiciona ao mapa global caso venha do servidor
         if(reg.nome1&&reg.sarpas1)sarpasPorNome[reg.nome1.toLowerCase()]=reg.sarpas1;
         if(reg.nome2&&reg.sarpas2)sarpasPorNome[reg.nome2.toLowerCase()]=reg.sarpas2;
       });
