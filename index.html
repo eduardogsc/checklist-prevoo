@@ -402,9 +402,9 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 </div>
 
 <script>
-const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxMKLxFCUr9KAmm2eI-nal5jDckMmQXGOjktCwhqz104GDqrqmnLQ7kiwcO-HQx8XNG/exec";
+const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbz2XS-bC3YgDVStDsBlaPNHZC8v-3H7B51xX6hUVjHbKGtZ6aIjtmMboX1tPdtdQBQu/exec";
 const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"];
-const PESSOAS     = ["Andre","Augusto Távora","Bruno Vidal","Carlos","Diorge","Eduardo","Emanuel Lins","Gabriel Patricio","Guilherme","Jackson","Lucas Cruz","Luiz Gustavo","Marcelo Ceto","Matheus Gomes","Raphael Neves","Rodrigo Vinhosa","Ronald","Sanderson","Tiago Sampaio","Wallace"];
+let PESSOAS       = []; // carregado da aba Usuários após login
 const DOCS_LIST   = [
   { name:"MOARP", meta:"Manual de Operações de Aeronaves Remotamente Pilotadas", url:"https://drive.google.com/file/d/1Cm_QrtRH0w_XLGiAu1H-q0GEClLOQ5Uq/view?usp=drive_link" },
   { name:"Guia de Uso — Petrobras", meta:"Procedimentos operacionais para operações Petrobras", url:"https://drive.google.com/file/d/1FNY0HH7v1izn-wUyMFbfIL6sbEF0PmZH/view?usp=sharing" },
@@ -509,17 +509,30 @@ async function doLogin(){
         if(currentUser.nome&&currentUser.sarpas)sarpasPorNome[currentUser.nome.toLowerCase()]=currentUser.sarpas;
         document.getElementById('menu-greeting').textContent='Olá, '+c.nome;
         document.getElementById('menu-sarpas').textContent=c.sarpas?'SARPAS: '+c.sarpas:'';
-        // Tenta carregar sarpas dos outros tripulantes se tiver conexão
+        // Tenta carregar nomes e sarpas se tiver conexão
         if(navigator.onLine){try{
           const sr=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'get_sarpas'})});
           const sd=await sr.json();
-          if(sd.status==='ok')Object.values(sd.sarpas).forEach(u=>{
-            if(u.nome&&u.sarpas)sarpasPorNome[u.nome.toLowerCase()]=u.sarpas;
-          });
+          if(sd.status==='ok'){
+            if(sd.nomes&&sd.nomes.length)PESSOAS.splice(0,PESSOAS.length,...sd.nomes);
+            Object.values(sd.sarpas).forEach(u=>{
+              if(u.nome&&u.sarpas)sarpasPorNome[u.nome.toLowerCase()]=u.sarpas;
+            });
+            localStorage.setItem('dit_pessoas',JSON.stringify(PESSOAS));
+            localStorage.setItem('dit_sarpas',JSON.stringify(sarpasPorNome));
+          }
         }catch(e){}}
+        // Carrega do cache local se disponível
+        const cachedPessoas=localStorage.getItem('dit_pessoas');
+        const cachedSarpas=localStorage.getItem('dit_sarpas');
+        if(cachedPessoas&&!PESSOAS.length)PESSOAS.splice(0,PESSOAS.length,...JSON.parse(cachedPessoas));
+        if(cachedSarpas)Object.assign(sarpasPorNome,JSON.parse(cachedSarpas));
         show('s-menu');btn.textContent='Entrar';btn.disabled=false;return;
       }
     }
+    const cp=localStorage.getItem('dit_pessoas');const cs=localStorage.getItem('dit_sarpas');
+    if(cp)PESSOAS.splice(0,PESSOAS.length,...JSON.parse(cp));
+    if(cs)Object.assign(sarpasPorNome,JSON.parse(cs));
     err.textContent='Sem conexão. Faça login online pelo menos uma vez.';err.classList.add('visible');btn.textContent='Entrar';btn.disabled=false;return;
   }
 
@@ -532,13 +545,18 @@ async function doLogin(){
       if(currentUser.nome&&currentUser.sarpas)sarpasPorNome[currentUser.nome.toLowerCase()]=currentUser.sarpas;
       document.getElementById('menu-greeting').textContent='Olá, '+currentUser.nome;
       document.getElementById('menu-sarpas').textContent=currentUser.sarpas?'SARPAS: '+currentUser.sarpas:'';
-      // Carrega sarpas de TODOS os tripulantes antes de mostrar o menu
+      // Carrega nomes e sarpas de TODOS os tripulantes antes de mostrar o menu
       try{
         const sr=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'get_sarpas'})});
         const sd=await sr.json();
-        if(sd.status==='ok')Object.values(sd.sarpas).forEach(u=>{
-          if(u.nome&&u.sarpas)sarpasPorNome[u.nome.toLowerCase()]=u.sarpas;
-        });
+        if(sd.status==='ok'){
+          if(sd.nomes&&sd.nomes.length)PESSOAS.splice(0,PESSOAS.length,...sd.nomes);
+          Object.values(sd.sarpas).forEach(u=>{
+            if(u.nome&&u.sarpas)sarpasPorNome[u.nome.toLowerCase()]=u.sarpas;
+          });
+          localStorage.setItem('dit_pessoas',JSON.stringify(PESSOAS));
+          localStorage.setItem('dit_sarpas',JSON.stringify(sarpasPorNome));
+        }
       }catch(e){}
       show('s-menu');
     } else {
@@ -570,7 +588,10 @@ function setR(id,val){resp[id]=val;const item=ITEMS[id-1],card=document.getEleme
 function updateProg(){const done=Object.keys(resp).length;document.getElementById('ck-prog-txt').textContent=done+' / 35';document.getElementById('ck-sub').textContent=done+' de 35 itens respondidos';document.getElementById('ck-prog-fill').style.width=Math.round(done/35*100)+'%';}
 
 // ASSINATURAS — exibe SARPAS abaixo do nome
-function getSarpas(nome){return sarpasPorNome[nome?.toLowerCase()]||'';}
+function getSarpas(nome){
+  if(!nome)return '';
+  return sarpasPorNome[nome.toLowerCase().trim()]||'';
+}
 function initSigCanvases(form){
   if(form==='pv'){
     document.getElementById('sig-pilot-name').textContent=meta.piloto;
