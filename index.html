@@ -62,7 +62,13 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 .login-card{background:#fff;border-radius:20px;padding:28px 22px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(11,36,58,0.20);}
 .login-err{font-size:12px;color:var(--red);font-family:var(--mono);text-align:center;margin-top:-8px;margin-bottom:12px;display:none;}
 .login-err.visible{display:block;}
+
+/* ── MENU SAUDAÇÃO COM SARPAS ─────────────────────────────── */
 .menu-greeting{font-size:13px;color:var(--navy-muted);font-family:var(--mono);margin-top:3px;}
+.menu-sarpas{display:inline-flex;align-items:center;gap:5px;margin-top:5px;background:rgba(119,166,112,0.18);border:1px solid rgba(119,166,112,0.35);border-radius:6px;padding:3px 8px;}
+.menu-sarpas-label{font-size:10px;color:var(--navy-muted);font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;}
+.menu-sarpas-code{font-size:12px;font-weight:500;color:#a8d4a4;font-family:var(--mono);letter-spacing:0.04em;}
+
 .section-title{font-size:10px;font-weight:500;color:var(--text3);font-family:var(--mono);letter-spacing:0.10em;text-transform:uppercase;margin:22px 0 10px;}
 .section-title:first-child{margin-top:4px;}
 .menu-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.12s;position:relative;}
@@ -178,6 +184,14 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 .escala-field input:read-only{background:var(--surface);color:var(--text2);cursor:default;}
 .escala-field input.dd-sel{border-color:var(--sage);background:var(--sage-light);color:var(--sage-dark);font-weight:500;}
 .escala-field .dropdown{top:100%;z-index:300;}
+
+/* ── SARPAS badge na escala ──────────────────────────────── */
+.escala-sarpas-tag{display:inline-flex;align-items:center;gap:4px;margin-top:3px;background:var(--sage-light);border:1px solid var(--sage-border);border-radius:5px;padding:2px 7px;width:fit-content;}
+.escala-sarpas-tag span:first-child{font-size:9px;color:var(--sage-dark);font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;opacity:0.75;}
+.escala-sarpas-tag span:last-child{font-size:11px;font-weight:500;color:var(--sage-dark);font-family:var(--mono);}
+.escala-sarpas-tag.empty{background:var(--surface);border-color:var(--border);}
+.escala-sarpas-tag.empty span{color:var(--text3);}
+
 .escala-save-row{display:flex;gap:8px;margin-top:12px;}
 .escala-empty{text-align:center;padding:48px 20px;color:var(--text3);font-family:var(--mono);font-size:13px;}
 .escala-loading{text-align:center;padding:32px 20px;color:var(--text3);font-family:var(--mono);font-size:12px;}
@@ -214,7 +228,15 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 <div id="s-menu" class="screen">
   <div class="topbar">
     <div class="topbar-row">
-      <div><div class="topbar-title">Dit Services</div><div class="menu-greeting" id="menu-greeting"></div></div>
+      <div>
+        <div class="topbar-title">Dit Services</div>
+        <div class="menu-greeting" id="menu-greeting"></div>
+        <!-- Badge SARPAS exibido apenas quando o usuário tem código -->
+        <div class="menu-sarpas" id="menu-sarpas-badge" style="display:none;">
+          <span class="menu-sarpas-label">SARPAS</span>
+          <span class="menu-sarpas-code" id="menu-sarpas-code"></span>
+        </div>
+      </div>
       <button class="topbar-logout" onclick="doLogout()">Sair</button>
     </div>
   </div>
@@ -436,7 +458,6 @@ let currentUser = null, resp = {}, meta = {};
 const sigState  = { pilot:false, op:false, 'mn-p1':false, 'mn-p2':false };
 const sel       = { pv:{aero:'',piloto:'',operador:''}, mn:{aero:'',piloto1:'',piloto2:''} };
 let pdfLogoB64  = null;
-// escala: estado dos dropdowns por card (chave = linha da planilha)
 const escSel    = {};
 
 // ════════════════════════════════════════════════════════════
@@ -485,7 +506,7 @@ function show(id){
 }
 
 // ════════════════════════════════════════════════════════════
-// LOGIN — retorna nivel do GAS (admin ou outro)
+// LOGIN — retorna nome, nivel e sarpas do GAS
 // ════════════════════════════════════════════════════════════
 function doLogin(){
   const email=document.getElementById('l-email').value.trim().toLowerCase();
@@ -496,16 +517,30 @@ function doLogin(){
 
   if(!navigator.onLine){
     const cached=localStorage.getItem('dit_login_cache');
-    if(cached){const c=JSON.parse(cached);if(c.email===email&&c.senha===senha){currentUser={email,nome:c.nome,nivel:c.nivel||''};document.getElementById('menu-greeting').textContent='Olá, '+c.nome;show('s-menu');btn.textContent='Entrar';btn.disabled=false;return;}}
+    if(cached){
+      const c=JSON.parse(cached);
+      if(c.email===email&&c.senha===senha){
+        currentUser={email,nome:c.nome,nivel:c.nivel||'',sarpas:c.sarpas||''};
+        exibirSaudacao();
+        show('s-menu');
+        btn.textContent='Entrar';btn.disabled=false;return;
+      }
+    }
     err.textContent='Sem conexão. Faça login online pelo menos uma vez.';err.classList.add('visible');btn.textContent='Entrar';btn.disabled=false;return;
   }
 
   fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({tipo:'login',email,senha})})
     .then(r=>r.json()).then(d=>{
       if(d.status==='ok'){
-        localStorage.setItem('dit_login_cache',JSON.stringify({email,senha,nome:d.nome||email,nivel:d.nivel||''}));
-        currentUser={email,nome:d.nome||email,nivel:d.nivel||''};
-        document.getElementById('menu-greeting').textContent='Olá, '+currentUser.nome;
+        // Salva cache incluindo sarpas
+        localStorage.setItem('dit_login_cache',JSON.stringify({
+          email, senha,
+          nome:   d.nome   || email,
+          nivel:  d.nivel  || '',
+          sarpas: d.sarpas || ''
+        }));
+        currentUser={email, nome:d.nome||email, nivel:d.nivel||'', sarpas:d.sarpas||''};
+        exibirSaudacao();
         show('s-menu');
       } else {
         err.textContent='E-mail ou senha incorretos.';err.classList.add('visible');
@@ -513,7 +548,29 @@ function doLogin(){
       btn.textContent='Entrar';btn.disabled=false;
     }).catch(()=>{err.textContent='Erro de conexão.';err.classList.add('visible');btn.textContent='Entrar';btn.disabled=false;});
 }
-function doLogout(){currentUser=null;localStorage.removeItem('dit_login_cache');document.getElementById('l-email').value='';document.getElementById('l-senha').value='';document.getElementById('login-err').classList.remove('visible');show('s-login');}
+
+// Atualiza saudação + badge SARPAS na topbar do menu
+function exibirSaudacao() {
+  document.getElementById('menu-greeting').textContent = 'Olá, ' + currentUser.nome;
+  const badge = document.getElementById('menu-sarpas-badge');
+  const code  = document.getElementById('menu-sarpas-code');
+  if (currentUser.sarpas) {
+    code.textContent = currentUser.sarpas;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function doLogout(){
+  currentUser=null;
+  localStorage.removeItem('dit_login_cache');
+  document.getElementById('l-email').value='';
+  document.getElementById('l-senha').value='';
+  document.getElementById('login-err').classList.remove('visible');
+  document.getElementById('menu-sarpas-badge').style.display='none';
+  show('s-login');
+}
 
 // ════════════════════════════════════════════════════════════
 // DROPDOWNS (pv, mn)
@@ -570,18 +627,17 @@ function newManut(){sigState['mn-p1']=false;sigState['mn-p2']=false;sel.mn={aero
 // ESCALA DE EMBARCAÇÕES
 // ════════════════════════════════════════════════════════════
 
-// Converte dd/mm/yyyy → yyyy-MM-dd (para input type=date)
 function brToIso(d) {
   if (!d || !d.includes('/')) return d || '';
   var p = d.split('/');
   return p[2] + '-' + p[1] + '-' + p[0];
 }
-// Converte yyyy-MM-dd → dd/mm/yyyy (para exibição e envio ao GAS)
 function isoToBr(d) {
   if (!d || !d.includes('-')) return d || '';
   var p = d.split('-');
   return p[2] + '/' + p[1] + '/' + p[0];
 }
+
 async function carregarEscala() {
   const body = document.getElementById('escala-body');
   const sub  = document.getElementById('escala-topbar-sub');
@@ -608,6 +664,18 @@ async function carregarEscala() {
   }
 }
 
+// Gera o badge de SARPAS para uso nos cards da escala
+function sarpasBadge(codigo) {
+  if (codigo) {
+    return `<div class="escala-sarpas-tag">
+      <span>SARPAS</span><span>${codigo}</span>
+    </div>`;
+  }
+  return `<div class="escala-sarpas-tag empty">
+    <span>SARPAS</span><span>—</span>
+  </div>`;
+}
+
 function renderEscala(registros, isAdmin) {
   const body = document.getElementById('escala-body');
   if (!registros.length) {
@@ -616,8 +684,6 @@ function renderEscala(registros, isAdmin) {
   }
 
   body.innerHTML = registros.map(r => {
-    const lid = 'linha-' + r.linha;
-    // Inicializa seleção dos dropdowns para este card
     escSel[r.linha] = { nome1: r.nome1, nome2: r.nome2 };
 
     const roField = (label, val) =>
@@ -626,7 +692,8 @@ function renderEscala(registros, isAdmin) {
     const editField = (label, inputId, val) =>
       `<div class="escala-field"><label>${label}</label><input type="date" id="${inputId}" value="${brToIso(val)}"/></div>`;
 
-    const ddField = (label, inputId, ddId, val, linha) =>
+    // Campo de nome com badge SARPAS abaixo
+    const ddFieldWithSarpas = (label, inputId, ddId, val, sarpas, linha) =>
       `<div class="escala-field" style="position:relative">
         <label>${label}</label>
         <input type="text" id="${inputId}" value="${val}" placeholder="Buscar..."
@@ -636,10 +703,18 @@ function renderEscala(registros, isAdmin) {
           onblur="escBlurDD('${inputId}','${ddId}',${linha},'${label.includes('1') ? 'nome1' : 'nome2'}')"
           ${!isAdmin ? 'readonly' : ''}/>
         <div class="dropdown" id="${ddId}"></div>
+        ${sarpasBadge(sarpas)}
+      </div>`;
+
+    const roFieldWithSarpas = (label, val, sarpas) =>
+      `<div class="escala-field">
+        <label>${label}</label>
+        <input type="text" value="${val || '—'}" readonly/>
+        ${sarpasBadge(sarpas)}
       </div>`;
 
     return `
-    <div class="escala-card" id="${lid}">
+    <div class="escala-card" id="linha-${r.linha}">
       <div class="escala-card-top">
         <span class="escala-emb">${r.embarcacao}</span>
         ${isAdmin
@@ -659,8 +734,14 @@ function renderEscala(registros, isAdmin) {
           }
         </div>
         <div class="escala-field-row">
-          ${ddField('Nome 1', `esc-n1-${r.linha}`, `esc-dd-n1-${r.linha}`, r.nome1, r.linha)}
-          ${ddField('Nome 2', `esc-n2-${r.linha}`, `esc-dd-n2-${r.linha}`, r.nome2, r.linha)}
+          ${isAdmin
+            ? ddFieldWithSarpas('Nome 1', `esc-n1-${r.linha}`, `esc-dd-n1-${r.linha}`, r.nome1, r.sarpas1, r.linha)
+            : roFieldWithSarpas('Nome 1', r.nome1, r.sarpas1)
+          }
+          ${isAdmin
+            ? ddFieldWithSarpas('Nome 2', `esc-n2-${r.linha}`, `esc-dd-n2-${r.linha}`, r.nome2, r.sarpas2, r.linha)
+            : roFieldWithSarpas('Nome 2', r.nome2, r.sarpas2)
+          }
         </div>
         ${isAdmin
           ? editField('Data de Desembarque', `esc-des-${r.linha}`, r.dataDesembarque)
