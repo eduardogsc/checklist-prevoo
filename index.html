@@ -328,12 +328,55 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
       <div class="field"><label>Piloto 1</label><input type="text" id="mn-piloto1" placeholder="Buscar..." autocomplete="off" oninput="filterDD('piloto1','mn')" onfocus="openDD('piloto1','mn')" onblur="blurDD('piloto1','mn')"/><div class="dropdown" id="dd-mn-piloto1"></div><div class="field-error" id="err-mn-piloto1">Selecione</div></div>
       <div class="field"><label>Piloto 2</label><input type="text" id="mn-piloto2" placeholder="Buscar..." autocomplete="off" oninput="filterDD('piloto2','mn')" onfocus="openDD('piloto2','mn')" onblur="blurDD('piloto2','mn')"/><div class="dropdown" id="dd-mn-piloto2"></div><div class="field-error" id="err-mn-piloto2">Selecione</div></div>
     </div>
-    <div class="field"><label>Nº de Cadastro (Aeronave)</label><input type="text" id="mn-cadastro" placeholder="Ex: BR-12345"/></div>
-    <div class="field"><label>Nº Transmissor</label><input type="text" id="mn-transmissor" placeholder="Ex: TX-0042"/></div>
+    <div class="section-title" style="margin:20px 0 10px">🚁 Drone 1</div>
+    <div class="field"><label>Nº de Cadastro — Aeronave 1</label><input type="text" id="mn-cad1" placeholder="Ex: BR-12345"/></div>
     <div class="field-row">
-      <div class="field"><label>Nº Versão Anterior</label><input type="text" id="mn-versao-ant" placeholder="Ex: v1.0.2"/></div>
-      <div class="field"><label>Nº Versão Atual</label><input type="text" id="mn-versao-atual" placeholder="Ex: v1.1.0"/></div>
+      <div class="field"><label>Versão Anterior — Drone 1</label><input type="text" id="mn-vant-d1" placeholder="Ex: v1.0.2"/></div>
+      <div class="field"><label>Versão Atual — Drone 1</label><input type="text" id="mn-vatu-d1" placeholder="Ex: v1.1.0"/></div>
     </div>
+    <div class="section-title" style="margin:20px 0 10px">🎮 RC 1</div>
+    <div class="field"><label>Nº Radio Controle — RC1</label><input type="text" id="mn-rc1" placeholder="Ex: RC-001"/></div>
+    <div class="field-row">
+      <div class="field"><label>Versão Anterior — RC1</label><input type="text" id="mn-vant-rc1" placeholder="Ex: v2.0.0"/></div>
+      <div class="field"><label>Versão Atual — RC1</label><input type="text" id="mn-vatu-rc1" placeholder="Ex: v2.1.0"/></div>
+    </div>
+    <div class="section-title" style="margin:20px 0 10px">📡 Transmissor</div>
+    <div class="field"><label>Nº Transmissor</label><input type="text" id="mn-tx" placeholder="Ex: TX-0042"/></div>
+    <div class="field-row">
+      <div class="field"><label>Versão Anterior — Transmissor</label><input type="text" id="mn-vant-tx" placeholder="Ex: v1.0.0"/></div>
+      <div class="field"><label>Versão Atual — Transmissor</label><input type="text" id="mn-vatu-tx" placeholder="Ex: v1.2.0"/></div>
+    </div>
+    <div class="section-title" style="margin:20px 0 10px">📻 Receptor</div>
+    <div class="field"><label>Nº Receptor</label><input type="text" id="mn-rx" placeholder="Ex: RX-0011"/></div>
+    <div class="field-row">
+      <div class="field"><label>Versão Anterior — Receptor</label><input type="text" id="mn-vant-rx" placeholder="Ex: v1.0.0"/></div>
+      <div class="field"><label>Versão Atual — Receptor</label><input type="text" id="mn-vatu-rx" placeholder="Ex: v1.1.0"/></div>
+    </div>
+    <div class="section-title" style="margin:20px 0 10px">🔋 Base de Carregamento 1</div>
+    <div class="field"><label>Nº Base de Carregamento 1</label><input type="text" id="mn-base1" placeholder="Ex: BC-001"/></div>
+    <div class="field-row">
+      <div class="field"><label>Versão Anterior — Base 1</label><input type="text" id="mn-vant-b1" placeholder="Ex: v1.0.0"/></div>
+      <div class="field"><label>Versão Atual — Base 1</label><input type="text" id="mn-vatu-b1" placeholder="Ex: v1.1.0"/></div>
+    </div>
+    <div class="section-title" style="margin:20px 0 10px">🔋 Base de Carregamento 2</div>
+    <div class="field"><label>Nº Base de Carregamento 2</label><input type="text" id="mn-base2" placeholder="Ex: BC-002"/></div>
+    <div class="field-row">
+      <div class="field"><label>Versão Anterior — Base 2</label><input type="text" id="mn-vant-b2" placeholder="Ex: v1.0.0"/></div>
+      <div class="field"><label>Versão Atual — Base 2</label><input type="text" id="mn-vatu-b2" placeholder="Ex: v1.1.0"/></div>
+    </div>
+    <div class="section-title" style="margin:20px 0 10px">🚁 Drone 2</div>
+    <div class="field"><label>Nº de Cadastro — Aeronave 2</label><input type="text" id="mn-cad2" placeholder="Ex: BR-12346"/></div>
+    <div class="field-row">
+      <div class="field"><label>Versão Anterior — Drone 2</label><input type="text" id="mn-vant-d2" placeholder="Ex: v1.0.2"/></div>
+      <div class="field"><label>Versão Atual — Drone 2</label><input type="text" id="mn-vatu-d2" placeholder="Ex: v1.1.0"/></div>
+    </div>
+    <div class="section-title" style="margin:20px 0 10px">🎮 RC 2</div>
+    <div class="field"><label>Nº Radio Controle — RC2</label><input type="text" id="mn-rc2" placeholder="Ex: RC-002"/></div>
+    <div class="field-row">
+      <div class="field"><label>Versão Anterior — RC2</label><input type="text" id="mn-vant-rc2" placeholder="Ex: v2.0.0"/></div>
+      <div class="field"><label>Versão Atual — RC2</label><input type="text" id="mn-vatu-rc2" placeholder="Ex: v2.1.0"/></div>
+    </div>
+    <div class="section-title" style="margin:20px 0 10px">📋 Registro</div>
     <div class="field"><label>Data da Manutenção</label><input type="date" id="mn-data"/></div>
     <div class="field"><label>Alarme / Log Apresentado</label><textarea id="mn-alarme" placeholder="Descreva o alarme ou log registrado..."></textarea></div>
     <div class="field"><label>O que foi Resolvido / Ação Tomada</label><textarea id="mn-acao" placeholder="Descreva a ação tomada..."></textarea></div>
@@ -406,7 +449,7 @@ html,body{height:100%;background:var(--surface);font-family:var(--sans);color:va
 </div>
 
 <script>
-const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxurz7fFfS5Mdb3BuySRFwqkJSaZQ2ZM3TRhAYtKVt2cifN8OLZXyxqT0_CEeyi8bWm/exec";
+const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbyoO7AHTOwsb0UsYMCIMVG6jJC5ebZseSZgwRpAC_y5cjelK9W7j-feZppriO_9upv0/exec";
 const EMBARCACOES = ["C Agressor","C-Atlas","Olin Conqueror","Elizabeth C","Corcovado","C Warrior","C Viking","Mr Sidney","MS Virgie"];
 let PESSOAS       = []; // carregado da aba Usuários após login
 const DOCS_LIST   = [
@@ -645,11 +688,207 @@ function newOp(){resp={};meta={};sigState.pilot=false;sigState.op=false;sel.pv={
 
 // MANUTENÇÃO
 function setManutDefaults(){document.getElementById('mn-data').value=new Date().toISOString().split('T')[0];}
-function goManutSign(){let valid=true;const ddF=[{id:'mn-aero',errId:'err-mn-aero',val:sel.mn.aero},{id:'mn-piloto1',errId:'err-mn-piloto1',val:sel.mn.piloto1},{id:'mn-piloto2',errId:'err-mn-piloto2',val:sel.mn.piloto2}];ddF.forEach(f=>{document.getElementById(f.id).classList.remove('error');document.getElementById(f.errId).classList.remove('visible');});ddF.forEach(f=>{if(!f.val){document.getElementById(f.id).classList.add('error');document.getElementById(f.errId).classList.add('visible');valid=false;}});['mn-cadastro','mn-transmissor','mn-versao-ant','mn-versao-atual','mn-data','mn-alarme','mn-acao','mn-proxima'].forEach(id=>{const el=document.getElementById(id);el.classList.remove('error');if(!el.value.trim()){el.classList.add('error');valid=false;}});if(!valid){alert('Preencha todos os campos antes de continuar.');return;}show('s-manut-sign');}
-function goManutReview(){if(!sigState['mn-p1']||!sigState['mn-p2']){alert('Ambos os pilotos devem assinar antes de continuar.');return;}const sp1=getSarpas(sel.mn.piloto1),sp2=getSarpas(sel.mn.piloto2);const rows=[['Embarcação',sel.mn.aero],['Piloto 1',sel.mn.piloto1+(sp1?' ('+sp1+')':'')],['Piloto 2',sel.mn.piloto2+(sp2?' ('+sp2+')':'')],['Nº Cadastro',document.getElementById('mn-cadastro').value],['Nº Transmissor',document.getElementById('mn-transmissor').value],['Versão Anterior',document.getElementById('mn-versao-ant').value],['Versão Atual',document.getElementById('mn-versao-atual').value],['Data da Manutenção',document.getElementById('mn-data').value],['Alarme / Log',document.getElementById('mn-alarme').value],['Ação Tomada',document.getElementById('mn-acao').value],['Próxima Revisão',document.getElementById('mn-proxima').value]];document.getElementById('manut-review-body').innerHTML=rows.map(([k,v])=>`<div class="review-row"><span class="review-key">${k}</span><span class="review-val">${v}</span></div>`).join('');document.getElementById('manut-rv-sigs').innerHTML=`<div class="sig-preview"><div class="sig-preview-label">Assinatura — ${sel.mn.piloto1.toUpperCase()}${sp1?' ('+sp1+')':''} · Piloto 1</div><img src="${document.getElementById('sig-mn-p1').toDataURL()}"/></div><div class="sig-preview"><div class="sig-preview-label">Assinatura — ${sel.mn.piloto2.toUpperCase()}${sp2?' ('+sp2+')':''} · Piloto 2</div><img src="${document.getElementById('sig-mn-p2').toDataURL()}"/></div>`;show('s-manut-review');}
-function gerarPdfManut(){const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;let y=pdfCabecalho(doc,pw,ml,mr,'MANUTENÇÃO PREVENTIVA',[176,122,26]);const sp1=getSarpas(sel.mn.piloto1),sp2=getSarpas(sel.mn.piloto2);const campos=[['Embarcação',sel.mn.aero],['Piloto 1',sel.mn.piloto1+(sp1?' ('+sp1+')':'')],['Piloto 2',sel.mn.piloto2+(sp2?' ('+sp2+')':'')],['Nº Cadastro',document.getElementById('mn-cadastro').value],['Nº Transmissor',document.getElementById('mn-transmissor').value],['Versão Anterior',document.getElementById('mn-versao-ant').value],['Versão Atual',document.getElementById('mn-versao-atual').value],['Data',document.getElementById('mn-data').value],['Próxima Revisão',document.getElementById('mn-proxima').value]];doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);doc.text('DADOS DO REGISTRO',ml,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);campos.forEach(([k,v],i)=>{const col=i%2===0?ml:ml+cw/2+5;if(i%2===0&&i>0)y+=6;doc.setTextColor(74,96,112);doc.text(k+':',col,y);doc.setTextColor(13,31,45);doc.text(v||'-',col+32,y);});y+=10;doc.setDrawColor(200,212,221);doc.setLineWidth(0.3);doc.line(ml,y,pw-mr,y);y+=6;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);doc.text('ALARME / LOG APRESENTADO',ml,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(13,31,45);doc.splitTextToSize(document.getElementById('mn-alarme').value||'-',cw).forEach(line=>{if(y>ph-50){doc.addPage();y=15;}doc.text(line,ml,y);y+=5;});y+=4;doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=6;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);doc.text('AÇÃO TOMADA / O QUE FOI RESOLVIDO',ml,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(13,31,45);doc.splitTextToSize(document.getElementById('mn-acao').value||'-',cw).forEach(line=>{if(y>ph-50){doc.addPage();y=15;}doc.text(line,ml,y);y+=5;});y+=8;if(y>ph-60){doc.addPage();y=15;}doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);doc.text('ASSINATURAS',ml,y);y+=6;const hw=(cw-10)/2;try{doc.addImage(document.getElementById('sig-mn-p1').toDataURL(),'PNG',ml,y,hw,25);}catch(e){}doc.setDrawColor(179,209,176);doc.setLineWidth(0.4);doc.line(ml,y+26,ml+hw,y+26);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);doc.text('Piloto 1: '+sel.mn.piloto1+(sp1?' · '+sp1:''),ml,y+30);try{doc.addImage(document.getElementById('sig-mn-p2').toDataURL(),'PNG',ml+hw+10,y,hw,25);}catch(e){}doc.line(ml+hw+10,y+26,pw-mr,y+26);doc.text('Piloto 2: '+sel.mn.piloto2+(sp2?' · '+sp2:''),ml+hw+10,y+30);y+=38;if(y>ph-50){doc.addPage();y=15;}doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);doc.text('APROVAÇÃO',ml,y);y+=6;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);doc.rect(ml,y,hw,18);doc.text('Assinatura do Diretor',ml+2,y+5);doc.setDrawColor(179,209,176);doc.line(ml+2,y+14,ml+hw-2,y+14);doc.rect(ml+hw+10,y,hw,18);doc.text('Assinatura do Supervisor',ml+hw+12,y+5);doc.line(ml+hw+12,y+14,pw-mr-2,y+14);const pageCount=doc.internal.getNumberOfPages();for(let i=1;i<=pageCount;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(143,165,181);doc.text('Dit Services · Manutenção Preventiva · Gerado em '+new Date().toLocaleString('pt-BR'),pw/2,ph-8,{align:'center'});doc.text('Página '+i+' de '+pageCount,pw-mr,ph-8,{align:'right'});}return doc.output('datauristring').split(',')[1];}
-async function sendManut(){const btn=document.getElementById('manut-send-btn');btn.disabled=true;showOverlay('Gerando PDF...');await new Promise(r=>setTimeout(r,100));let pdfB64='';try{pdfB64=gerarPdfManut();}catch(e){console.error(e);}const payload={tipo:'manutencao',aeronave:sel.mn.aero,piloto1:sel.mn.piloto1,piloto2:sel.mn.piloto2,cadastro:document.getElementById('mn-cadastro').value,transmissor:document.getElementById('mn-transmissor').value,versaoAnt:document.getElementById('mn-versao-ant').value,versaoAtual:document.getElementById('mn-versao-atual').value,data:document.getElementById('mn-data').value,alarme:document.getElementById('mn-alarme').value,acao:document.getElementById('mn-acao').value,proxima:document.getElementById('mn-proxima').value,sig_piloto1:document.getElementById('sig-mn-p1').toDataURL(),sig_piloto2:document.getElementById('sig-mn-p2').toDataURL(),pdf_b64:pdfB64};if(!navigator.onLine){hideOverlay();await salvarNaFila(payload);await atualizarMenuFila();document.getElementById('manut-done-title').textContent='Salvo localmente!';document.getElementById('manut-done-sub').textContent='Sem conexão. Será enviado automaticamente quando a internet voltar.';show('s-manut-done');btn.disabled=false;return;}showOverlay('Enviando para a planilha...');try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});const d=await r.json();if(d.status==='ok'){document.getElementById('manut-done-title').textContent='Manutenção registrada!';document.getElementById('manut-done-sub').textContent='PDF gerado e salvo na planilha Google Sheets.';hideOverlay();show('s-manut-done');}else{hideOverlay();alert('Erro: '+(d.mensagem||'desconhecido'));btn.disabled=false;}}catch(e){hideOverlay();await salvarNaFila(payload);await atualizarMenuFila();document.getElementById('manut-done-title').textContent='Salvo localmente!';document.getElementById('manut-done-sub').textContent='Falha de rede. Será reenviado automaticamente.';show('s-manut-done');btn.disabled=false;}}
-function newManut(){sigState['mn-p1']=false;sigState['mn-p2']=false;sel.mn={aero:'',piloto1:'',piloto2:''};['mn-aero','mn-piloto1','mn-piloto2'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('selected','error');});['mn-cadastro','mn-transmissor','mn-versao-ant','mn-versao-atual','mn-alarme','mn-acao'].forEach(id=>document.getElementById(id).value='');document.getElementById('mn-proxima').value='';setManutDefaults();show('s-manut-meta');}
+function goManutSign(){
+  let valid=true;
+  const ddF=[{id:'mn-aero',errId:'err-mn-aero',val:sel.mn.aero},{id:'mn-piloto1',errId:'err-mn-piloto1',val:sel.mn.piloto1},{id:'mn-piloto2',errId:'err-mn-piloto2',val:sel.mn.piloto2}];
+  ddF.forEach(f=>{document.getElementById(f.id).classList.remove('error');document.getElementById(f.errId).classList.remove('visible');});
+  ddF.forEach(f=>{if(!f.val){document.getElementById(f.id).classList.add('error');document.getElementById(f.errId).classList.add('visible');valid=false;}});
+  ['mn-cad1','mn-cad2','mn-rc1','mn-rc2','mn-tx','mn-rx','mn-base1','mn-base2','mn-data','mn-alarme','mn-acao','mn-proxima'].forEach(id=>{
+    const el=document.getElementById(id);el.classList.remove('error');
+    if(!el.value.trim()){el.classList.add('error');valid=false;}
+  });
+  if(!valid){alert('Preencha todos os campos obrigatórios antes de continuar.');return;}
+  show('s-manut-sign');
+}
+function goManutReview(){
+  if(!sigState['mn-p1']||!sigState['mn-p2']){alert('Ambos os pilotos devem assinar antes de continuar.');return;}
+  const sp1=getSarpas(sel.mn.piloto1),sp2=getSarpas(sel.mn.piloto2);
+  const g=id=>document.getElementById(id).value;
+  const rows=[
+    ['Embarcação',sel.mn.aero],['Piloto 1',sel.mn.piloto1+(sp1?' ('+sp1+')':'')],['Piloto 2',sel.mn.piloto2+(sp2?' ('+sp2+')':'')],
+    ['— DRONE 1 —',''],['Nº Cadastro Aeronave 1',g('mn-cad1')],['Versão Ant. Drone 1',g('mn-vant-d1')],['Versão Atual Drone 1',g('mn-vatu-d1')],
+    ['— RC 1 —',''],['Nº RC1',g('mn-rc1')],['Versão Ant. RC1',g('mn-vant-rc1')],['Versão Atual RC1',g('mn-vatu-rc1')],
+    ['— TRANSMISSOR —',''],['Nº Transmissor',g('mn-tx')],['Versão Ant. TX',g('mn-vant-tx')],['Versão Atual TX',g('mn-vatu-tx')],
+    ['— RECEPTOR —',''],['Nº Receptor',g('mn-rx')],['Versão Ant. RX',g('mn-vant-rx')],['Versão Atual RX',g('mn-vatu-rx')],
+    ['— BASE 1 —',''],['Nº Base 1',g('mn-base1')],['Versão Ant. Base 1',g('mn-vant-b1')],['Versão Atual Base 1',g('mn-vatu-b1')],
+    ['— BASE 2 —',''],['Nº Base 2',g('mn-base2')],['Versão Ant. Base 2',g('mn-vant-b2')],['Versão Atual Base 2',g('mn-vatu-b2')],
+    ['— DRONE 2 —',''],['Nº Cadastro Aeronave 2',g('mn-cad2')],['Versão Ant. Drone 2',g('mn-vant-d2')],['Versão Atual Drone 2',g('mn-vatu-d2')],
+    ['— RC 2 —',''],['Nº RC2',g('mn-rc2')],['Versão Ant. RC2',g('mn-vant-rc2')],['Versão Atual RC2',g('mn-vatu-rc2')],
+    ['— REGISTRO —',''],['Data da Manutenção',g('mn-data')],['Alarme / Log',g('mn-alarme')],['Ação Tomada',g('mn-acao')],['Próxima Revisão',g('mn-proxima')]
+  ];
+  document.getElementById('manut-review-body').innerHTML=rows.map(([k,v])=>
+    k.startsWith('—')?`<div class="review-row" style="background:var(--navy-light);margin:4px -16px;padding:6px 16px"><span class="review-key" style="color:var(--navy);font-weight:500">${k}</span></div>`
+    :`<div class="review-row"><span class="review-key">${k}</span><span class="review-val">${v||'—'}</span></div>`
+  ).join('');
+  document.getElementById('manut-rv-sigs').innerHTML=`<div class="sig-preview"><div class="sig-preview-label">Assinatura — ${sel.mn.piloto1.toUpperCase()}${sp1?' ('+sp1+')':''} · Piloto 1</div><img src="${document.getElementById('sig-mn-p1').toDataURL()}"/></div><div class="sig-preview"><div class="sig-preview-label">Assinatura — ${sel.mn.piloto2.toUpperCase()}${sp2?' ('+sp2+')':''} · Piloto 2</div><img src="${document.getElementById('sig-mn-p2').toDataURL()}"/></div>`;
+  show('s-manut-review');
+}
+function gerarPdfManut(){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const pw=210,ph=297,ml=15,mr=15,cw=pw-ml-mr;
+  const g=id=>document.getElementById(id).value||'-';
+  let y=pdfCabecalho(doc,pw,ml,mr,'MANUTENÇÃO PREVENTIVA',[176,122,26]);
+  const sp1=getSarpas(sel.mn.piloto1),sp2=getSarpas(sel.mn.piloto2);
+
+  function secTitle(txt){
+    if(y>ph-40){doc.addPage();y=20;}
+    doc.setFillColor(22,61,94);doc.rect(ml,y-4,cw,8,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);
+    doc.text(txt,ml+3,y);y+=8;
+  }
+  function row2(k1,v1,k2,v2){
+    if(y>ph-16){doc.addPage();y=20;}
+    const hw=cw/2-3;
+    doc.setFont('helvetica','normal');doc.setFontSize(8);
+    doc.setTextColor(74,96,112);doc.text(k1+':',ml,y);
+    doc.setTextColor(13,31,45);doc.text(v1||'-',ml+40,y);
+    doc.setTextColor(74,96,112);doc.text(k2+':',ml+hw+6,y);
+    doc.setTextColor(13,31,45);doc.text(v2||'-',ml+hw+46,y);
+    y+=6;
+  }
+  function row1(k,v){
+    if(y>ph-12){doc.addPage();y=20;}
+    doc.setFont('helvetica','normal');doc.setFontSize(8);
+    doc.setTextColor(74,96,112);doc.text(k+':',ml,y);
+    doc.setTextColor(13,31,45);doc.text(v||'-',ml+50,y);
+    y+=6;
+  }
+  function rowText(k,v){
+    if(y>ph-20){doc.addPage();y=20;}
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(11,36,58);doc.text(k,ml,y);y+=5;
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(13,31,45);
+    doc.splitTextToSize(v||'-',cw).forEach(line=>{if(y>ph-12){doc.addPage();y=20;}doc.text(line,ml,y);y+=5;});
+    y+=2;
+  }
+
+  // Cabeçalho geral
+  secTitle('IDENTIFICAÇÃO');
+  row1('Embarcação',sel.mn.aero);
+  row2('Piloto 1',sel.mn.piloto1+(sp1?' ('+sp1+')':''),'Piloto 2',sel.mn.piloto2+(sp2?' ('+sp2+')':''));
+  row1('Data da Manutenção',g('mn-data'));
+  y+=2;
+
+  // Drone 1
+  secTitle('DRONE 1');
+  row1('Nº Cadastro Aeronave 1',g('mn-cad1'));
+  row2('Versão Anterior',g('mn-vant-d1'),'Versão Atual',g('mn-vatu-d1'));
+  y+=2;
+
+  // RC 1
+  secTitle('RÁDIO CONTROLE 1 (RC1)');
+  row1('Nº RC1',g('mn-rc1'));
+  row2('Versão Anterior',g('mn-vant-rc1'),'Versão Atual',g('mn-vatu-rc1'));
+  y+=2;
+
+  // Transmissor
+  secTitle('TRANSMISSOR');
+  row1('Nº Transmissor',g('mn-tx'));
+  row2('Versão Anterior',g('mn-vant-tx'),'Versão Atual',g('mn-vatu-tx'));
+  y+=2;
+
+  // Receptor
+  secTitle('RECEPTOR');
+  row1('Nº Receptor',g('mn-rx'));
+  row2('Versão Anterior',g('mn-vant-rx'),'Versão Atual',g('mn-vatu-rx'));
+  y+=2;
+
+  // Base 1
+  secTitle('BASE DE CARREGAMENTO 1');
+  row1('Nº Base 1',g('mn-base1'));
+  row2('Versão Anterior',g('mn-vant-b1'),'Versão Atual',g('mn-vatu-b1'));
+  y+=2;
+
+  // Base 2
+  secTitle('BASE DE CARREGAMENTO 2');
+  row1('Nº Base 2',g('mn-base2'));
+  row2('Versão Anterior',g('mn-vant-b2'),'Versão Atual',g('mn-vatu-b2'));
+  y+=2;
+
+  // Drone 2
+  secTitle('DRONE 2');
+  row1('Nº Cadastro Aeronave 2',g('mn-cad2'));
+  row2('Versão Anterior',g('mn-vant-d2'),'Versão Atual',g('mn-vatu-d2'));
+  y+=2;
+
+  // RC 2
+  secTitle('RÁDIO CONTROLE 2 (RC2)');
+  row1('Nº RC2',g('mn-rc2'));
+  row2('Versão Anterior',g('mn-vant-rc2'),'Versão Atual',g('mn-vatu-rc2'));
+  y+=4;
+
+  // Registro
+  if(y>ph-40){doc.addPage();y=20;}
+  doc.setDrawColor(200,212,221);doc.setLineWidth(0.3);doc.line(ml,y,pw-mr,y);y+=6;
+  rowText('ALARME / LOG APRESENTADO',g('mn-alarme'));
+  doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=6;
+  rowText('AÇÃO TOMADA / O QUE FOI RESOLVIDO',g('mn-acao'));
+  row1('Próxima Revisão',g('mn-proxima'));
+  y+=4;
+
+  // Assinaturas
+  if(y>ph-60){doc.addPage();y=20;}
+  doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);doc.text('ASSINATURAS',ml,y);y+=6;
+  const hw=(cw-10)/2;
+  try{doc.addImage(document.getElementById('sig-mn-p1').toDataURL(),'PNG',ml,y,hw,25);}catch(e){}
+  doc.setDrawColor(179,209,176);doc.setLineWidth(0.4);doc.line(ml,y+26,ml+hw,y+26);
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);
+  doc.text('Piloto 1: '+sel.mn.piloto1+(sp1?' · '+sp1:''),ml,y+30);
+  try{doc.addImage(document.getElementById('sig-mn-p2').toDataURL(),'PNG',ml+hw+10,y,hw,25);}catch(e){}
+  doc.line(ml+hw+10,y+26,pw-mr,y+26);
+  doc.text('Piloto 2: '+sel.mn.piloto2+(sp2?' · '+sp2:''),ml+hw+10,y+30);
+  y+=38;
+
+  // Aprovação
+  if(y>ph-40){doc.addPage();y=20;}
+  doc.setDrawColor(200,212,221);doc.line(ml,y,pw-mr,y);y+=8;
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(11,36,58);doc.text('APROVAÇÃO',ml,y);y+=6;
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(74,96,112);
+  const hw2=(cw-10)/2;
+  doc.rect(ml,y,hw2,18);doc.text('Assinatura do Diretor',ml+2,y+5);
+  doc.setDrawColor(179,209,176);doc.line(ml+2,y+14,ml+hw2-2,y+14);
+  doc.rect(ml+hw2+10,y,hw2,18);doc.text('Assinatura do Supervisor',ml+hw2+12,y+5);
+  doc.line(ml+hw2+12,y+14,pw-mr-2,y+14);
+
+  const pageCount=doc.internal.getNumberOfPages();
+  for(let i=1;i<=pageCount;i++){
+    doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(143,165,181);
+    doc.text('Dit Services · Manutenção Preventiva · Gerado em '+new Date().toLocaleString('pt-BR'),pw/2,ph-8,{align:'center'});
+    doc.text('Página '+i+' de '+pageCount,pw-mr,ph-8,{align:'right'});
+  }
+  return doc.output('datauristring').split(',')[1];
+}
+async function sendManut(){const btn=document.getElementById('manut-send-btn');btn.disabled=true;showOverlay('Gerando PDF...');await new Promise(r=>setTimeout(r,100));let pdfB64='';try{pdfB64=gerarPdfManut();}catch(e){console.error(e);}const g=id=>document.getElementById(id).value;
+  const payload={tipo:'manutencao',
+    aeronave:sel.mn.aero,piloto1:sel.mn.piloto1,piloto2:sel.mn.piloto2,
+    cad1:g('mn-cad1'),cad2:g('mn-cad2'),
+    rc1:g('mn-rc1'),rc2:g('mn-rc2'),
+    tx:g('mn-tx'),rx:g('mn-rx'),
+    base1:g('mn-base1'),base2:g('mn-base2'),
+    vantD1:g('mn-vant-d1'),vatuD1:g('mn-vatu-d1'),
+    vantD2:g('mn-vant-d2'),vatuD2:g('mn-vatu-d2'),
+    vantRc1:g('mn-vant-rc1'),vatuRc1:g('mn-vatu-rc1'),
+    vantRc2:g('mn-vant-rc2'),vatuRc2:g('mn-vatu-rc2'),
+    vantTx:g('mn-vant-tx'),vatuTx:g('mn-vatu-tx'),
+    vantRx:g('mn-vant-rx'),vatuRx:g('mn-vatu-rx'),
+    vantB1:g('mn-vant-b1'),vatuB1:g('mn-vatu-b1'),
+    vantB2:g('mn-vant-b2'),vatuB2:g('mn-vatu-b2'),
+    data:g('mn-data'),alarme:g('mn-alarme'),acao:g('mn-acao'),proxima:g('mn-proxima'),
+    sig_piloto1:document.getElementById('sig-mn-p1').toDataURL(),
+    sig_piloto2:document.getElementById('sig-mn-p2').toDataURL(),
+    pdf_b64:pdfB64};if(!navigator.onLine){hideOverlay();await salvarNaFila(payload);await atualizarMenuFila();document.getElementById('manut-done-title').textContent='Salvo localmente!';document.getElementById('manut-done-sub').textContent='Sem conexão. Será enviado automaticamente quando a internet voltar.';show('s-manut-done');btn.disabled=false;return;}showOverlay('Enviando para a planilha...');try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});const d=await r.json();if(d.status==='ok'){document.getElementById('manut-done-title').textContent='Manutenção registrada!';document.getElementById('manut-done-sub').textContent='PDF gerado e salvo na planilha Google Sheets.';hideOverlay();show('s-manut-done');}else{hideOverlay();alert('Erro: '+(d.mensagem||'desconhecido'));btn.disabled=false;}}catch(e){hideOverlay();await salvarNaFila(payload);await atualizarMenuFila();document.getElementById('manut-done-title').textContent='Salvo localmente!';document.getElementById('manut-done-sub').textContent='Falha de rede. Será reenviado automaticamente.';show('s-manut-done');btn.disabled=false;}}
+function newManut(){
+  sigState['mn-p1']=false;sigState['mn-p2']=false;sel.mn={aero:'',piloto1:'',piloto2:''};
+  ['mn-aero','mn-piloto1','mn-piloto2'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('selected','error');});
+  ['mn-cad1','mn-cad2','mn-rc1','mn-rc2','mn-tx','mn-rx','mn-base1','mn-base2',
+   'mn-vant-d1','mn-vatu-d1','mn-vant-d2','mn-vatu-d2',
+   'mn-vant-rc1','mn-vatu-rc1','mn-vant-rc2','mn-vatu-rc2',
+   'mn-vant-tx','mn-vatu-tx','mn-vant-rx','mn-vatu-rx',
+   'mn-vant-b1','mn-vatu-b1','mn-vant-b2','mn-vatu-b2',
+   'mn-alarme','mn-acao','mn-proxima'].forEach(id=>document.getElementById(id).value='');
+  setManutDefaults();show('s-manut-meta');
+}
 
 // ESCALA — carrega sarpas e exibe abaixo dos nomes
 function brToIso(d){if(!d||!d.includes('/'))return d||'';var p=d.split('/');return p[2]+'-'+p[1]+'-'+p[0];}
